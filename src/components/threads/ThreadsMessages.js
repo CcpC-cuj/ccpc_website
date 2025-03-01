@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { auth, database } from "../../threadsFirebaseConfig";
 import { ref, onValue, push, set, remove, update } from "firebase/database";
 import { FaPlus, FaPaperPlane, FaTimes, FaReply, FaTrash } from "react-icons/fa";
-
+import { LeftNavigation, BottomNavigation } from "./Navigation";
+import { useNavigate } from "react-router-dom";
 const DiscussionForum = () => {
   const [user, setUser] = useState(auth.currentUser);
   const [messages, setMessages] = useState([]);
@@ -11,6 +12,8 @@ const DiscussionForum = () => {
   const [loading, setLoading] = useState(true);
   const [showCompose, setShowCompose] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged((currentUser) => {
@@ -18,6 +21,16 @@ const DiscussionForum = () => {
     });
     return () => unsubscribeAuth();
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   useEffect(() => {
     const messagesRef = ref(database, "forumMessages");
@@ -66,6 +79,9 @@ const DiscussionForum = () => {
     setShowCompose(false);
   };
 
+ const handleNavigation = (path) => {
+    navigate(path);
+  };
   const handleReply = (messageId) => {
     if (!replyContent[messageId]?.trim()) return;
     const repliesRef = ref(database, `forumMessages/${messageId}/replies`);
@@ -82,8 +98,10 @@ const DiscussionForum = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 relative">
-      <div className="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-lg">
+    <div className="min-h-screen bg-black text-white p-6 relative flex">
+      {/* Render Left Navigation only on Desktop */}
+      {!isMobile && <LeftNavigation user={user} onNavigate={handleNavigation} />}
+      <div className="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-lg flex-1">
         <h1 className="text-2xl font-bold text-center mb-4">Discussion Forum</h1>
 
         {loading ? (
@@ -160,31 +178,90 @@ const DiscussionForum = () => {
           <p className="text-center text-gray-400">No messages yet. Be the first to post!</p>
         )}
       </div>
+{/* Render Bottom Navigation only on Mobile */}
+{isMobile && <BottomNavigation user={user} onNavigate={handleNavigation} />}
+{user && (
+  <>
+    {/* Mobile Floating Button */}
+    {isMobile ? (
+      <button
+        onClick={() => setShowCompose(true)}
+        className="fixed bottom-20 right-6 bg-blue-500 p-4 rounded-full shadow-lg hover:bg-blue-600 transition-transform duration-300"
+      >
+        <FaPlus size={28} className={`${showCompose ? "rotate-45" : "rotate-0"} transition-transform duration-300`} />
+      </button>
+    ) : (
+      // Desktop Button (Top-right or Sidebar)
+      <button
+        onClick={() => setShowCompose(true)}
+        className="fixed bottom-10 right-6 bg-blue-500 p-4 rounded-full shadow-lg hover:bg-blue-600 transition-transform duration-300"
+      >
+        <FaPlus size={24} className={`${showCompose ? "rotate-45" : "rotate-0"} transition-transform duration-300`} />
+      </button>
+    )}
+  </>
+)}
 
-      {user && (
-        <button
-          onClick={() => setShowCompose(true)}
-          className="fixed bottom-6 right-6 bg-blue-500 p-4 rounded-full shadow-lg hover:bg-blue-600 transition-colors transform duration-300"
-        >
-          <FaPlus size={28} className={`${showCompose ? "rotate-45" : "rotate-0"} transition-transform duration-300`} />
+
+{/* Mobile Compose Modal */}
+{isMobile && showCompose && (
+  <div
+    className="fixed inset-0 bottom-20 flex items-end justify-center bg-black bg-opacity-50 z-50"
+    onClick={() => setShowCompose(false)}
+  >
+    <div
+      className="w-full sm:w-5/6 bg-gray-900 p-2 rounded-t-lg transform transition-transform duration-300 animate-slideIn"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="flex items-center">
+        <textarea
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Write your message..."
+          className="flex-1 p-2 rounded-md bg-gray-800 text-white resize-none"
+          rows="2"
+        />
+        <button onClick={handlePostMessage} className="p-2">
+          <FaPaperPlane size={20} />
         </button>
-      )}
+        <button onClick={() => setShowCompose(false)} className="text-red-500 p-2">
+          <FaTimes size={20} />
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-      {showCompose && (
-        <div className="fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 z-50" onClick={() => setShowCompose(false)}>
-          <div className="w-full sm:w-5/6 bg-gray-900 p-2 rounded-t-lg transform transition-transform duration-300 animate-slideIn" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center">
-              <textarea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Write your message..." className="flex-1 p-2 rounded-md bg-gray-800 text-white resize-none" rows="2" />
-              <button onClick={handlePostMessage} className="p-2">
-                <FaPaperPlane size={20} />
-              </button>
-              <button onClick={() => setShowCompose(false)} className="text-red-500 p-2">
-                <FaTimes size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
+{/* Desktop Compose Modal */}
+{!isMobile && showCompose && (
+  <div
+  className="fixed inset-0 bottom-10 flex items-end justify-center bg-black bg-opacity-50 z-50"
+  onClick={() => setShowCompose(false)}
+>
+  <div
+    className="w-full sm:w-5/6 bg-gray-900 p-2 rounded-t-lg transform transition-transform duration-300 animate-slideIn"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <div className="flex items-center">
+      <textarea
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+        placeholder="Write your message..."
+        className="flex-1 p-2 rounded-md bg-gray-800 text-white resize-none"
+        rows="2"
+      />
+      <button onClick={handlePostMessage} className="p-2">
+        <FaPaperPlane size={20} />
+      </button>
+      <button onClick={() => setShowCompose(false)} className="text-red-500 p-2">
+        <FaTimes size={20} />
+      </button>
+    </div>
+  </div>
+</div>
+)}
+
     </div>
   );
 };

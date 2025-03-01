@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../threadsFirebaseConfig";
 import Footer from "../Footer";
-import Starfield from "../Starfield";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -12,14 +11,16 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  getDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { LeftNavigation, BottomNavigation } from "./Navigation"; // adjust path as needed
+import { LeftNavigation, BottomNavigation } from "./Navigation";
 import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 
 const ThreadsHome = () => {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null); // Store user details like is_members
   const [posts, setPosts] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [previewImage, setPreviewImage] = useState(null);
@@ -33,16 +34,30 @@ const ThreadsHome = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Listen for auth state changes and fetch posts.
+  // Listen for auth state changes and fetch user data.
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+
+        // Fetch user document from Firestore to get is_members
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          setUserData(userDocSnap.data()); // Store user data
+        }
+      } else {
+        setUser(null);
+        setUserData(null);
+      }
     });
 
-    const postsQuery = query(
-      collection(db, "posts"),
-      orderBy("timestamp", "desc")
-    );
+    return () => unsubscribeAuth();
+  }, []);
+
+  // Listen for post updates.
+  useEffect(() => {
+    const postsQuery = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     const unsubscribePosts = onSnapshot(postsQuery, (snapshot) => {
       const postsData = snapshot.docs.map((docSnap) => ({
         id: docSnap.id,
@@ -51,10 +66,7 @@ const ThreadsHome = () => {
       setPosts(postsData);
     });
 
-    return () => {
-      unsubscribeAuth();
-      unsubscribePosts();
-    };
+    return () => unsubscribePosts();
   }, []);
 
   const handleNavigation = (path) => {
@@ -71,45 +83,39 @@ const ThreadsHome = () => {
     if (!auth.currentUser) return;
     const postDocRef = doc(db, "posts", post.id);
     const currentUserId = auth.currentUser.uid;
-    // Use the likedBy array to toggle like/unlike.
     const likedBy = post.likedBy || [];
     try {
       if (likedBy.includes(currentUserId)) {
-        // User has already liked the post; remove their uid.
-        await updateDoc(postDocRef, {
-          likedBy: arrayRemove(currentUserId),
-        });
+        await updateDoc(postDocRef, { likedBy: arrayRemove(currentUserId) });
       } else {
-        // Add the user's uid to likedBy.
-        await updateDoc(postDocRef, {
-          likedBy: arrayUnion(currentUserId),
-        });
+        await updateDoc(postDocRef, { likedBy: arrayUnion(currentUserId) });
       }
     } catch (error) {
       console.error("Error toggling like:", error);
     }
   };
 
-  // Render posts, filtering to public posts and showing multiple images if available.
+  // Render posts with proper filtering
   const renderPosts = () => {
-    const publicPosts = posts.filter((post) => post.isPublic);
-    if (publicPosts.length === 0) {
-      return (
-        <p className="text-center text-gray-400 mt-4">
-          No posts available yet.
-        </p>
-      );
+    if (!userData) return <p className="text-center text-gray-400 mt-4">Loading...</p>;
+
+    const filteredPosts = posts.filter((post) => {
+      if (post.isPublic) return true; // Show public posts
+      if (!post.isPublic && userData.is_members) return true; // Show private posts to members
+      return false; // Hide private posts from non-members
+    });
+
+    if (filteredPosts.length === 0) {
+      return <p className="text-center text-gray-400 mt-4">No posts available yet.</p>;
     }
-    return publicPosts.map((post) => (
+
+    return filteredPosts.map((post) => (
       <div
         key={post.id}
         className="mb-4 bg-gray-900 bg-opacity-80 p-4 rounded-lg shadow-lg hover:shadow-2xl m-10 transition-shadow max-w-xl mx-auto"
       >
         <h3 className="text-xl font-bold">{post.author}</h3>
-        <p className="text-sm mt-2" style={{ whiteSpace: "pre-wrap" }}>
-          {post.content}
-        </p>
-        {post.imageUrls && post.imageUrls.length > 0 ? (
+        {post.imageUrls?.length > 0 ? (
           <div className="grid grid-cols-2 gap-2 mt-4">
             {post.imageUrls.map((url, index) => (
               <img
@@ -129,27 +135,24 @@ const ThreadsHome = () => {
             onClick={() => openPreview(post.imageUrl)}
           />
         ) : null}
+         <p className="text-sm mt-2" style={{ whiteSpace: "pre-wrap" }}>
+          {post.content}
+        </p>
         <div className="flex items-center mt-2">
           <button
             onClick={() => handleLike(post)}
             className="text-blue-400 hover:text-blue-600 mr-2"
           >
-            {post.likedBy && auth.currentUser && post.likedBy.includes(auth.currentUser.uid)
-              ? "Unlike"
-              : "Like"}
+            {post.likedBy?.includes(auth.currentUser?.uid) ? "Unlike" : "Like"}
           </button>
-          <span className="text-xs text-gray-500">
-            {(post.likedBy ? post.likedBy.length : 0)} likes
-          </span>
+          <span className="text-xs text-gray-500">{post.likedBy?.length || 0} likes</span>
         </div>
         <div className="mt-2">
           <Comments postId={post.id} />
           <CommentForm postId={post.id} />
         </div>
         <p className="text-xs text-gray-500 mt-1">
-          {post.timestamp
-            ? new Date(post.timestamp.seconds * 1000).toLocaleString()
-            : ""}
+          {post.timestamp ? new Date(post.timestamp.seconds * 1000).toLocaleString() : ""}
         </p>
       </div>
     ));
@@ -190,25 +193,20 @@ const ThreadsHome = () => {
       {isMobile ? mobileLayout : desktopLayout}
       {showPreview && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50"
+          className="fixed inset-0  flex items-center justify-center bg-black bg-opacity-80 z-50"
           onClick={() => {
             setShowPreview(false);
             setPreviewImage(null);
           }}
         >
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="max-h-full max-w-full rounded"
-            />
+          <div className="relative flex flex-row items-start ">
+            <img src={previewImage} alt="Preview" className="max-h-72 max-w-auto rounded" />
             <button
               onClick={() => {
                 setShowPreview(false);
                 setPreviewImage(null);
               }}
-              style={{ color: "#ef4444" }}
-              className="absolute top-[-7.5rem] right-[-3.75rem] md:top-[-5rem] md:right-[-2.5rem] text-3xl p-2"
+              className="-top-64 -right-12 text-3xl text-red-500 p-2"
             >
               &times;
             </button>

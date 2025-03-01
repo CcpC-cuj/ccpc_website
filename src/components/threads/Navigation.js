@@ -1,6 +1,6 @@
 import React from "react";
 import { FaHome, FaPlusSquare, FaEnvelope, FaUser } from "react-icons/fa";
-
+import NavLogo from "../logo/navlogo";
 // Left side navigation for desktop view.
 export const LeftNavigation = ({ onNavigate, user }) => {
   return (
@@ -8,6 +8,15 @@ export const LeftNavigation = ({ onNavigate, user }) => {
       <div className="relative">
         <nav className="border-r border-gray-700 min-h-[calc(100vh-8rem)] ml-12 pt-10 pr-20 p-4 sticky top-0">
           <ul className="space-y-8 text-xl">
+            <li>
+            <button
+                onClick={() => onNavigate("/")}
+                className="flex items-center space-x-2 hover:text-gray-300"
+              >
+                <NavLogo className="w-16 h-10" />
+              </button>
+            
+            </li>
             <li>
               <button
                 onClick={() => onNavigate("/threads/home")}
@@ -73,7 +82,7 @@ export const BottomNavigation = ({ onNavigate, user }) => {
         <FaPlusSquare size={20} />
         <span className="text-xs mt-1">Create</span>
       </button>
-      <button onClick={() => onNavigate("/threads/messages")} className="flex flex-col items-center">
+      <button onClick={() => onNavigate("/threads/forum")} className="flex flex-col items-center">
         <FaEnvelope size={20} />
         <span className="text-xs mt-1">Messages</span>
       </button>
