@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { auth, db } from "../threadsFirebaseConfig";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "firebase/firestore";
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { LeftNavigation, BottomNavigation } from "../components/threads/Navigation";
+import SignIn from "../components/threads/signinThreads";  // Import SignIn component
 import { motion } from "framer-motion";
 
 const SharedPost = () => {
@@ -15,14 +16,12 @@ const SharedPost = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // Detect screen size for responsive layout
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Fetch post data & listen for live updates
   useEffect(() => {
     const postRef = doc(db, "posts", postId);
     const unsubscribe = onSnapshot(postRef, (docSnap) => {
@@ -36,21 +35,24 @@ const SharedPost = () => {
     return () => unsubscribe();
   }, [postId, navigate]);
 
-  // Listen for auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          setUser({ uid: currentUser.uid, ...userDocSnap.data() });
+        } else {
+          setUser(currentUser);
+        }
+      } else {
+        setUser(null);
+      }
     });
+
     return () => unsubscribe();
   }, []);
 
-  // Google Login
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  };
-
-  // Like/Unlike Post
   const handleLike = async () => {
     if (!user) return;
     const postDocRef = doc(db, "posts", postId);
@@ -61,7 +63,6 @@ const SharedPost = () => {
     });
   };
 
-  // Open Image Preview
   const openPreview = (url) => {
     setPreviewImage(url);
     setShowPreview(true);
@@ -71,16 +72,13 @@ const SharedPost = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex">
-      {/* Left Navigation (for logged-in users only) */}
       {user && !isMobile && (
         <div className="w-1/5 fixed h-screen">
           <LeftNavigation user={user} onNavigate={navigate} />
         </div>
       )}
 
-      {/* Main Content */}
       <div className={`flex flex-col flex-1 ${user && !isMobile ? "ml-1/5" : ""} p-6`}>
-        {/* Show Navigation if Mobile */}
         {user && isMobile && <BottomNavigation user={user} onNavigate={navigate} />}
 
         <div className="flex justify-center">
@@ -92,7 +90,6 @@ const SharedPost = () => {
           >
             <h3 className="text-xl font-bold text-center">{post.author}</h3>
 
-            {/* Show Images */}
             {post.imageUrls && post.imageUrls.length > 0 ? (
               <div className="grid grid-cols-2 gap-2 mt-4">
                 {post.imageUrls.map((url, index) => (
@@ -118,11 +115,10 @@ const SharedPost = () => {
 
             <p className="text-sm mt-2 text-start whitespace-pre-wrap text-gray-300">{post.content}</p>
 
-            {/* Like Button */}
             <div className="flex flex-col items-center mt-4">
-            <p className="text-sm text-gray-400 text-center mt-2">
-              {post.likedBy?.length || 0} {post.likedBy?.length === 1 ? "like" : "likes"}
-            </p>
+              <p className="text-sm text-gray-400 text-center mt-2">
+                {post.likedBy?.length || 0} {post.likedBy?.length === 1 ? "like" : "likes"}
+              </p>
               {user ? (
                 <button
                   onClick={handleLike}
@@ -135,22 +131,14 @@ const SharedPost = () => {
                   {post.likedBy?.includes(user.uid) ? "Unlike" : "Like"}
                 </button>
               ) : (
-                
-                <button
-                  onClick={handleGoogleLogin}
-                  className="bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition transform hover:scale-105"
-                >
-                  Continue with Google to Like & Comment
-                </button>
+                <SignIn redirectPath={`/post/${postId}`} />
+
               )}
             </div>
-
-            
           </motion.div>
         </div>
       </div>
 
-      {/* Image Preview Modal */}
       {showPreview && (
         <motion.div
           initial={{ opacity: 0 }}

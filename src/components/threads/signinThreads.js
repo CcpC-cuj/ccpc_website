@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-const SignIn = () => {
+const SignIn = ({ redirectPath = "/threads/home" }) => { // Default to home if no path is provided
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -13,8 +13,8 @@ const SignIn = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      
-      // Firestore: Store profile details including membership status.
+
+      // Firestore: Store profile details
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
       const profileData = {
@@ -22,30 +22,16 @@ const SignIn = () => {
         email: user.email,
         photoURL: user.photoURL,
         lastLogin: new Date().toISOString(),
-        // Set default membership status to false if it doesn't exist.
-        is_members: false,
+        is_members: userDocSnap.exists() ? userDocSnap.data().is_members : false,
       };
 
-      if (!userDocSnap.exists()) {
-        // Create new document with default is_members.
-        await setDoc(userDocRef, profileData);
-      } else {
-        // If document exists, keep the existing membership status.
-        const existingData = userDocSnap.data();
-        const newData = {
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          lastLogin: new Date().toISOString(),
-          is_members: existingData.is_members !== undefined ? existingData.is_members : false,
-        };
-        await updateDoc(userDocRef, newData);
-      }
-      
-      console.log("Sign-in successful, redirecting to /threads/home");
-      navigate("/threads/home");      
+      // Store user data in Firestore
+      await setDoc(userDocRef, profileData, { merge: true });
+
+      console.log("Sign-in successful, redirecting to", redirectPath);
+      navigate(redirectPath); // Redirect based on where the user signed in from
     } catch (error) {
-      console.error("Error during sign-in", error);
+      console.error("Error during sign-in ❌", error);
     }
   };
 
