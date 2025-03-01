@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { LeftNavigation, BottomNavigation } from "./Navigation";
+import {FaShare} from "react-icons/fa";
 import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 
@@ -113,7 +114,19 @@ const ThreadsHome = () => {
       <div
         key={post.id}
         className="mb-4 bg-gray-900 bg-opacity-80 p-4 rounded-lg shadow-lg hover:shadow-2xl m-10 transition-shadow max-w-xl mx-auto"
-      >
+      ><div className="flex justify-end">
+        <button
+            onClick={() => {
+              const shareUrl = `${window.location.origin}/post/${post.id}`;
+              navigator.clipboard.writeText(shareUrl);
+              alert("Post link copied to clipboard!");
+            }}
+            className="text-green-400 text-right hover:text-green-600 ml-2"
+          >
+            <FaShare />
+          </button>
+      </div>
+        
         <h3 className="text-xl font-bold">{post.author}</h3>
         {post.imageUrls?.length > 0 ? (
           <div className="grid grid-cols-2 gap-2 mt-4">
