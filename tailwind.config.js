@@ -11,7 +11,8 @@ module.exports = {
       fontFamily: {
         serif: ['"Noto Serif"', 'serif'], 
         radley: ['"Radley"', 'serif'],
-        sans: ['Josefin Sans', 'sans-serif']
+        sans: ['Josefin Sans', 'sans-serif'],
+        ssans: ['sans-serif'],
       },
     },
   },

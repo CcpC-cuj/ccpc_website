@@ -44,7 +44,7 @@ const Threads = () => {
               </svg>
 
 
-            <h1 className="text-5xl font-extrabold font-sans text-gray-100 mt-2">threads</h1>
+            <h1 className="text-5xl font-extrabold font-jose text-gray-100 mt-2">threads</h1>
             <p className="mt-4 text-xl text-gray-400 text-center">
               Engage, share, and connect with a vibrant community of thinkers and creators.
               Discover discussions, collaborate on ideas, and enjoy a space where every voice matters.
@@ -57,7 +57,7 @@ const Threads = () => {
 
         {/* What is Threads Section */}
         <div className=" rounded-xl shadow-lg p-8 max-w-4xl w-full mb-12">
-          <h2 className="text-3xl font-bold text-blue-700 mb-4">What is Threads?</h2>
+          <h2 className="text-3xl font-bold text-blue-700 mb-4">What is threads?</h2>
           <p className="text-lg text-white mb-6">
             Threads is your go-to platform for meaningful conversations and creative sharing. 
             Whether you're here to learn, share your projects, or simply explore new ideas, 

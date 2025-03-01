@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { gsap } from "gsap";
-import NAVBAR from '../components/SOC/socnavbar.js';
+import NAVBAR from '../components/Navbar.js';
 import Footer from "../components/Footer.js";
 import STARFIELD from "../components/Starfield";
 

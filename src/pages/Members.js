@@ -4,8 +4,10 @@ import { database } from "../firebaseConfig.js";
 import { useNavigate } from "react-router-dom";
 import { FaLogin } from "react-icons/fa"; 
 import Footer from "../components/Footer.js";
-import NAVBAR from "../components/SOC/socnavbar.js"
+import NAVBAR from "../components/Navbar.js";
 import STARFIELD from "../components/Starfield";
+
+
 const Members = () => {
   const [users, setUsers] = useState([]);
   const [alumni, setAlumni] = useState([]); // State for alumni

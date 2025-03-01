@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ref, get, update } from "firebase/database";
 import { database } from "../firebaseConfig";
 import { getAuth } from "firebase/auth";
-import NAVBAR from "./navbar";
+import NAVBAR from "../socnavbar.js";
 import PROJECT from "./profile/project.js";
 import { FaShareAlt, FaEdit, FaCamera } from "react-icons/fa";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
