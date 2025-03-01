@@ -75,3 +75,4 @@ build/static/js/
 .cache/
 #firebaseconfig
 src/firebaseConfig.js
+.DS_Store
