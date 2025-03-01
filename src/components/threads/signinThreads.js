@@ -54,7 +54,7 @@ const SignIn = () => {
       <div className="px-8 py-6 w-full max-w-md z-10">
         <button
           onClick={handleGoogleSignIn}
-          className="w-full py-2 px-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white font-bold rounded-md flex items-center justify-center"
+          className="w-full py-2 px-2 bg-gradient-to-r from-red-500 to-yellow-500 font-radley text-white font-bold rounded-md flex items-center justify-center"
         >
           <FaGoogle className="mr-2" />
           Continue with Google
