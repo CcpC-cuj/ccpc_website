@@ -7,6 +7,7 @@
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "firebase": "^9.22.2",
+    "framer-motion": "^12.4.7",
     "gsap": "^3.12.7",
     "lucide-react": "^0.476.0",
     "react": "^19.0.0",

@@ -20,6 +20,7 @@ import CreatePost from "./components/threads/CreatePost";
 import ThreadsHome from "./components/threads/threadshome";
 import ThreadsProfile from "./components/threads/ThreadsProfile.js";
 import ThreadsMessages from "./components/threads/ThreadsMessages.js";
+import SharedPost from "./pages/SharedPost";
 function App() {
   return (
     <Router>
@@ -44,6 +45,7 @@ function App() {
           <Route path="/threads/home" element={<ThreadsHome />} />
           <Route path="/threads/create" element={<CreatePost />} />
           <Route path="/threads/forum" element={<ThreadsMessages />} />
+          <Route path="/post/:postId" element={<SharedPost />} />
         </Routes>
       </div>
     </Router>
