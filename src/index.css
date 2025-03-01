@@ -97,4 +97,16 @@ body {
   @keyframes blink {
     50% { opacity: 0; }
   }
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  .animate-slideIn {
+    animation: slideIn 0.5s ease-out forwards;
+  }
   
