@@ -73,3 +73,5 @@ build/static/css/
 build/static/js/
 
 .cache/
+#firebaseconfig
+src/firebaseConfig.js
