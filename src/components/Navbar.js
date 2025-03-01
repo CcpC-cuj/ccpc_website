@@ -24,7 +24,7 @@ const Navbar = () => {
     try {
       await auth.signOut();
       setUser(null);
-      navigate("/soc");
+      navigate("/members");
     } catch (error) {
       console.error("Logout Error:", error);
     }

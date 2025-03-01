@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, db, storage } from "../../threadsFirebaseConfig";
 import Footer from "../Footer";
+import { useNavigate } from "react-router-dom";
 // import Starfield from "../Starfield";
 import {
   doc,
@@ -27,7 +28,7 @@ const ProfilePage = () => {
   const [editContent, setEditContent] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
   const currentUser = auth.currentUser;
-
+  const navigate = useNavigate();
   // Listen for real-time updates to the user's profile document.
   useEffect(() => {
     if (currentUser) {
@@ -66,7 +67,7 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // Optionally, redirect to a login page.
+      navigate("/threads");
     } catch (err) {
       console.error("Logout error:", err);
     }
