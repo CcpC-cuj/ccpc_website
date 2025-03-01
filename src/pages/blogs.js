@@ -7,7 +7,7 @@ const Blogs = () => {
        
         {
             id: 1,
-            title: 'GitHub Unlocked Mastering Collabrotion & Automation',
+            title: 'GitHub Unlocked: Mastering Collabrotion & Automation',
             date: '25th Feb, 2025',
             attendees: 38,
             location: 'CCPC Meeting Hall',
