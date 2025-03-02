@@ -21,6 +21,7 @@ import ThreadsHome from "./components/threads/threadshome";
 import ThreadsProfile from "./components/threads/ThreadsProfile.js";
 import ThreadsMessages from "./components/threads/ThreadsMessages.js";
 import SharedPost from "./pages/SharedPost";
+import ThreadsWrapper from "./pages/ThreadsWrapper";
 function App() {
   return (
     <Router>
@@ -32,7 +33,7 @@ function App() {
           <Route path="/reachus" element={<ReachUs />} />
           <Route path="/soc" element={<SoC />} />
           <Route path="/members" element={<Members />} />
-          <Route path="/threads" element={<Threads />} />
+          <Route path="/threads" element={<ThreadsWrapper />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/login/auth" element={<LoginPage />} /> {/* Login Page Route */}
           <Route path="/u/:userId"  element={<Dashboard />} /> {/* Dashboard Route */}
@@ -42,9 +43,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/threads/signin" element={<ThreadsSignin />} />
           <Route path="/threads/profile/:id" element={<ThreadsProfile />} />
-          <Route path="/threads/home" element={<ThreadsHome />} />
-          <Route path="/threads/create" element={<CreatePost />} />
-          <Route path="/threads/forum" element={<ThreadsMessages />} />
+          <Route path="/threads/create/:id" element={<CreatePost />} />
+          <Route path="/threads/forum/:id" element={<ThreadsMessages />} />
           <Route path="/post/:postId" element={<SharedPost />} />
         </Routes>
       </div>

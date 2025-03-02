@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-const SignIn = ({ redirectPath = "/threads/home" }) => { // Default to home if no path is provided
+const SignIn = ({ redirectPath = "/threads" }) => { // Default to home if no path is provided
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {

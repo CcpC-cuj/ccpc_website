@@ -19,7 +19,7 @@ export const LeftNavigation = ({ onNavigate, user }) => {
             </li>
             <li>
               <button
-                onClick={() => onNavigate("/threads/home")}
+                onClick={() => onNavigate("/threads")}
                 className="flex items-center space-x-2 hover:text-gray-300"
               >
                 <FaHome size={20} />
@@ -28,7 +28,7 @@ export const LeftNavigation = ({ onNavigate, user }) => {
             </li>
             <li>
               <button
-                onClick={() => onNavigate("/threads/create")}
+                onClick={() => onNavigate("/threads/create/"+ (user && user.uid ? user.uid : ""))}
                 className="flex items-center space-x-2 hover:text-gray-300"
               >
                 <FaPlusSquare size={20} />
@@ -37,7 +37,7 @@ export const LeftNavigation = ({ onNavigate, user }) => {
             </li>
             <li>
               <button
-                onClick={() => onNavigate("/threads/forum")}
+                onClick={() => onNavigate("/threads/forum/"+ (user && user.uid ? user.uid : ""))}
                 className="flex items-center space-x-2 hover:text-gray-300"
               >
                 <FaEnvelope size={20} />
@@ -74,15 +74,15 @@ export const LeftNavigation = ({ onNavigate, user }) => {
 export const BottomNavigation = ({ onNavigate, user }) => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 py-2 flex justify-around">
-      <button onClick={() => onNavigate("/threads/home")} className="flex flex-col items-center">
+      <button onClick={() => onNavigate("/threads")} className="flex flex-col items-center">
         <FaHome size={20} />
         <span className="text-xs mt-1">Home</span>
       </button>
-      <button onClick={() => onNavigate("/threads/create")} className="flex flex-col items-center">
+      <button onClick={() => onNavigate("/threads/create/"+ (user && user.uid ? user.uid : "") )} className="flex flex-col items-center">
         <FaPlusSquare size={20} />
         <span className="text-xs mt-1">Create</span>
       </button>
-      <button onClick={() => onNavigate("/threads/forum")} className="flex flex-col items-center">
+      <button onClick={() => onNavigate("/threads/forum/"+ (user && user.uid ? user.uid : ""))} className="flex flex-col items-center">
         <FaEnvelope size={20} />
         <span className="text-xs mt-1">Messages</span>
       </button>
