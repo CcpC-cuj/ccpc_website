@@ -51,29 +51,42 @@ const DiscussionForum = () => {
     });
   }, []);
 
-  // Once messages are loaded, fetch membership status for each unique author uid
-  useEffect(() => {
-    async function fetchMembershipsForMessages() {
-      const memberships = {};
-      // Get unique UIDs from messages
-      const uniqueUids = [...new Set(messages.map((m) => m.uid))];
-      for (const uid of uniqueUids) {
-        try {
-          const userDocRef = doc(db, "users", uid);
-          const userDocSnap = await getDoc(userDocRef);
-          memberships[uid] =
-            userDocSnap.exists() && userDocSnap.data().is_members === true;
-        } catch (error) {
-          console.error("Error fetching membership for uid:", uid, error);
-          memberships[uid] = false;
-        }
+ // Once messages are loaded, fetch membership status for each unique author uid including replies
+useEffect(() => {
+  async function fetchMembershipsForMessages() {
+    const memberships = {};
+    // Create a set to hold unique UIDs from both messages and replies
+    const uniqueUids = new Set();
+    
+    messages.forEach((msg) => {
+      uniqueUids.add(msg.uid);
+      if (msg.replies) {
+        // Loop through replies and add each reply's uid
+        Object.values(msg.replies).forEach((reply) => {
+          uniqueUids.add(reply.uid);
+        });
       }
-      setUserMemberships(memberships);
+    });
+    
+    // Fetch membership info for each UID
+    for (const uid of uniqueUids) {
+      try {
+        const userDocRef = doc(db, "users", uid);
+        const userDocSnap = await getDoc(userDocRef);
+        memberships[uid] =
+          userDocSnap.exists() && userDocSnap.data().is_members === true;
+      } catch (error) {
+        console.error("Error fetching membership for uid:", uid, error);
+        memberships[uid] = false;
+      }
     }
-    if (messages.length > 0) {
-      fetchMembershipsForMessages();
-    }
-  }, [messages]);
+    setUserMemberships(memberships);
+  }
+  if (messages.length > 0) {
+    fetchMembershipsForMessages();
+  }
+}, [messages]);
+
 
   // Helper function to check if a given uid is a club member
   const checkIfClubMember = (uid) => {
