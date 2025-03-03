@@ -62,7 +62,7 @@ const CreatePost = () => {
       // Clear the form after posting.
       setContent("");
       setFiles([]);
-      navigate("/threads/home");
+      navigate("/threads");
     } catch (error) {
       console.error("Error creating post:", error);
     }

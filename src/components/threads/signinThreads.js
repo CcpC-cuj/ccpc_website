@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-const SignIn = ({ redirectPath = "/threads" }) => { // Default to home if no path is provided
+const SignIn = ({ redirectPath = "/threads" }) => {
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -14,7 +14,6 @@ const SignIn = ({ redirectPath = "/threads" }) => { // Default to home if no pat
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Firestore: Store profile details
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
       const profileData = {

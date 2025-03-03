@@ -13,7 +13,6 @@ const Threads = () => {
         {/* Hero Section */}
         <div className="rounded-xl shadow-xl p-8 max-w-4xl w-full mb-12">
           <div className="flex flex-col items-center">
-            {/* Club Threads Logo */}
             <THREADSLOGO  />
             <h1 className="text-5xl font-extrabold font-jose text-gray-100 mt-2">threads</h1>
             <p className="mt-4 text-xl text-gray-400 text-center">

@@ -221,13 +221,13 @@ const ThreadsHome = () => {
           }}
         >
           <div className="relative flex flex-row items-start ">
-            <img src={previewImage} alt="Preview" className="max-h-72 max-w-auto rounded" />
+            <img src={previewImage} alt="Preview" className=" min-h-5 max-h-96 max-w-auto rounded" />
             <button
               onClick={() => {
                 setShowPreview(false);
                 setPreviewImage(null);
               }}
-              className="-top-64 -right-12 text-3xl text-red-500 p-2"
+              className="absolute -top-20 -right-6 text-3xl text-red-500 p-2"
             >
               &times;
             </button>
