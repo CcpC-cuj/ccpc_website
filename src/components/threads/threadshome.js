@@ -217,7 +217,14 @@ const ThreadsHome = () => {
       <main className="flex-1 overflow-auto p-2 max-w-xl">
         {renderPosts()}
       </main>
-      <BottomNavigation onNavigate={handleNavigation} user={user} />
+      
+      {isMobile && (
+        <BottomNavigation 
+          onNavigate={handleNavigation} 
+          user={user} 
+          isMember={userData && userData.is_members} 
+        />
+      )}
     </div>
   );
 
@@ -231,7 +238,11 @@ const ThreadsHome = () => {
         </div>
       </header>
       <div className="relative flex">
-        <LeftNavigation onNavigate={handleNavigation} user={user} />
+      <LeftNavigation 
+          onNavigate={handleNavigation} 
+          user={user} 
+          isMember={userData && userData.is_members} 
+        />
         <main className="w-4/5 p-6 overflow-auto min-h-[calc(100vh-8rem)]">
           <section>
             <h2 className="text-2xl font-semibold mb-6">
