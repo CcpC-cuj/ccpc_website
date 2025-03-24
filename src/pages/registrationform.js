@@ -160,7 +160,7 @@ const RegistrationForm = () => {
               className="absolute left-3 text-white text-sm  bg-black  rounded px-1 transform -translate-y-1/2 transition-all 
                          peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-focus:top-0"
             >
-              About
+              About (Specification)
             </label>
           </div>
           {/* Batch */}
