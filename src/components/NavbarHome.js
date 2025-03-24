@@ -123,6 +123,12 @@ const Navbar = () => {
               <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
             </a>
           </li>
+          <li>
+          <a href="/registration" className="relative group w-full py-1.5 px-3 rounded-md bg-blue-500 text-white font-bold text-center hover:bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-2">
+            <span className="relative z-5">Register</span>
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          </li>
         </ul>
 
         {/* Mobile Menu (Hamburger Menu) */}
@@ -168,6 +174,12 @@ const Navbar = () => {
               Reach Us
               <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
             </a>
+          </li>
+          <li>
+          <a href="/registration" className="relative group w-full py-1.5 px-3 rounded-md bg-blue-500 text-white font-bold text-center hover:bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-2">
+            <span className="relative z-5">Register</span>
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300"></span>
+          </a>
           </li>
         </ul>
       </div>

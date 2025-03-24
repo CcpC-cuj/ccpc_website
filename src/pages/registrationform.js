@@ -26,8 +26,9 @@ const RegistrationForm = () => {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (data.ok) {
         alert(data.message); // Success message
+        window.location.href = 'https://ccpc-cuj.web.app/';
       } else {
         alert(data.error); // Show error message
       }
