@@ -122,8 +122,10 @@ const Members = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        Wanna Join CcpC, <a href="/" className="text-red-500 px-1 hover:text-yellow-500">Click here! </a>
-      </div>
+        <h1>
+       Wanna Join CcpC,(Registration is open until March 30, 2025) <a href="/registration" className="text-red-500 px-1 hover:text-yellow-500">Click here! </a>
+       </h1>
+       </div>
       <Footer />
     </div>
     </div>
