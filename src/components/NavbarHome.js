@@ -124,9 +124,10 @@ const Navbar = () => {
             </a>
           </li>
           <li>
-          <a href="/registration" className="relative group w-full py-1.5 px-3 rounded-md bg-blue-500 text-white font-bold text-center hover:bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-2">
-            <span className="relative z-5">Register</span>
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-700 transition-all duration-300"></span>
+          <a href="/registration" className=" text-gray-400 hover:text-blue-500 transition duration-200 relative group">
+            <span className="relative z-5">Register </span>
+            <span className="absolute text-xs -top-3 -right-2 z-5 text-red-500 duration-200 ease-in-out animate-[blink_1s_infinite]">New</span>
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
           </a>
           </li>
         </ul>
@@ -177,9 +178,10 @@ const Navbar = () => {
 
           </li>
           <li>
-          <a href="/registration" className="relative group w-full py-1.5 px-3 rounded-md bg-blue-500 text-white font-bold text-center hover:bg-blue-700 transition transform hover:scale-105 focus:outline-none focus:ring-2">
-            <span className="relative z-5">Register</span>
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-700  transition-all duration-300"></span>
+          <a href="/registration" className=" text-gray-400 hover:text-blue-500 transition duration-200 relative group">
+            <span className="relative z-5">Register </span>
+            <span className="absolute text-xs -top-3 -right-2 z-5 text-red-500 duration-200 ease-in-out animate-[blink_1s_infinite]">New</span>
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
           </a>
           </li>
         </ul>
