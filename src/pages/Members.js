@@ -123,7 +123,7 @@ const Members = () => {
       </div>
       <div className="flex justify-center">
         <h1>
-       Wanna Join CcpC,(Registration deadline extended to April 5th, 2025) <a href="/registration" className="text-red-500 px-1 hover:text-yellow-500">Click here! </a>
+       Wanna Join CcpC (Registration) <a href="/registration" className="text-red-500 px-1 hover:text-yellow-500">Click here! </a>
        </h1>
        </div>
       <Footer />
