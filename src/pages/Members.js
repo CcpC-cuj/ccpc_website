@@ -62,9 +62,6 @@ const Members = () => {
     navigate(`/profile/${userId}`);
   };
 
-  // Google Form link for adding new member
-  const registarionLink = "/" //registetion
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
