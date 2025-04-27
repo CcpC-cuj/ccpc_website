@@ -140,7 +140,7 @@ const ThreadsHome = () => {
                   key={i}
                   src={url}
                   alt={`Visual ${i}`}
-                  className="cursor-pointer rounded"
+                  className="cursor-pointer rounded  min-w-36 max-w-64 max-h-64 object-cover"
                   onClick={() => openPreview(url)}
                 />
               ))}
