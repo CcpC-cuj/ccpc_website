@@ -1,3 +1,4 @@
+// ThreadsHome.jsx
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../threadsFirebaseConfig";
 import Footer from "../Footer";
@@ -16,240 +17,215 @@ import {
 import { useNavigate } from "react-router-dom";
 import { LeftNavigation, BottomNavigation } from "./Navigation";
 import { FaShare } from "react-icons/fa";
+import { Heart, MessageCircle } from "lucide-react";
 import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 import THREADSLOGO from "../logo/threads";
 
 const ThreadsHome = () => {
   const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null); // Store user details like is_members
+  const [userData, setUserData] = useState(null);
   const [posts, setPosts] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [previewImage, setPreviewImage] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [activeCommentPostId, setActiveCommentPostId] = useState(null);
   const navigate = useNavigate();
 
-  // Update isMobile state on window resize.
+  // Handle resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Fetch posts
   useEffect(() => {
-    const postsQuery = query(
-      collection(db, "posts"),
-      orderBy("timestamp", "desc")
-    );
-    const unsubscribePosts = onSnapshot(postsQuery, async (snapshot) => {
-      const postsData = await Promise.all(
+    const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+    const unsub = onSnapshot(q, async (snapshot) => {
+      const data = await Promise.all(
         snapshot.docs.map(async (docSnap) => {
-          const postData = docSnap.data();
-          // Use postData.uid (the user id) to fetch the user document
-          const userDocRef = doc(db, "users", postData.uid);
-          const userDocSnap = await getDoc(userDocRef);
+          const post = { id: docSnap.id, ...docSnap.data() };
+          const userDoc = await getDoc(doc(db, "users", post.uid));
           return {
-            id: docSnap.id,
-            ...postData,
-            // Get photoURL from the user document; fallback to null or a placeholder.
-            authorImage: userDocSnap.exists() ? userDocSnap.data().photoURL : null,
+            ...post,
+            authorImage: userDoc.exists() ? userDoc.data().photoURL : null,
           };
         })
       );
-      setPosts(postsData);
+      setPosts(data);
     });
-    return () => unsubscribePosts();
-  }, []);
-    
-  // Listen for auth state changes and fetch user data.
-  useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        // Fetch user document from Firestore to get is_members (and any other info)
-        const userDocRef = doc(db, "users", currentUser.uid);
-        const userDocSnap = await getDoc(userDocRef);
-        if (userDocSnap.exists()) {
-          setUserData(userDocSnap.data());
-        }
-      } else {
-        setUser(null);
-        setUserData(null);
-      }
-    });
-    return () => unsubscribeAuth();
+    return () => unsub();
   }, []);
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
+  // Auth listener
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+        setUserData(userDoc.exists() ? userDoc.data() : null);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   const openPreview = (url) => {
     setPreviewImage(url);
     setShowPreview(true);
   };
 
-  // Toggle like for a post.
   const handleLike = async (post) => {
-    if (!auth.currentUser) return;
-    const postDocRef = doc(db, "posts", post.id);
-    const currentUserId = auth.currentUser.uid;
-    const likedBy = post.likedBy || [];
-    try {
-      if (likedBy.includes(currentUserId)) {
-        await updateDoc(postDocRef, { likedBy: arrayRemove(currentUserId) });
-      } else {
-        await updateDoc(postDocRef, { likedBy: arrayUnion(currentUserId) });
-      }
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
-  };
-
-  // Render posts with proper filtering.
-  const renderPosts = () => {
-    if (!userData)
-      return (
-        <p className="text-center text-gray-400 mt-4">Loading...</p>
-      );
-
-    const filteredPosts = posts.filter((post) => {
-      if (post.isPublic) return true; // Show public posts.
-      if (!post.isPublic && userData.is_members) return true; // Show private posts to members.
-      return false; // Hide private posts from non-members.
+    if (!user) return;
+    const ref = doc(db, "posts", post.id);
+    const uid = user.uid;
+    const liked = post.likedBy || [];
+    await updateDoc(ref, {
+      likedBy: liked.includes(uid) ? arrayRemove(uid) : arrayUnion(uid),
     });
-
-    if (filteredPosts.length === 0) {
-      return (
-        <p className="text-center text-gray-400 mt-4">
-          No posts available yet.
-        </p>
-      );
-    }
-
-    return filteredPosts.map((post) => (
-      <div
-        key={post.id}
-        className="mb-4 bg-gray-900 bg-opacity-80 p-4 rounded-lg shadow-lg hover:shadow-2xl m-10 transition-shadow max-w-xl mx-auto"
-      >
-        <div className="flex justify-end">
-          <button
-            onClick={() => {
-              const shareUrl = `${window.location.origin}/post/${post.id}`;
-              navigator.clipboard.writeText(shareUrl);
-              alert("Post link copied to clipboard!");
-            }}
-            className="text-green-400 text-right hover:text-green-600 ml-2"
-          >
-            <FaShare />
-          </button>
-        </div>
-        <div className="flex items-center space-x-3 mb-2">
-          {post.authorImage ? (
-            <img
-              src={post.authorImage}
-              alt="Author"
-              className="w-10 h-10 rounded-full"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-500" />
-          )}
-          <h3 className="text-xl font-bold">{post.author}</h3>
-        </div>
-        {post.imageUrls?.length > 0 ? (
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            {post.imageUrls.map((url, index) => (
-              <img
-                key={index}
-                src={url}
-                alt={`Post visual ${index}`}
-                className="cursor-pointer rounded"
-                onClick={() => openPreview(url)}
-              />
-            ))}
-          </div>
-        ) : post.imageUrl ? (
-          <img
-            src={post.imageUrl}
-            alt="Post visual"
-            className="mt-4 max-w-full rounded cursor-pointer"
-            onClick={() => openPreview(post.imageUrl)}
-          />
-        ) : null}
-        <p className="text-sm mt-2" style={{ whiteSpace: "pre-wrap" }}>
-          {post.content}
-        </p>
-        <div className="flex items-center mt-2">
-          <button
-            onClick={() => handleLike(post)}
-            className="text-blue-400 hover:text-blue-600 mr-2"
-          >
-            {post.likedBy?.includes(auth.currentUser?.uid)
-              ? "Unlike"
-              : "Like"}
-          </button>
-          <span className="text-xs text-gray-500">
-            {post.likedBy?.length || 0} likes
-          </span>
-        </div>
-        <div className="mt-2">
-          <Comments postId={post.id} />
-          <CommentForm postId={post.id} />
-        </div>
-        <p className="text-xs text-gray-500 mt-1">
-          {post.timestamp
-            ? new Date(post.timestamp.seconds * 1000).toLocaleString()
-            : ""}
-        </p>
-      </div>
-    ));
   };
 
-  // Mobile Layout
-  const mobileLayout = (
-    <div className="relative min-h-screen bg-black text-white flex flex-col mb-10">
-      <header className="py-4 text-center border-b border-gray-700">
-        <div className="flex items-center justify-center gap-5">
-          <THREADSLOGO style={{ height: "40px", width: "40px" }} />
-          <h1 className="text-2xl font-bold">Threads</h1>
+  const activateCommentForm = (id) => {
+    setActiveCommentPostId(id);
+  };
+
+  const renderPosts = () => {
+    if (!userData) return <p className="text-center text-gray-400 mt-4">Loading...</p>;
+
+    const filtered = posts.filter((p) => p.isPublic || userData.is_members);
+    if (!filtered.length)
+      return <p className="text-center text-gray-400 mt-4">No posts available yet.</p>;
+
+    return filtered.map((post) => {
+      const isActive = activeCommentPostId === post.id;
+      return (
+        <div
+          key={post.id}
+          className="mb-6 bg-gray-900 p-4 rounded-xl shadow-lg max-w-xl mx-auto"
+        >
+          {/* Share */}
+          <div className="flex justify-end">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/post/${post.id}`
+                );
+                alert("Link copied!");
+              }}
+              className="text-green-400 hover:text-green-600"
+            >
+              <FaShare />
+            </button>
+          </div>
+
+          {/* Author */}
+          <div className="flex items-center space-x-3 mb-2">
+            {post.authorImage ? (
+              <img
+                src={post.authorImage}
+                alt="Author"
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gray-500" />
+            )}
+            <h3 className="text-lg font-semibold text-white">{post.author}</h3>
+          </div>
+
+          {/* Images */}
+          {post.imageUrls?.length ? (
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {post.imageUrls.map((url, i) => (
+                <img
+                  key={i}
+                  src={url}
+                  alt={`Visual ${i}`}
+                  className="cursor-pointer rounded"
+                  onClick={() => openPreview(url)}
+                />
+              ))}
+            </div>
+          ) : post.imageUrl ? (
+            <img
+              src={post.imageUrl}
+              alt="Visual"
+              className="mb-4 rounded cursor-pointer"
+              onClick={() => openPreview(post.imageUrl)}
+            />
+          ) : null}
+
+          {/* Content */}
+          <p className="text-sm mb-4 whitespace-pre-wrap text-gray-200">
+            {post.content}
+          </p>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-6 mb-4">
+            <div className="flex items-center space-x-1">
+              <button onClick={() => handleLike(post)}>
+                <Heart
+                  size={20}
+                  className={
+                    user && post.likedBy?.includes(user.uid)
+                      ? "text-red-500"
+                      : "text-gray-600"
+                  }
+                />
+              </button>
+              <span className="text-sm text-white font-medium">
+                {post.likedBy?.length || 0}
+              </span>
+            </div>
+            <button
+              onClick={() => activateCommentForm(post.id)}
+              className="flex items-center space-x-1 px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-sm text-gray-200"
+            >
+              <MessageCircle size={16} />
+              <span>Comment</span>
+            </button>
+          </div>
+
+          {/* Comment form & list */}
+          <div className="space-y-3">
+            {isActive && (
+              <CommentForm postId={post.id} autoFocus />
+            )}
+            <Comments postId={post.id} />
+          </div>
+
+          {/* Timestamp */}
+          <p className="text-xs text-gray-500 mt-2">
+            {post.timestamp
+              ? new Date(post.timestamp.seconds * 1000).toLocaleString()
+              : ""}
+          </p>
         </div>
+      );
+    });
+  };
+
+  const mobile = (
+    <div className="bg-black text-white min-h-screen flex flex-col">
+      <header className="px-4 py-3 border-b border-gray-700 flex items-center justify-center space-x-2">
+        <THREADSLOGO className="h-8 w-8" />
+        <h1 className="text-xl font-bold">Threads</h1>
       </header>
-      <main className="flex-1 overflow-auto p-2 max-w-xl">
-        {renderPosts()}
-      </main>
-      
-      {isMobile && (
-        <BottomNavigation 
-          onNavigate={handleNavigation} 
-          user={user} 
-          isMember={userData && userData.is_members} 
-        />
-      )}
+      <main className="p-2 flex-1 overflow-auto">{renderPosts()}</main>
+      <BottomNavigation user={user} onNavigate={navigate} isMember={userData?.is_members} />
     </div>
   );
 
-  // Desktop Layout
-  const desktopLayout = (
-    <div className="relative min-h-screen bg-black text-white">
-      <header className="py-4 border-b border-gray-700 text-center">
-        <div className="flex items-center justify-center gap-5">
-          <THREADSLOGO style={{ height: "40px", width: "40px" }} />
-          <h1 className="text-2xl font-bold">Threads</h1>
-        </div>
+  const desktop = (
+    <div className="bg-black text-white min-h-screen">
+      <header className="py-4 border-b border-gray-700 flex items-center justify-center space-x-2">
+        <THREADSLOGO className="h-10 w-10" />
+        <h1 className="text-2xl font-bold">Threads</h1>
       </header>
-      <div className="relative flex">
-      <LeftNavigation 
-          onNavigate={handleNavigation} 
-          user={user} 
-          isMember={userData && userData.is_members} 
-        />
-        <main className="w-4/5 p-6 overflow-auto min-h-[calc(100vh-8rem)]">
-          <section>
-            <h2 className="text-2xl font-semibold mb-6">
-              Latest Threads
-            </h2>
-            {renderPosts()}
-          </section>
+      <div className="flex">
+        <LeftNavigation user={user} onNavigate={navigate} isMember={userData?.is_members} />
+        <main className="flex-1 p-6 overflow-auto">
+          <h2 className="text-2xl font-semibold mb-6 text-white">Latest Threads</h2>
+          {renderPosts()}
         </main>
       </div>
       <Footer />
@@ -258,27 +234,17 @@ const ThreadsHome = () => {
 
   return (
     <>
-      {isMobile ? mobileLayout : desktopLayout}
+      {isMobile ? mobile : desktop}
       {showPreview && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50"
-          onClick={() => {
-            setShowPreview(false);
-            setPreviewImage(null);
-          }}
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setShowPreview(false)}
         >
-          <div className="relative flex flex-row items-start ">
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="min-h-5 max-h-96 max-w-auto rounded"
-            />
+          <div className="relative">
+            <img src={previewImage} alt="Preview" className="max-h-96 max-w-full rounded" />
             <button
-              onClick={() => {
-                setShowPreview(false);
-                setPreviewImage(null);
-              }}
-              className="absolute -top-20 -right-6 text-3xl text-red-500 p-2"
+              onClick={() => setShowPreview(false)}
+              className="absolute top-0 right-0 text-2xl text-white p-2"
             >
               &times;
             </button>
