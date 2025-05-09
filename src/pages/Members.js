@@ -65,6 +65,7 @@ const Members = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <STARFIELD className="z-0" />
         Loading...
       </div>
     );
