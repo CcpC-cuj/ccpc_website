@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { auth, db, storage } from "../../threadsFirebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import Footer from "../Footer";
 import { useNavigate } from "react-router-dom";
-// import Starfield from "../Starfield";
 import {
   doc,
   onSnapshot,
@@ -27,7 +27,17 @@ const ProfilePage = () => {
   const [editingPostId, setEditingPostId] = useState(null);
   const [editContent, setEditContent] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
-  const currentUser = auth.currentUser;
+  const [authLoading, setAuthLoading] = useState(true);
+  const [initializedUser, setInitializedUser] = useState(null);
+  const currentUser = initializedUser;
+  // wait for Firebase to restore the user
+  useEffect(() => {
+     const unsub = onAuthStateChanged(auth, user => {
+       setInitializedUser(user);
+       setAuthLoading(false);
+     });
+     return unsub;
+   }, []);
   const navigate = useNavigate();
   // Listen for real-time updates to the user's profile document.
   useEffect(() => {
@@ -134,14 +144,16 @@ const ProfilePage = () => {
     }
   };
 
-  if (!currentUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <p>You must be logged in to view your profile.</p>
-      </div>
-    );
-  }
-
+  if (authLoading) {
+     return <div className="min-h-screen flex items-center justify-center bg-black text-white">Loading…</div>;
+   }
+   if (!initializedUser) {
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-black text-white">
+            <p>You must be logged in to view your profile.</p>
+          </div>
+        );
+   }
   return (
     <div className="relative min-h-screen bg-black text-white">
       {/* <Starfield className="absolute inset-0 -z-10" /> */}
