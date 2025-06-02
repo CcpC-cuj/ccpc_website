@@ -51,7 +51,7 @@ const SOC = () => {
 
         <div className="soc-title text-left flex-1">
             <h1 className="text-3xl font-urbanist md:text-4xl font-bold mb-4">
-              Seasons of Code:
+              Seasons of Code
             </h1>
             <div className="text-2xl md:text-4xl md:ml-80 font-crimson ml-20 mb-30 relative text-left  ">
               <span className="rotating-text opacity-0 absolute">Summer Project</span>
