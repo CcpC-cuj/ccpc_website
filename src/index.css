@@ -111,3 +111,40 @@ body {
     animation: slideIn 0.5s ease-out forwards;
   }
   
+/*soc*/
+/* Arrow drawing animation */
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Arrowhead bounce */
+@keyframes bounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+/* Initial state */
+.animate-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw 1.5s forwards;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite 1.5s;
+}
+
+/* Scroll-triggered elastic effect */
+@media (prefers-reduced-motion: no-preference) {
+  .arrow-summer, .arrow-winter {
+    transition: transform 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  }
+  
+  .arrow-summer:hover {
+    transform: translateX(-105%) translateY(-50%) scaleX(1.1);
+  }
+  
+  .arrow-winter:hover {
+    transform: translateX(-105%) translateY(-50%) scaleX(1.1);
+  }
+}
