@@ -72,6 +72,7 @@ const studentDetails = {
         name: "Om Vishesh",
         role: "Executive",
         linkedin: "https://www.linkedin.com/in/omvishesh/",
+        github: "https://github.com/Omvishesh",
         link:"https://ccpc-cuj.web.app/profile/g9xJ9JMy56XXJh4W1FKLXaTVdD52",
         img: Om,
       },
@@ -79,6 +80,7 @@ const studentDetails = {
         name: "Siya Mandal",
         role: "Executive",
         linkedin: "https://www.linkedin.com/in/siya-mandal-29ad10/",
+        github: "https://github.com/siya2910",
         link:"https://ccpc-cuj.web.app/profile/gNC7e2F5AxNa9onJDzpBmBrgYBp1",
         img: Siya,
       },
@@ -94,7 +96,7 @@ const studentDetails = {
         name: "Saket Tripathi",
         role: "Treasurer",
         linkedin: "https://www.linkedin.com/in/saket-tripathi-178819286/",
-
+        github: "https://github.com/Tripathijii147",
         link:"https://ccpc-cuj.web.app/profile/tl7kpo2ijLP4JC7RlZAmKYyPdWA2",
         img:Saket,
       }
