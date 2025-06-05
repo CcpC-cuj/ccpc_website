@@ -17,7 +17,7 @@ const studentDetails = {
         role: "President",
         linkedin: "https://www.linkedin.com/in/abhimaan-kumar-287262247/",
         github: "https://github.com/Abhimaan-kumar",
-        link:"https://soc-ccpc-cuj.web.app/profile/WjaIg6rrBtPFHjttuTFanKmubZP2",
+        link:"https://ccpc-cuj.web.app/profile/WjaIg6rrBtPFHjttuTFanKmubZP2",
         img: Abhimaan,
     },
     Krish: {
@@ -25,7 +25,7 @@ const studentDetails = {
         role: "Vice-President",
         linkedin: "https://www.linkedin.com/in/imkkrish/",
         github: "https://github.com/Imkkrish",
-        link:"https://soc-ccpc-cuj.web.app/profile/FE9FO4dLssN22QBPz8liIIgj04C2",
+        link:"https://ccpc-cuj.web.app/profile/FE9FO4dLssN22QBPz8liIIgj04C2",
         img: Krish,
     },
     Priyanshu: {
@@ -33,7 +33,7 @@ const studentDetails = {
         role: "Vice-President",
         linkedin: "https://www.linkedin.com/in/priyanshuverma17/",
         github: "https://github.com/PriyanshuV17",
-        link:"https://soc-ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92",
+        link:"https://ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92",
         img: Priyanshu,
       },
       AdityaSC: {
@@ -41,7 +41,7 @@ const studentDetails = {
         role: "Secretary",
         linkedin: "https://www.linkedin.com/in/adityasc2004/",
         github: "https://github.com/adityasc2004",
-        link:"https://soc-ccpc-cuj.web.app/profile/iBdQw1IaMHY2urKixNsee8R7y4D3",
+        link:"https://ccpc-cuj.web.app/profile/iBdQw1IaMHY2urKixNsee8R7y4D3",
         img: AdityaSC,
       },
       Apurba: {
@@ -49,7 +49,7 @@ const studentDetails = {
         role: "Joint Secretary",
         linkedin: "https://www.linkedin.com/in/apurbasbjk30/",
         github: "https://github.com/apurbasbjk30",
-        link:"https://soc-ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2",
+        link:"https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2",
         img: Apurba,
       },
       Prashant: {
@@ -57,7 +57,7 @@ const studentDetails = {
         role: "Joint Secretary",
         linkedin: "https://www.linkedin.com/in/prashantdubey2107/",
         github: "https://github.com/prashantdubeypng",
-        link:"https://soc-ccpc-cuj.web.app/profile/rOJOSJnLGYfNd5Tyi1wiZTFCk2z1",
+        link:"https://ccpc-cuj.web.app/profile/rOJOSJnLGYfNd5Tyi1wiZTFCk2z1",
         img: Prashant,
       },
       Basil: {
@@ -65,21 +65,21 @@ const studentDetails = {
         role: "Executive",
         linkedin: "https://www.linkedin.com/in/basil-joy-6b07511a7/",
         github: "https://github.com/basiljoy91",
-        link:"https://soc-ccpc-cuj.web.app/profile/ZnStO6ic3fM6MQLiI5iUBZnyyC63",
+        link:"https://ccpc-cuj.web.app/profile/ZnStO6ic3fM6MQLiI5iUBZnyyC63",
         img: Basil,
       },
       Om: {
         name: "Om Vishesh",
         role: "Executive",
         linkedin: "https://www.linkedin.com/in/omvishesh/",
-        link:"https://soc-ccpc-cuj.web.app/profile/g9xJ9JMy56XXJh4W1FKLXaTVdD52",
+        link:"https://ccpc-cuj.web.app/profile/g9xJ9JMy56XXJh4W1FKLXaTVdD52",
         img: Om,
       },
       Siya:{
         name: "Siya Mandal",
         role: "Executive",
         linkedin: "https://www.linkedin.com/in/siya-mandal-29ad10/",
-        link:"https://soc-ccpc-cuj.web.app/profile/gNC7e2F5AxNa9onJDzpBmBrgYBp1",
+        link:"https://ccpc-cuj.web.app/profile/gNC7e2F5AxNa9onJDzpBmBrgYBp1",
         img: Siya,
       },
       Sandeep: {
@@ -87,7 +87,7 @@ const studentDetails = {
         role: "Treasurer",
         linkedin: "https://www.linkedin.com/in/sandeep-mahato-a31b4a256/",
         github: "https://github.com/sandeepmahato1",
-        link:"https://soc-ccpc-cuj.web.app/profile/2I3nncT3UERhG4ZMJxJwNEpoZ5y1",
+        link:"https://ccpc-cuj.web.app/profile/2I3nncT3UERhG4ZMJxJwNEpoZ5y1",
         img: Sandeep,
       },
       Saket:{
@@ -95,7 +95,7 @@ const studentDetails = {
         role: "Treasurer",
         linkedin: "https://www.linkedin.com/in/saket-tripathi-178819286/",
 
-        link:"https://soc-ccpc-cuj.web.app/profile/tl7kpo2ijLP4JC7RlZAmKYyPdWA2",
+        link:"https://ccpc-cuj.web.app/profile/tl7kpo2ijLP4JC7RlZAmKYyPdWA2",
         img:Saket,
       }
 
