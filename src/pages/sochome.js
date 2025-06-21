@@ -39,7 +39,7 @@ const SOC = () => {
             </div>
             <div className="relative group">
               {/* Animated Card */}
-              <div className="bg-gradient-to-br bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl overflow-hidden transition-all duration-700 transform group-hover:scale-[1.02]">
+              <div className="bg-gradient-to-br bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl overflow-hidden transition-all duration-700">
                 {/* Shimmer animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 
