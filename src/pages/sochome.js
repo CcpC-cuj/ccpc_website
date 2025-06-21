@@ -49,7 +49,7 @@ const SOC = () => {
                     What is Seasons of Code?
                   </h2>
                   <div style={{ textAlign: "justify" }} className="text-lg md:text-xl leading-relaxed text-white/80">
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp; <span className="font-bold text-yellow-400">Seasons of Code (SoC)</span> is the flagship year-round coding program by CCPC, built to <span className="font-bold text-white">boost your skills through real projects, collaboration, and competitions.</span></p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp; <span className="font-bold text-yellow-400">Seasons of Code (SoC)</span> is the flagship year-round coding program by CcpC, built to <span className="font-bold text-white">boost your skills through real projects, collaboration, and competitions.</span></p>
                     <br />
                     <p>&nbsp;&nbsp;&nbsp;&nbsp; In every season — Summer and winter —  <span className="font-bold text-white">different projects and challenges are introduced.</span> Students get grouped based on their interests or may form their own teams to <span className="font-bold text-white">collaborate, compete, and create.</span> Each season brings a <span className="font-bold text-white"> new set of goals </span> — whether it's building a product, solving coding problems, or taking part in a hackathon. </p>
                     <br />
@@ -83,7 +83,8 @@ const SOC = () => {
                     <h3 className="text-xl md:text-2xl font-bold text-orange-800">Summer Project (June - July)</h3>
                     
                     <p className="text-orange-600 mt-2 md:mt-3 text-sm md:text-base leading-relaxed">
-                      Participants are grouped based on interests (Web Dev, AI/ML, UI/UX) to build real-world projects under mentor guidance. Projects are showcased on CCPC's GitHub and website.
+                      During the Summer Project phase, participants are grouped based on their interests in fields like Web Development, AI/ML, UI/UX, and more. Under the guidance of mentors, these groups work on real-world projects, which are then showcased on the CcpC GitHub account and website. This phase is crucial for gaining in-depth technical experience.
+
                     </p>
                     
                     <div className="mt-3 md:mt-4 flex flex-wrap gap-2">
@@ -101,10 +102,10 @@ const SOC = () => {
 
                   {/* Spring Card */}
                   <div className="relative md:ml-16 lg:ml-32 p-5 md:p-6 bg-gradient-to-br from-blue-50 to-cyan-100 rounded-xl shadow-lg border border-cyan-200 transform transition-all duration-300 hover:shadow-cyan-200/50 hover:-translate-y-1">
-                    <h3 className="text-xl md:text-2xl font-bold text-cyan-800">Spring DevSprint (Feb - Mar)</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-cyan-800">Autumn Coding Challenge (October - November)</h3>
                     
                     <p className="text-cyan-600 mt-2 md:mt-3 text-sm md:text-base leading-relaxed">
-                      Fast-paced hackathon featuring coding challenges in Web and App Development. Solve real-world problems individually or in teams to showcase skills and creativity.
+                      The Autumn Coding Challenge is an open-to-all competitive coding event held in October and November. It offers a platform for students across the university to test their problem-solving skills, engage in algorithmic challenges, and compete in hackathons. It’s a high-energy event that fosters creativity, teamwork, and coding excellence.
                     </p>
                     
                     <div className="mt-3 md:mt-4 flex flex-wrap gap-2">
