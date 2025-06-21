@@ -69,7 +69,7 @@ const SOC = () => {
             {/* Big SOC Text - Top on mobile, original position on desktop */}
             <div className="flex-1 relative text-center">
               <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
-                SOC
+                SoC
               </h1>
               <p className="text-xl md:text-xl text-gray-400 -mt-2 tracking-[0.5em] ml-[0.5em]">
                 Seasons of Code
