@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { storage, db, auth, database } from "../../threadsFirebaseConfig";
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+// Remove Firebase Storage for new uploads
+import { supabase } from "../../supabaseClient";
 
 import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -43,12 +44,22 @@ const CreatePost = () => {
         // Limit to 4 images.
         const selectedFiles = files.slice(0, 4);
         const folder = isPublic ? "public" : "private";
-        // Upload all selected files concurrently and get their download URLs.
-        const uploadPromises = selectedFiles.map((file) => {
-          const sRef = storageRef(storage, `${folder}/${file.name}-${Date.now()}`);
-          return uploadBytes(sRef, file).then(() => getDownloadURL(sRef));
+        // Upload all selected files concurrently to Supabase Storage
+        const uploadPromises = selectedFiles.map(async (file) => {
+          const filePath = `threads/${Date.now()}-${file.name}`;
+          const { data, error } = await supabase.storage.from("CcpC").upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+          if (error) {
+            console.error("Supabase upload error:", error);
+            return null;
+          }
+          // Get public URL
+          const { data: urlData } = supabase.storage.from("CcpC").getPublicUrl(filePath);
+          return urlData.publicUrl;
         });
-        imageUrls = await Promise.all(uploadPromises);
+        imageUrls = (await Promise.all(uploadPromises)).filter(Boolean);
       }
   
       await addDoc(collection(db, "posts"), {

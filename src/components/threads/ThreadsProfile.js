@@ -18,6 +18,7 @@ import { signOut } from "firebase/auth";
 import { FaEllipsisH } from "react-icons/fa";
 import { deleteObject } from "firebase/storage";
 import { ref as storageRef } from "firebase/storage";
+import { supabase } from "../../supabaseClient";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -95,19 +96,26 @@ const ProfilePage = () => {
         );
         await Promise.all(commentDeletionPromises);
   
-        // 2. Delete associated images from Firebase Storage by extracting the file path from imageUrls.
+        // 2. Delete associated images from Supabase or Firebase Storage
         if (post.imageUrls && post.imageUrls.length > 0) {
           const deletePromises = post.imageUrls.map(async (url) => {
             try {
-              // Create a URL object to extract pathname.
-              const urlObj = new URL(url);
-              // Get the encoded file path between "/o/" and the query parameters.
-              const fullPathEncoded = urlObj.pathname.split("/o/")[1];
-              // Decode the file path.
-              const filePath = decodeURIComponent(fullPathEncoded);
-              const fileRef = storageRef(storage, filePath);
-              await deleteObject(fileRef);
-              console.log(`Deleted file at ${filePath}`);
+              if (url.includes("/storage/v1/object/public/CcpC/")) {
+                // Supabase image
+                const filePath = url.split("/storage/v1/object/public/CcpC/")[1];
+                if (filePath) {
+                  await supabase.storage.from("CcpC").remove([filePath]);
+                  console.log(`Deleted Supabase file at ${filePath}`);
+                }
+              } else if (url.includes("firebasestorage.googleapis.com")) {
+                // Firebase image (legacy)
+                const urlObj = new URL(url);
+                const fullPathEncoded = urlObj.pathname.split("/o/")[1];
+                const filePath = decodeURIComponent(fullPathEncoded);
+                const fileRef = storageRef(storage, filePath);
+                await deleteObject(fileRef);
+                console.log(`Deleted Firebase file at ${filePath}`);
+              }
             } catch (err) {
               console.error("Failed to delete file from storage:", err);
             }
