@@ -7,6 +7,114 @@ const Blogs = () => {
        
         {
             id: 1,
+            title: 'Dive into Generative AI and BadgeMonster Platform',
+            date: '23rd July, 2025',
+            attendees: 67,
+            location: 'CCPC Meeting Hall',
+            content: (
+                <>
+                  <h3 id="title" className="text-xl font-semibold text-pink-500 mt-6 mb-2">Session Overview:</h3>
+                  <p className="text-lg text-gray-300 mb-4">
+                  <p style={{ textAlign: 'justify' }}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;On 23rd July 2025, the Code Crafter Programming Club (CCPC) of Central University of Jharkhand, Ranchi organized a tech session for all students of Computer Science & Engineering. The session was led by Amin U., accompanied by three associates and one intern, and aimed to expose students to cutting-edge developments in Generative Artificial Intelligence and provide insights into the BadgeMonster platform—a tool for self-paced skill development and certification.
+                  </p>
+                  </p>
+                  <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Session Flow:</h3>
+                  <ul className="pl-5 space-y-2 text-gray-300">
+                      <li className="text-white mb-2 ">
+                      <p style={{ textAlign: 'justify' }}>
+                        <li className="text-white text-lg">
+                          <strong>1. Generative AI Introduction</strong>
+                          </li> 
+                          <ul className="pl-4 text-gray-300">
+                          <p style={{ textAlign: 'justify' }}>
+                            The session began with a clear and engaging explanation of Generative AI, its significance, and its real-world impact. The covered topics go as follows:
+                            </p>
+                            </ul>
+                          <ul className="list-disc pl-14">
+                              <li className="text-gray-300">Definition of Generative AI</li>
+                              <li className="text-gray-300">Career relevance and industry applications</li>
+                          </ul>
+                          </p>
+                      </li>
+                      <li className="text-white mb-2">
+                      <p style={{ textAlign: 'justify' }}>
+                        <li className="text-white text-lg">
+                          <strong>2. Tools & Concepts: Perplexity AI, AI Agents, and RAG</strong> 
+                          </li>
+                          <ul className="pl-4 text-gray-300">
+                          <p style={{ textAlign: 'justify' }}>
+                            After laying the foundation, Amin U. introduced the audience to key tools and techniques in the AI landscape:
+                            </p>
+                            </ul>
+                          <ul className="list-disc pl-14">
+                              <li className="text-gray-300">Perplexity AI: An advanced AI-driven knowledge assistant</li>
+                              <li className="text-gray-300">AI Agents: Self-operating digital agents capable of learning and task execution</li>
+                              <li className="text-gray-300">RAG (Retrieval-Augmented Generation): An architecture that enhances AI performance by retrieving external information</li>
+                          </ul>
+                          </p>
+                      </li>
+                      <li className="text-white mb-2">
+                      <p style={{ textAlign: 'justify' }}>
+                        <li className="text-white text-lg">
+                          <strong>3. Introduction to BadgeMonster</strong> 
+                          </li>
+                          <ul className="pl-4 text-gray-300">
+                          <p style={{ textAlign:  'justify' }}>
+                            Toward the end of the session, the speaker introduced BadgeMonster, his own platform that helps students structure their learning journey. Highlights of the platform goes as follows:
+                            </p>
+                            </ul>
+                          <ul className="list-disc pl-14">
+                              <li className="text-gray-300">Monthly learning roadmaps for targeted growth</li>
+                              <li className="text-gray-300">Modules and tasks leading to tangible skill-building</li>
+                              <li className="text-gray-300">Assessments like the AHS test to validate learning</li>
+                              <li className="text-gray-300">Digital badges, certificates, and T-shirts as performance rewards</li>
+                          </ul>
+                          </p>
+                      </li>
+                      <li className="text-white mb-2">
+                      <p style={{ textAlign: 'justify' }}>
+                        <li className="text-white text-lg">
+                          <strong>4. Incentives & Takeaways:</strong> 
+                          </li>
+                          <ul className="list-disc pl-14">
+                              <li className="text-gray-300">Refreshments were provided to all attendees during the event</li>
+                              <li className="text-gray-300">T-shirts were distributed to selected participants on the same day</li>
+                              <li className="text-gray-300">Certificates will be awarded in the upcoming days based on student performance and completion of tasks on the platform</li>
+                          </ul>
+                          </p>
+                      </li>
+                      <li className="text-white mb-2">
+                      <p style={{ textAlign: 'justify' }}>
+                        <li className="text-white text-lg">
+                          <strong>5. Session Objective</strong> 
+                          </li>
+                          <ul className="pl-4 text-gray-300">
+                          <p style={{ textAlign: 'justify' }}>
+                            This tech session aimed to:
+                            </p>
+                            </ul>
+                          <ul className="list-disc pl-14">
+                              <li className="text-gray-300">Educate students about the latest advancements in AI and digital assistants</li>
+                              <li className="text-gray-300">Promote the use of a structured skill development platform</li>
+                              <li className="text-gray-300">Encourage self-paced learning through interactive and gamified models</li>
+                          </ul>
+                          </p>
+                      </li>
+                      <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Conclusion</h3>
+                        <p className="text-lg text-gray-300 mb-4">
+                  <p style={{ textAlign: 'justify' }}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;The session conducted by Amin U. was informative, inspiring, and action-oriented. It successfully merged AI education with a practical platform for skill enhancement—BadgeMonster—leaving students with a clearer vision of their learning path. Such initiatives reflect the university's dedication to integrating industry exposure into academic life and empowering students to take charge of their career development.
+
+                  </p>
+                  </p>
+                  </ul>
+              </>
+            ),
+            author: "~Neha Kumari"
+        },
+        {
+            id: 2,
             title: 'GitHub Unlocked: Mastering Collabrotion & Automation',
             date: '25th Feb, 2025',
             attendees: 38,
@@ -26,7 +134,7 @@ const Blogs = () => {
             author: "~Srishti Pathak"
         },
         {
-            id: 2,
+            id: 3,
             title: 'Career in Tech',
             date: '18th Feb, 2025',
             attendees: 23,
@@ -47,20 +155,20 @@ const Blogs = () => {
             author: "~Namrata Dey"
         },
         {
-            id: 3,
+            id: 4,
             title: 'Weekly Meeting of CCPC',
             date: '25th July, 2024',
             attendees: 17,
             location: 'CCPC Meeting Hall',
             content: (
               <>
-                  <h3 id="title" className="text-xl font-semibold text-pink-500 mt-6 mb-2">OBJECTIVE:</h3>
+                  <h3 id="title" className="text-xl font-semibold text-pink-500 mt-6 mb-2">Objective:</h3>
                   <p className="text-lg text-gray-300 mb-4">
                   <p style={{ textAlign: 'justify' }}>
                   &nbsp;&nbsp;&nbsp;&nbsp;The objective of the event is to launch our club's website, introduce the new student body, and kick off the Season of Code (SOC) initiative. We will showcase summer projects, outline plans for future sessions, and explain the registration process for new members. Additionally, we will introduce the Autumn Coding Challenge, aimed at enhancing coding skills and fostering innovation and collaboration.
                   </p>
                   </p>
-                  <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">ACTIVITIES:</h3>
+                  <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Activities:</h3>
                   <ul className="list-disc pl-5 space-y-2 text-gray-300">
                       <li className="text-white mb-2">
                       <p style={{ textAlign: 'justify' }}>
@@ -127,7 +235,7 @@ const Blogs = () => {
         },
           
         {
-            id: 4,
+            id: 5,
             title: 'Computer Graphics & Future Outlook',
             date: '16th May, 2024',
             attendees: 18,
@@ -142,7 +250,7 @@ const Blogs = () => {
             author: "~Apurba Das"
         },
         {
-            id: 5,
+            id: 6,
             title: 'GitHub basics and Collaborative coding',
             date: '1st March, 2024',
             attendees: 20,
