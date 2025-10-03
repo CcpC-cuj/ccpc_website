@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db, auth, database } from "../../threadsFirebaseConfig";
+import { db, auth } from "../../threadsFirebaseConfig";
 // Remove Firebase Storage for new uploads
 import { supabase } from "../../supabaseClient";
 

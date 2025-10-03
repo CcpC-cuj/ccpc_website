@@ -119,7 +119,7 @@ const Profile = () => {
   const uploadImage = async (file) => {
     // Upload to Supabase Storage
     const filePath = `members_images/${Date.now()}-${file.name}`;
-    const { data, error } = await supabase.storage.from("CcpC").upload(filePath, file, {
+  const { error } = await supabase.storage.from("CcpC").upload(filePath, file, {
       cacheControl: '3600',
       upsert: false,
     });
