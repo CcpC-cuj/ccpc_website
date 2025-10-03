@@ -27,5 +27,8 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Disable CI strict mode
+        run: echo "CI=false" >> $GITHUB_ENV
+
       - name: Deploy to Firebase Hosting
         run: npx firebase deploy --token $FIREBASE_TOKEN --only hosting
