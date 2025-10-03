@@ -32,11 +32,10 @@ const Profile = () => {
         get(userRef)
           .then((snapshot) => {
             if (snapshot.exists()) {
-              const data = snapshot.val();
-              setProfileData(data);
-              setUpdatedProfile(data);
-              const links = Object.keys(data.socialLinks || {}).map(
-                (key) => data.socialLinks[key]
+              setProfileData(snapshot.val());
+              setUpdatedProfile(snapshot.val());
+              const links = Object.keys(snapshot.val().socialLinks || {}).map(
+                (key) => snapshot.val().socialLinks[key]
               );
               setSocialLinks(links);
             } else {

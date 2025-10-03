@@ -8,7 +8,6 @@ import ReachUs from "./pages/reachus";
 import NotFound from "./pages/NotFound";
 import SoC from "./pages/sochome"
 import Profile from './components/SOC/profile/profile';
-import Threads from './components/threads/threads';
 import Members from './pages/Members'
 import CompleteProfile from "./components/SOC/auth/CompleteProfile"; // Import Complete Profile Page
 import ForgotPassword from "./components/SOC/auth/ForgotPassword"; // Import Forgot Password Page
@@ -17,7 +16,6 @@ import Dashboard from "./components/SOC/Dashboard";
 import RegistrationForm from "./pages/registrationform";
 import ThreadsSignin from "./components/threads/signinThreads";
 import CreatePost from "./components/threads/CreatePost";
-import ThreadsHome from "./components/threads/threadshome";
 import ThreadsProfile from "./components/threads/ThreadsProfile.js";
 import ThreadsMessages from "./components/threads/ThreadsMessages.js";
 import SharedPost from "./pages/SharedPost";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ref, get } from "firebase/database";
 import { database } from "../../../firebaseConfig";
-import { FaEdit, FaTrash } from "react-icons/fa";
+// ...existing code...
 import STARFIELD from "../../../components/Starfield";
 
 const Profile = () => {

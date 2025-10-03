@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Starfield from '../components/Starfield';
 const RegistrationForm = () => {
   // Toggle the registration form. Set to false to display the closed message.
-  const [isFormOpen, setIsFormOpen] = useState(false); // change to true when you want to open registration
+  // ...existing code...
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ref, get } from "firebase/database";
 import { database } from "../firebaseConfig.js";
 import { useNavigate } from "react-router-dom";
-import { FaLogin } from "react-icons/fa"; 
+// ...existing code...
 import Footer from "../components/Footer.js";
 import NAVBAR from "../components/Navbar.js";
 import STARFIELD from "../components/Starfield";

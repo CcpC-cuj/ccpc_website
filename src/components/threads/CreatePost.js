@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { storage, db, auth, database } from "../../threadsFirebaseConfig";
+import { db, auth, database } from "../../threadsFirebaseConfig";
 // Remove Firebase Storage for new uploads
 import { supabase } from "../../supabaseClient";
 
@@ -43,11 +43,11 @@ const CreatePost = () => {
       if (files.length > 0) {
         // Limit to 4 images.
         const selectedFiles = files.slice(0, 4);
-        const folder = isPublic ? "public" : "private";
+  // ...existing code...
         // Upload all selected files concurrently to Supabase Storage
         const uploadPromises = selectedFiles.map(async (file) => {
           const filePath = `threads/${Date.now()}-${file.name}`;
-          const { data, error } = await supabase.storage.from("CcpC").upload(filePath, file, {
+          const { error } = await supabase.storage.from("CcpC").upload(filePath, file, {
             cacheControl: '3600',
             upsert: false,
           });

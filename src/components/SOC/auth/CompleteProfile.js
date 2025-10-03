@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, database, storage } from "../../../firebaseConfig";
+import { auth, database } from "../../../firebaseConfig";
 import { ref, set } from "firebase/database";
 // Remove Firebase Storage for new uploads
 import { supabase } from "../../../supabaseClient";
@@ -48,7 +48,7 @@ const CompleteProfile = () => {
         }
         // Upload to Supabase Storage
         const filePath = `members_images/${userId}-${Date.now()}-${profileImage.name}`;
-        const { data, error } = await supabase.storage.from("CcpC").upload(filePath, profileImage, {
+  const { error } = await supabase.storage.from("CcpC").upload(filePath, profileImage, {
           cacheControl: '3600',
           upsert: false,
         });

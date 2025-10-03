@@ -169,7 +169,7 @@ const ProfilePage = () => {
         <div className="flex flex-row justify-evenly items-center">
           <img
             src={userData?.photoURL || "https://via.placeholder.com/150"}
-            alt="User avatar"
+            alt="Avatar"
             className="w-32 h-32 rounded-full border-4 border-gray-700 mb-4"
           />
           <div>
@@ -244,7 +244,7 @@ const ProfilePage = () => {
                           <img
                             key={index}
                             src={url}
-                            alt={`Post image ${index}`}
+                            alt={`Post ${index}`}
                             className="rounded"
                           />
                         ))}

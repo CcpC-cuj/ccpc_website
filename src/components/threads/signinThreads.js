@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, GoogleAuthProvider, db } from "../../threadsFirebaseConfig";
 import { FaGoogle } from "react-icons/fa";
 import { signInWithPopup } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const SignIn = ({ redirectPath = "/threads" }) => {
   const navigate = useNavigate();
