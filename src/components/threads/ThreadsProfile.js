@@ -18,7 +18,6 @@ import { signOut } from "firebase/auth";
 import { FaEllipsisH } from "react-icons/fa";
 import { deleteObject } from "firebase/storage";
 import { ref as storageRef } from "firebase/storage";
-import { supabase } from "../../supabaseClient";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -100,15 +99,8 @@ const ProfilePage = () => {
         if (post.imageUrls && post.imageUrls.length > 0) {
           const deletePromises = post.imageUrls.map(async (url) => {
             try {
-              if (url.includes("/storage/v1/object/public/CcpC/")) {
-                // Supabase image
-                const filePath = url.split("/storage/v1/object/public/CcpC/")[1];
-                if (filePath) {
-                  await supabase.storage.from("CcpC").remove([filePath]);
-                  console.log(`Deleted Supabase file at ${filePath}`);
-                }
-              } else if (url.includes("firebasestorage.googleapis.com")) {
-                // Firebase image (legacy)
+              if (url.includes("firebasestorage.googleapis.com")) {
+                // Firebase image
                 const urlObj = new URL(url);
                 const fullPathEncoded = urlObj.pathname.split("/o/")[1];
                 const filePath = decodeURIComponent(fullPathEncoded);

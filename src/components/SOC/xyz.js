@@ -5,8 +5,7 @@ import { getAuth } from "firebase/auth";
 import NAVBAR from "../socnavbar.js";
 import PROJECT from "./profile/project.js";
 import { FaShareAlt, FaEdit, FaCamera } from "react-icons/fa";
-// Remove Firebase Storage for new uploads
-import { supabase } from "../supabaseClient";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -78,11 +77,14 @@ const Profile = () => {
       const userId = user.uid;
 
       if (newImage) {
-        // Delete old image from Supabase if it exists
-        if (profileData.imageUrl && profileData.imageUrl.includes("/storage/v1/object/public/CcpC/")) {
-          const oldPath = profileData.imageUrl.split("/storage/v1/object/public/CcpC/")[1];
-          if (oldPath) {
-            await supabase.storage.from("CcpC").remove([oldPath]);
+        // Delete the old image if it exists
+        if (profileData.imageUrl) {
+          try {
+            const oldImageRef = storageRef(getStorage(), profileData.imageUrl);
+            await deleteObject(oldImageRef);
+            console.log("Old image deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting old image:", error);
           }
         }
         const imageUrl = await uploadImage(newImage);
@@ -145,19 +147,11 @@ const Profile = () => {
   };
 
   const uploadImage = async (file) => {
-    // Upload to Supabase Storage
-    const filePath = `members_images/${Date.now()}-${file.name}`;
-    const { data, error } = await supabase.storage.from("CcpC").upload(filePath, file, {
-      cacheControl: '3600',
-      upsert: false,
-    });
-    if (error) {
-      console.error("Supabase upload error:", error);
-      throw new Error("Error uploading image.");
-    }
-    // Get public URL
-    const { data: urlData } = supabase.storage.from("CcpC").getPublicUrl(filePath);
-    return urlData.publicUrl;
+    const storage = getStorage();
+    const imageRef = storageRef(storage, `profileImages/${file.name}`);
+    await uploadBytes(imageRef, file);
+    const imageUrl = await getDownloadURL(imageRef);
+    return imageUrl;
   };
 
   if (loading) {

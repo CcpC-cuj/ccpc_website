@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, database } from "../../../firebaseConfig";
 import { ref, set } from "firebase/database";
-// Remove Firebase Storage for new uploads
-import { supabase } from "../../../supabaseClient";
+import { storage } from "../../../firebaseConfig";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { FaTimes } from "react-icons/fa";
 import "../../../index.css";
 import STARFIELD from "../../../components/Starfield";
@@ -39,26 +39,9 @@ const CompleteProfile = () => {
 
       let imageUrl = "";
       if (profileImage) {
-        // Delete old image from Supabase if it exists
-        if (previewImage && previewImage.includes("/storage/v1/object/public/CcpC/")) {
-          const oldPath = previewImage.split("/storage/v1/object/public/CcpC/")[1];
-          if (oldPath) {
-            await supabase.storage.from("CcpC").remove([oldPath]);
-          }
-        }
-        // Upload to Supabase Storage
-        const filePath = `members_images/${userId}-${Date.now()}-${profileImage.name}`;
-  const { error } = await supabase.storage.from("CcpC").upload(filePath, profileImage, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-        if (error) {
-          setError("Error uploading image to Supabase");
-          return;
-        }
-        // Get public URL
-        const { data: urlData } = supabase.storage.from("CcpC").getPublicUrl(filePath);
-        imageUrl = urlData.publicUrl;
+        const imageRef = storageRef(storage, `profileImages/${userId}`);
+        await uploadBytes(imageRef, profileImage);
+        imageUrl = await getDownloadURL(imageRef);
       }
 
       // Save profile data to database

@@ -5,8 +5,7 @@ import { getAuth } from "firebase/auth";
 import NAVBAR from "../Navbar.js";
 import PROJECT from "./profile/project.js";
 import { FaShareAlt, FaEdit, FaCamera } from "react-icons/fa";
-// Remove Firebase Storage for new uploads
-import { supabase } from "../../supabaseClient";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer.js";
 import STARFIELD from "../../components/Starfield";
@@ -84,11 +83,14 @@ const Profile = () => {
 
       // Check if a new image is being uploaded
       if (newImage) {
-        // Delete old image from Supabase if it exists
-        if (profileData.imageUrl && profileData.imageUrl.includes("/storage/v1/object/public/CcpC/")) {
-          const oldPath = profileData.imageUrl.split("/storage/v1/object/public/CcpC/")[1];
-          if (oldPath) {
-            await supabase.storage.from("CcpC").remove([oldPath]);
+        // Delete the old image if it exists
+        if (profileData.imageUrl) {
+          try {
+            const oldImageRef = storageRef(getStorage(), profileData.imageUrl); // Get reference to old image
+            await deleteObject(oldImageRef); // Delete the old image
+            console.log("Old image deleted successfully.");
+          } catch (error) {
+            console.error("Error deleting old image:", error);
           }
         }
         // Upload the new image and get the image URL
@@ -117,19 +119,16 @@ const Profile = () => {
   };
 
   const uploadImage = async (file) => {
-    // Upload to Supabase Storage
-    const filePath = `members_images/${Date.now()}-${file.name}`;
-  const { error } = await supabase.storage.from("CcpC").upload(filePath, file, {
-      cacheControl: '3600',
-      upsert: false,
-    });
-    if (error) {
-      console.error("Supabase upload error:", error);
+    const storage = getStorage();
+    const imageRef = storageRef(storage, `profile_images/${file.name}`);
+    try {
+      await uploadBytes(imageRef, file); // Upload new image to storage
+      const imageUrl = await getDownloadURL(imageRef); // Get the download URL
+      return imageUrl;
+    } catch (error) {
+      console.error("Error uploading image:", error);
       throw new Error("Error uploading image.");
     }
-    // Get public URL
-    const { data: urlData } = supabase.storage.from("CcpC").getPublicUrl(filePath);
-    return urlData.publicUrl;
   };
 
   const handleChange = (e) => {
