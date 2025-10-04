@@ -3,7 +3,7 @@ import Starfield from '../components/Starfield';
 
 const RegistrationForm = () => {
   // Toggle the registration form. Set to false to display the closed message.
-  const [isFormOpen] = useState(true); // change to true when you want to open registration
+  const [isFormOpen] = useState(false); // change to true when you want to open registration
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
