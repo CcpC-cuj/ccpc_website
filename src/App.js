@@ -21,6 +21,11 @@ import ThreadsMessages from "./components/threads/ThreadsMessages.js";
 import SharedPost from "./pages/SharedPost";
 import ThreadsWrapper from "./pages/ThreadsWrapper";
 import ResetPassword from "./components/SOC/auth/ResetPassword";
+import AdminHome from "./pages/Admin/Home";
+import AdminUsers from "./pages/Admin/User";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
+
 function App() {
   return (
     <Router>
@@ -46,6 +51,25 @@ function App() {
           <Route path="/threads/forum/:id" element={<ThreadsMessages />} />
           <Route path="/post/:postId" element={<SharedPost />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          
+          {/* Admin Routes - Protected */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <AdminHome />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminProtectedRoute>
+                <AdminUsers />
+              </AdminProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>

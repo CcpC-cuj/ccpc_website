@@ -10,7 +10,8 @@ export default function Users() {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users");
+  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const response = await fetch(`${apiBase}/api/users`);
       const data = await response.json();
       console.log("Fetched users:", data);
 
@@ -35,31 +36,37 @@ useEffect(() => {
 }, []);
 
 
-  // Function to generate a pre-filled email
-  const handleSendMail = (user) => {
-    const subject = encodeURIComponent("Welcome to Code Crafters Programming Club");
-    const body = encodeURIComponent(
-      `Hi ${user.name},\n\n` +
-      `Congratulations! You are successfully registered in the Code Crafters Programming Club.\n\n` +
-      `Here are your details:\n` +
-      `Name: ${user.name}\n` +
-      `Email: ${user.email}\n` +
-      `Phone: ${user.phone}\n` +
-      `Department: ${user.password}\n` +
-      `Batch: ${user.batch}\n` +
-      `Skills: ${user.skills}\n` +
-      `Preferred Language: ${user.preferedLanguage}\n` +
-      `Reg No: ${user.reg_no}\n\n` +
-      `Regards,\nCode Crafters Team`
-    );
+  // Send email to individual user via API
+  const handleSendMail = async (user) => {
+    if (!window.confirm(`Send welcome email to ${user.name} (${user.email})?`)) {
+      return;
+    }
 
-    window.location.href = `mailto:${user.email}?subject=${subject}&body=${body}`;
+    try {
+      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+      const response = await fetch(`${apiBase}/api/email/send-individual`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user._id })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert(`✅ ${data.message}`);
+      } else {
+        alert(`❌ Failed to send email: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("❌ Failed to send email. Please check your connection and try again.");
+    }
   };
-
 
 const toggleActive = async (userId, currentStatus) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/users/${userId}/status`, {
+  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const response = await fetch(`${apiBase}/api/users/${userId}/status`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ active: !currentStatus }),
@@ -98,7 +105,8 @@ const submitTask = async () => {
     if (editIndex !== undefined) {
       // editing existing task
       newTasks[editIndex] = task;
-      const response = await fetch(`http://localhost:5000/api/users/${user._id}/updateTasks`, {
+  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const response = await fetch(`${apiBase}/api/users/${user._id}/updateTasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tasks: newTasks }),
@@ -106,7 +114,8 @@ const submitTask = async () => {
       updatedUser = await response.json();
     } else {
       // adding new task
-      const response = await fetch(`http://localhost:5000/api/users/${user._id}/task`, {
+  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const response = await fetch(`${apiBase}/api/users/${user._id}/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ task }),
@@ -126,7 +135,8 @@ const submitTask = async () => {
 const deleteTask = async (user, taskIndex) => {
   try {
     const newTasks = user.tasks.filter((_, idx) => idx !== taskIndex);
-    const response = await fetch(`http://localhost:5000/api/users/${user._id}/updateTasks`, {
+  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const response = await fetch(`${apiBase}/api/users/${user._id}/updateTasks`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tasks: newTasks }),
@@ -152,27 +162,41 @@ const openEditTaskModal = (user, taskIndex) => {
       <div className="p-8">
         <div className="flex mb-6 justify-between">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/admin")}
             className="mb-6 bg-gray-700 px-4 py-2 rounded hover:bg-gray-600"
           >
             Back to Home
           </button>
 
           <button
-              onClick={() => {
+              onClick={async () => {
                 const activeUsers = users.filter(u => u.active);
-                if (activeUsers.length === 0) return alert("No active users to send mail to.");
+                if (activeUsers.length === 0) {
+                  return alert("No active users to send mail to.");
+                }
                 
-                const allEmails = activeUsers.map(u => u.email).join(",");
-                const subject = encodeURIComponent("Welcome to Code Crafters Programming Club");
-                const body = encodeURIComponent(
-                  "Hi all,\n\n" +
-                  "Congratulations! You are successfully registered in the Code Crafters Programming Club.\n\n" +
-                  "Please find your registration details in your personal email individually.\n\n" +
-                  "Regards,\nCode Crafters Team"
-                );
+                if (!window.confirm(`Send welcome email to all ${activeUsers.length} active users?`)) {
+                  return;
+                }
 
-                window.location.href = `mailto:${allEmails}?subject=${subject}&body=${body}`;
+                try {
+                  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+                  const response = await fetch(`${apiBase}/api/email/send-bulk`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                  });
+
+                  const data = await response.json();
+                  
+                  if (data.success) {
+                    alert(`✅ ${data.message}`);
+                  } else {
+                    alert(`❌ Failed to send bulk email: ${data.message}`);
+                  }
+                } catch (error) {
+                  console.error("Error sending bulk email:", error);
+                  alert("❌ Failed to send bulk email. Please check your connection and try again.");
+                }
               }}
               className="mb-6 ml-4 bg-green-600 px-4 py-2 rounded hover:bg-green-700"
             >
@@ -289,7 +313,7 @@ const openEditTaskModal = (user, taskIndex) => {
             <h3 className="text-white font-bold mb-4">Assign Task to {taskModal.user.name}</h3>
             <textarea
               type="text"
-              className="w-full p-2 mb-4 rounded text-white h-2/3 border border-gray-500 focus:outline-none focus:border-blue-500"
+              className="w-full p-2 mb-4 rounded text-white bg-gray-700 h-2/3 border border-gray-500 focus:outline-none focus:border-blue-500"
               placeholder="Enter task"
               value={taskModal.task}
               onChange={(e) => setTaskModal({ ...taskModal, task: e.target.value })}
@@ -297,14 +321,14 @@ const openEditTaskModal = (user, taskIndex) => {
             <div className="flex justify-end gap-2">
               <button
                 onClick={closeTaskModal}
-                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700"
+                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white"
               >
                 Cancel
               </button>
 
               <button
                 onClick={submitTask}
-                className="bg-green-600 px-4 py-2 rounded hover:bg-green-700"
+                className="bg-green-600 px-4 py-2 rounded hover:bg-green-700 text-white"
               >
                 {taskModal.editIndex !== undefined ? "Update" : "Assign"}
               </button>
