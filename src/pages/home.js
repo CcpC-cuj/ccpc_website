@@ -6,7 +6,8 @@ import Logo from "../components/logo/logo";
 import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
-import TEAM from "../components/SEB/Team2025"; 
+import TEAM from "../components/SEB/Team2025";
+import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
 const Home = () => {
   return (
     <div className="relative">
@@ -40,6 +41,7 @@ const Home = () => {
         </div>
 
         <WhyCCPC />
+        <UpcomingEvents />
         <SoC />
         <TEAM />
         <Footer />

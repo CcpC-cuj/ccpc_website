@@ -11,6 +11,33 @@ import Prashant from "../assets/Prashant.png";
 import Basil from "../assets/Basil.png";
 import Saket from "../assets/Saket.png";
 import Siya from "../assets/Siya.png";
+import PrashantPrashun from "../assets/prashantsir.jpg";
+
+const coordinatorDetails = {
+  PrashantParashun1: {
+    name: "Dr. Prashant Prashun",
+    role: "Club Coordinator",
+    designation: "Assistant Professor & Faculty Advisor",
+    linkedin: "#", // Add LinkedIn if available
+    github: "#", // Add GitHub if available
+    link: "#", // Add profile link if available
+    img: PrashantPrashun,
+    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
+    quote: "Education is the most powerful weapon which you can use to change the world."
+  },
+
+  PrashantParashun: {
+    name: "Dr. Prashant Prashun",
+    role: "Club Coordinator",
+    designation: "Assistant Professor & Faculty Advisor",
+    linkedin: "#", // Add LinkedIn if available
+    github: "#", // Add GitHub if available
+    link: "#", // Add profile link if available
+    img: PrashantPrashun,
+    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
+    quote: "Education is the most powerful weapon which you can use to change the world."
+  }
+};
 
 const studentDetails = {
   Abhimaan: {
@@ -130,8 +157,53 @@ const Team = () => {
 
   return (
     <div className="relative flex flex-col items-center p-4">
-      <h1 className="text-white text-3xl mb-6">Student Body</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <h1 className="text-white text-4xl mb-6">Club Leadership</h1>
+      
+      {/* Professor - Hierarchical Position */}
+      <div className="mb-8 flex justify-center">
+        <div className="flex flex-col items-center">
+          <div
+            className="cursor-pointer group"
+            onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+          >
+            <img
+              src={coordinatorDetails.PrashantParashun.img}
+              alt={coordinatorDetails.PrashantParashun.name}
+              className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+            />
+          </div>
+          <h2 className="text-white text-xl font-bold mt-3 cursor-pointer text-center" onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}>
+            {coordinatorDetails.PrashantParashun.name}
+          </h2>
+          <p className="text-blue-400 text-lg font-semibold">{coordinatorDetails.PrashantParashun.role}</p>
+          <p className="text-gray-300 text-base font-medium">{coordinatorDetails.PrashantParashun.designation}</p>
+          <div className="flex mt-2 space-x-4">
+            {coordinatorDetails.PrashantParashun.linkedin && coordinatorDetails.PrashantParashun.linkedin !== "#" && (
+              <span
+                onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                className="text-blue-500 hover:text-blue-400 cursor-pointer"
+              >
+                <FaLinkedin size={24} />
+              </span>
+            )}
+            {coordinatorDetails.PrashantParashun.github && coordinatorDetails.PrashantParashun.github !== "#" && (
+              <span
+                onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                className="text-gray-500 hover:text-gray-400 cursor-pointer"
+              >
+                <FaGithub size={24} />
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      
+
+      {/* Student Body Title */}
+      <h2 className="text-white text-3xl font-semibold mb-6">Student Body</h2>
+
+      {/* Student Council Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Object.keys(studentDetails).map((memberName) => {
           const member = studentDetails[memberName];
           return (
@@ -146,8 +218,10 @@ const Team = () => {
                   className="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
                 />
               </div>
-              <h2 className="text-white text-lg font-semibold mt-2 cursor-pointer" onClick={() => setModalMember(member)}>{member.name}</h2>
-              <p className="text-gray-400">{member.role}</p>
+              <h2 className="text-white text-lg font-semibold mt-2 cursor-pointer text-center" onClick={() => setModalMember(member)}>
+                {member.name}
+              </h2>
+              <p className="text-gray-400 font-semibold">{member.role}</p>
               <div className="flex mt-2 space-x-4">
                 {member.linkedin && (
                   <span
@@ -188,6 +262,9 @@ const Team = () => {
               />
               <h2 className="text-2xl font-bold text-gray-900 mb-1">{modalMember.name}</h2>
               <p className="text-blue-600 font-semibold mb-2">{modalMember.role}</p>
+              {modalMember.designation && (
+                <p className="text-purple-600 font-medium mb-2">{modalMember.designation}</p>
+              )}
               <p className="text-gray-700 text-center mb-2">{modalMember.bio}</p>
               <p className="italic text-gray-500 text-center mb-4">"{modalMember.quote}"</p>
               <div className="flex space-x-4 mb-4">
