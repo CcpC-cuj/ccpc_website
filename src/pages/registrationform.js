@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Starfield from '../components/Starfield';
+import getApiBase from '../utils/apiBase';
 
 const RegistrationForm = () => {
   // Check registration status from API
@@ -21,8 +22,8 @@ const RegistrationForm = () => {
 
   const fetchRegistrationStatus = async () => {
     try {
-      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-      const response = await fetch(`${apiBase}/api/settings/registration-status`);
+  const apiBase = getApiBase();
+  const response = await fetch(`${apiBase}/api/settings/registration-status`);
       const data = await response.json();
       setIsFormOpen(data.isOpen);
     } catch (error) {
@@ -52,8 +53,8 @@ const RegistrationForm = () => {
     };
 
     try {
-      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-      const response = await fetch(`${apiBase}/api/register`, {
+  const apiBase = getApiBase();
+  const response = await fetch(`${apiBase}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

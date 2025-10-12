@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar"; // adjust path
+import getApiBase from '../../utils/apiBase';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ export default function Home() {
 
   const fetchRegistrationStatus = async () => {
     try {
-      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-      const response = await fetch(`${apiBase}/api/settings/registration-status`);
+  const apiBase = getApiBase();
+  const response = await fetch(`${apiBase}/api/settings/registration-status`);
       const data = await response.json();
       setIsRegistrationOpen(data.isOpen);
     } catch (error) {
@@ -26,8 +27,8 @@ export default function Home() {
 
   const toggleRegistration = async () => {
     try {
-      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-      const response = await fetch(`${apiBase}/api/settings/registration-status`, {
+  const apiBase = getApiBase();
+  const response = await fetch(`${apiBase}/api/settings/registration-status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isOpen: !isRegistrationOpen })

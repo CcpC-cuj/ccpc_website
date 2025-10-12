@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar"; // adjust path
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import getApiBase from '../../utils/apiBase';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -10,8 +11,8 @@ export default function Users() {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-  const response = await fetch(`${apiBase}/api/users`);
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}/api/users`);
       const data = await response.json();
       console.log("Fetched users:", data);
 

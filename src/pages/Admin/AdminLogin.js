@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import getApiBase from '../../utils/apiBase';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -15,8 +16,8 @@ export default function AdminLogin() {
 
     try {
       // Call your backend API to verify admin credentials
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
-  const response = await fetch(`${apiBase}/api/admin/login`, {
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
