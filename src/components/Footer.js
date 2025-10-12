@@ -53,6 +53,16 @@ const Footer = () => {
               </a>
             </div>
 
+            {/* Team Page Link */}
+            <div className="w-full flex justify-center mt-4">
+              <a
+                href="/team"
+                className="text-blue-400 hover:underline text-base font-medium"
+              >
+                Meet the Student Body
+              </a>
+            </div>
+
             {/* Address Section */}
             <div className="text-center sm:text-right text-sm">
               <p>
