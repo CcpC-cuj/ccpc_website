@@ -8,7 +8,37 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5002;
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:3000", credentials: true }));
+// CORS Configuration - Allow both local and production origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://ccpc-cuj.web.app',
+  'https://ccpc-cuj.firebaseapp.com'
+];
+
+// If CORS_ORIGIN is set in env, use it (supports || separator for multiple origins)
+if (process.env.CORS_ORIGIN) {
+  const envOrigins = process.env.CORS_ORIGIN.split('||').map(origin => origin.trim());
+  envOrigins.forEach(origin => {
+    if (origin && !allowedOrigins.includes(origin)) {
+      allowedOrigins.push(origin);
+    }
+  });
+}
+
+app.use(cors({ 
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`⚠️ CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true 
+}));
 app.use(express.json());
 
 // MongoDB Connection
