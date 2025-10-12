@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 
 const Title = ({ text }) => {
   const [typedTitle, setTypedTitle] = useState("");
@@ -81,6 +82,10 @@ const Title = ({ text }) => {
       )}
     </div>
   );
+};
+
+Title.propTypes = {
+  text: PropTypes.string.isRequired
 };
 
 export default Title;

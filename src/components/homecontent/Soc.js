@@ -1,5 +1,5 @@
 import React from "react";
-import socImage from "../assets/soc.png"; // Replace with your actual image path
+import socImage from "../assets/soc.png";
 
 const SoC = () => {
   return (
@@ -8,12 +8,12 @@ const SoC = () => {
       <div className="flex flex-col lg:flex-row-reverse items-center lg:items-start justify-between gap-8">
         {/* Right Side: Image Section (Appears at top on mobile) */}
         <div className="lg:w-1/2 flex justify-center">
-        <a href="/soc">
-          <img
-            src={socImage}
-            alt="SoC Event"
-            className="w-full lg:w-3/4 h-auto rounded-xl shadow-2xl transition-transform transform hover:scale-105 duration-300 lg:ml-40"
-          />
+          <a href="/soc">
+            <img
+              src={socImage}
+              alt="SoC Event"
+              className="w-full lg:w-3/4 h-auto rounded-xl shadow-2xl transition-transform transform hover:scale-105 duration-300 lg:ml-40"
+            />
           </a>
         </div>
 

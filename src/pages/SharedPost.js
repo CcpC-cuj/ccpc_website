@@ -10,6 +10,10 @@ import Comments from "../components/threads/Comments";
 import CommentForm from "../components/threads/CommentForm";
 import { motion } from "framer-motion";
 import { Heart, MessageCircle } from "lucide-react";
+import SEO from "../components/common/SEO";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import Modal from "../components/common/Modal";
+import OptimizedImage from "../components/common/OptimizedImage";
 
 const SharedPost = () => {
   const { postId } = useParams();
@@ -86,10 +90,20 @@ const SharedPost = () => {
   };
   const closePreview = () => setShowPreview(false);
 
-  if (!post) return <p className="text-center text-gray-400 mt-6">Loading post...</p>;
+  if (!post) return (
+    <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <LoadingSpinner size="lg" color="white" text="Loading post..." />
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-black text-white flex">
+      <SEO 
+        title={`${post.author}'s Post | Code Crafters Programming Club`}
+        description={post.content ? post.content.substring(0, 160) + '...' : 'View this post on Code Crafters Programming Club threads.'}
+        keywords="programming, coding, community, threads, social, developers"
+        type="article"
+      />
       {user && !isMobile && (
         <div className="w-1/5 fixed h-screen">
           <LeftNavigation user={user} onNavigate={navigate} />
@@ -113,24 +127,50 @@ const SharedPost = () => {
             {post.imageUrls?.length > 0 ? (
               <div className="grid grid-cols-2 gap-2 mt-4">
                 {post.imageUrls.map((url, i) => (
-                  <motion.img
+                  <motion.div
                     key={i}
-                    src={url}
-                    alt={`Post visual ${i}`}
-                    className="cursor-pointer rounded-lg max-h-60 object-cover transition-transform hover:scale-105"
                     whileHover={{ scale: 1.05 }}
+                    className="cursor-pointer rounded-lg overflow-hidden"
                     onClick={() => openPreview(url)}
-                  />
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openPreview(url);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View image ${i + 1} in full size`}
+                  >
+                    <OptimizedImage
+                      src={url}
+                      alt={`Post image ${i + 1} by ${post.author}`}
+                      className="max-h-60 object-cover w-full transition-transform hover:scale-105"
+                    />
+                  </motion.div>
                 ))}
               </div>
             ) : post.imageUrl ? (
-              <motion.img
-                src={post.imageUrl}
-                alt="Post visual"
-                className="mt-4 max-w-full rounded-lg cursor-pointer transition-transform hover:scale-105"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
+                className="mt-4 cursor-pointer rounded-lg overflow-hidden"
                 onClick={() => openPreview(post.imageUrl)}
-              />
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openPreview(post.imageUrl);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="View image in full size"
+              >
+                <OptimizedImage
+                  src={post.imageUrl}
+                  alt={`Post image by ${post.author}`}
+                  className="max-w-full rounded-lg transition-transform hover:scale-105"
+                />
+              </motion.div>
             ) : null}
 
             {/* Content */}
@@ -144,16 +184,26 @@ const SharedPost = () => {
                 {/* Like icon & count */}
                 <div className="flex items-center space-x-2">
                   {user ? (
-                    <button onClick={handleLike}>
+                    <button 
+                      onClick={handleLike}
+                      className="p-1 rounded-full hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black"
+                      aria-label={post.likedBy?.includes(user.uid) ? 'Unlike this post' : 'Like this post'}
+                    >
                       <Heart
                         size={20}
-                        className={post.likedBy?.includes(user.uid) ? "text-red-500" : "text-gray-400"}
+                        className={`transition-colors duration-200 ${
+                          post.likedBy?.includes(user.uid) ? "text-red-500" : "text-gray-400 hover:text-red-400"
+                        }`}
                       />
                     </button>
                   ) : (
-                    <Heart size={20} className="text-gray-600 pointer-events-none" />
+                    <Heart 
+                      size={20} 
+                      className="text-gray-600" 
+                      aria-hidden="true"
+                    />
                   )}
-                  <span className="text-white text-sm font-medium">
+                  <span className="text-white text-sm font-medium" aria-label={`${post.likedBy?.length || 0} likes`}>
                     {post.likedBy?.length || 0}
                   </span>
                 </div>
@@ -162,9 +212,10 @@ const SharedPost = () => {
                 {user && (
                   <button
                     onClick={handleCommentsClick}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-800 hover:bg-gray-700 text-sm text-gray-200 transition"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-800 hover:bg-gray-700 text-sm text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
+                    aria-label="Write a comment on this post"
                   >
-                    <MessageCircle size={16} />
+                    <MessageCircle size={16} aria-hidden="true" />
                     <span>Comment</span>
                   </button>
                 )}
@@ -192,35 +243,20 @@ const SharedPost = () => {
       </div>
 
       {/* Image Preview Modal */}
-      {showPreview && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50"
-          onClick={closePreview}
-        >
-          <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            className="relative"
-          >
-            <img
-              src={previewImage}
-              alt="Preview"
-              className="max-h-96 max-w-full rounded-lg shadow-xl"
-            />
-            <button
-              onClick={closePreview}
-              className="absolute -top-10 right-4 text-3xl text-white p-2 rounded-full"
-            >
-              &times;
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
+      <Modal
+        isOpen={showPreview}
+        onClose={closePreview}
+        title="Image Preview"
+        size="xl"
+      >
+        <div className="flex justify-center">
+          <OptimizedImage
+            src={previewImage}
+            alt="Full size post image"
+            className="max-h-[70vh] max-w-full object-contain"
+          />
+        </div>
+      </Modal>
     </div>
   );
 };

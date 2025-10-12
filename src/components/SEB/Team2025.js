@@ -142,7 +142,8 @@ const Team = () => {
               >
                 <img
                   src={member.img}
-                  alt={member.name}
+                  alt={member.name + ' - ' + member.role}
+                  loading="lazy"
                   className="w-32 h-32 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
                 />
               </div>
@@ -172,18 +173,36 @@ const Team = () => {
       </div>
       {/* Modal */}
       {modalMember && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
-          <div className="bg-white bg-opacity-80 rounded-2xl shadow-2xl p-8 max-w-md w-full relative" style={{backdropFilter: 'blur(12px)'}}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label={modalMember.name + ' details'}
+          tabIndex={-1}
+          onKeyDown={e => {
+            if (e.key === 'Escape') setModalMember(null);
+          }}
+        >
+          <div
+            className="bg-white bg-opacity-80 rounded-2xl shadow-2xl p-8 max-w-md w-full relative animate-fadeIn"
+            style={{ backdropFilter: 'blur(12px)', animation: 'fadeIn 0.3s' }}
+          >
             <button
               className="absolute top-2 right-4 text-2xl text-gray-700 hover:text-red-500"
+              aria-label="Close modal"
               onClick={() => setModalMember(null)}
+              tabIndex={0}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') setModalMember(null);
+              }}
             >
               &times;
             </button>
             <div className="flex flex-col items-center">
               <img
                 src={modalMember.img}
-                alt={modalMember.name}
+                alt={modalMember.name + ' - ' + modalMember.role}
+                loading="lazy"
                 className="w-28 h-28 rounded-full border-4 border-white shadow-lg mb-4"
               />
               <h2 className="text-2xl font-bold text-gray-900 mb-1">{modalMember.name}</h2>
@@ -197,6 +216,7 @@ const Team = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-700"
+                    aria-label={modalMember.name + ' LinkedIn'}
                   >
                     <FaLinkedin size={28} />
                   </a>
@@ -207,6 +227,7 @@ const Team = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-700 hover:text-black"
+                    aria-label={modalMember.name + ' GitHub'}
                   >
                     <FaGithub size={28} />
                   </a>
@@ -215,6 +236,7 @@ const Team = () => {
               <a
                 href={modalMember.link}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+                aria-label={modalMember.name + ' full profile'}
               >
                 View Full Profile
               </a>

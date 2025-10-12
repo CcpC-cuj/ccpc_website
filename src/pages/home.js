@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React from "react";
 import NAVBAR from "../components/NavbarHome";
 import STARFIELD from "../components/Starfield";
 import Footer from "../components/Footer";
@@ -6,18 +6,28 @@ import Logo from "../components/logo/logo";
 import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
-import TEAM from "../components/SEB/Team2025"; 
+import TEAM from "../components/SEB/Team2025";
+import SEO from "../components/common/SEO"; 
 const Home = () => {
   return (
     <div className="relative">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
+      <SEO 
+        title="Home | Code Crafters Programming Club"
+        description="Join Code Crafters Programming Club - where students innovate, collaborate, and elevate their programming skills. Learn coding with mentorship and community support."
+        keywords="programming club, coding community, student developers, learn programming, software development, CCPC, Code Crafters"
+      />
       <STARFIELD />
       <div className="relative z-10">
         <NAVBAR />
-        <div className="flex flex-col justify-center items-center min-h-[70vh] lg:min-h-screen">
-          <div className="fixed-width text-center">
-            <Title text="Code Crafters Programming Club" />
+        <main id="main-content">
+          <div className="flex flex-col justify-center items-center min-h-[70vh] lg:min-h-screen">
+            <div className="fixed-width text-center">
+              <Title text="Code Crafters Programming Club" />
+            </div>
           </div>
-        </div>
 
         <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
           <div className="flex justify-center items-start mt-8">
@@ -39,9 +49,10 @@ const Home = () => {
           </div>
         </div>
 
-        <WhyCCPC />
-        <SoC />
-        <TEAM />
+          <WhyCCPC />
+          <SoC />
+          <TEAM />
+        </main>
         <Footer />
       </div>
     </div>

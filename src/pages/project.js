@@ -1,6 +1,8 @@
 import React from "react";
 import NAVBAR from "../components/Navbar";
 import STARFIELD from "../components/Starfield";
+import SEO from "../components/common/SEO";
+import OptimizedImage from "../components/common/OptimizedImage";
 
 const Projects = () => {
     const cardsData1 = [
@@ -24,6 +26,11 @@ const Projects = () => {
     
     return (
         <div className="relative min-h-screen bg-black text-white">
+            <SEO 
+                title="Projects | Code Crafters Programming Club"
+                description="Explore amazing projects built by Code Crafters Programming Club members. From web development to graphics programming, discover our innovative solutions."
+                keywords="programming projects, web development, graphics, coding examples, student projects, open source"
+            />
             {/* Background Starfield */}
             <STARFIELD />
             
@@ -46,11 +53,15 @@ const Projects = () => {
                     {/* Projects Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                         {cardsData1.map((project) => (
-                            <div key={project.id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out">
-                                <img
+                            <article 
+                                key={project.id} 
+                                className="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300 ease-in-out focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:ring-offset-black"
+                            >
+                                <OptimizedImage
                                     src={project.img}
-                                    alt={project.text}
+                                    alt={`${project.text} project preview - Code Crafters Programming Club`}
                                     className="w-full h-48 object-cover rounded-lg mb-4"
+                                    fallbackSrc="/api/placeholder/400/300"
                                 />
                                 <h2 className="text-xl font-semibold text-white mb-2">{project.text}</h2>
                                 <p className="text-gray-400 mb-4">A brief description of the {project.text} project.</p>
@@ -58,11 +69,21 @@ const Projects = () => {
                                     href={project.githubLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline"
+                                    className="inline-flex items-center text-blue-500 hover:text-blue-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded px-2 py-1"
+                                    aria-label={`View ${project.text} project source code on GitHub`}
                                 >
                                     View on GitHub
+                                    <svg 
+                                        className="w-4 h-4 ml-1" 
+                                        fill="none" 
+                                        stroke="currentColor" 
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
                                 </a>
-                            </div>
+                            </article>
                         ))}
                     </div>
                 </div>
