@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Starfield from '../components/Starfield';
 
 const RegistrationForm = () => {
-  // Toggle the registration form. Set to false to display the closed message.
-  const [isFormOpen] = useState(false); // change to true when you want to open registration
+  // Check registration status from API
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,30 +15,77 @@ const RegistrationForm = () => {
   const [reg_no, setRegNo] = useState('');
   const [Batch, setBatch] = useState('');
 
+  useEffect(() => {
+    fetchRegistrationStatus();
+  }, []);
+
+  const fetchRegistrationStatus = async () => {
+    try {
+      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+      const response = await fetch(`${apiBase}/api/settings/registration-status`);
+      const data = await response.json();
+      setIsFormOpen(data.isOpen);
+    } catch (error) {
+      console.error("Error fetching registration status:", error);
+      setIsFormOpen(false); // Default to closed on error
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!email || !email.includes('@')) {
       alert('Please enter a valid email');
       return;
     }
+
+    const data = {
+      name,
+      email,
+      password,
+      phone,
+      preferedLanguage: PreferedLanguage,
+      skills: Skills,
+      reg_no,
+      batch: Batch
+    };
+
     try {
-      const response = await fetch('https://ccpc-member-registration.onrender.com/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone, PreferedLanguage, Skills, reg_no, Batch }),
+      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+      const response = await fetch(`${apiBase}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
       });
-      const data = await response.json();
-      if (data.ok) {
-        alert(data.message);
-        window.location.href = 'https://ccpc-cuj.web.app/';
-      } else {
-        alert(data.error);
-      }
+
+      const result = await response.json();
+      alert(result.message);
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setPassword("");
+      setPhone("");
+      setSkills("");
+      setPreferedLanguage("");
+      setRegNo("");
+      setBatch("");
     } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Try again!');
+      console.error(error);
+      alert("Registration failed");
     }
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen relative z-10 bg-black">
+        <Starfield className="z-0 absolute inset-0" />
+        <div className="text-white text-xl z-10">Loading...</div>
+      </div>
+    );
+  }
 
   // Render the closed screen when the registration form is off
   if (!isFormOpen) {
@@ -126,23 +174,26 @@ const RegistrationForm = () => {
             </label>
           </div>
           {/* Department */}
-          <div className="relative mb-4 form-field">
-            <input
-              type="text"
+          <div className="mb-4 form-field">
+            <label htmlFor="password" className="block text-white mb-2">
+              Department
+            </label>
+            <select
               id="password"
-              placeholder=" "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="peer w-full border border-gray-300 p-3 bg-black text-white rounded focus:outline-none focus:border-indigo-300"
-            />
-            <label
-              htmlFor="password"
-              className="absolute left-3 text-white text-sm bg-black rounded px-1 transform -translate-y-1/2 transition-all
-                         peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-focus:top-0"
+              className="peer w-full border border-gray-300 text-white p-3 bg-black rounded focus:outline-none focus:border-indigo-300"
             >
-              Department
-            </label>
+              <option value="" disabled>
+                Select Department
+              </option>
+              <option value="CSE">CSE</option>
+              <option value="MME">MME</option>
+              <option value="CE">CE</option>
+              <option value="EE">EE</option>
+              {/* add other departments as needed */}
+            </select>
           </div>
           {/* Registration Number */}
           <div className="relative mb-4 form-field">
@@ -199,6 +250,7 @@ const RegistrationForm = () => {
               </option>
               <option value="2023">2023</option>
               <option value="2024">2024</option>
+              <option value="2025">2025</option>
             </select>
           </div>
           {/* Preferred Language */}
