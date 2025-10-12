@@ -3,10 +3,10 @@ import NAVBAR from "../components/NavbarHome";
 import STARFIELD from "../components/Starfield";
 import Footer from "../components/Footer";
 import Logo from "../components/logo/logo";
-import Title from "../components/homecontent/Title"; // Import the Title component
+import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
-import TEAM from "../components/homecontent/Team"; 
+import TEAM from "../components/SEB/Team2025"; 
 const Home = () => {
   return (
     <div className="relative">

@@ -26,6 +26,7 @@ import AdminUsers from "./pages/Admin/User";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
 
+import TeamPage from "./pages/TeamPage";
 function App() {
   return (
     <Router>
@@ -70,6 +71,7 @@ function App() {
               </AdminProtectedRoute>
             }
           />
+          <Route path="/team" element={<TeamPage />} /> {/* TeamPage Route */}
         </Routes>
       </div>
     </Router>
