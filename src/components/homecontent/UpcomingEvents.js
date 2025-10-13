@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaUsers, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
+import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaUsers, FaArrowRight} from "react-icons/fa";
+//FaChevronLeft, FaChevronRight
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -63,6 +63,7 @@ const UpcomingEvents = () => {
     }*/
   ];
 
+ /*
   const nextEvent = () => {
     setCurrentEventIndex((prev) => (prev + 1) % events.length);
   };
@@ -70,6 +71,8 @@ const UpcomingEvents = () => {
   const prevEvent = () => {
     setCurrentEventIndex((prev) => (prev - 1 + events.length) % events.length);
   };
+*/
+ 
 
   const currentEvent = events[currentEventIndex];
 
