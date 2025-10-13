@@ -184,10 +184,23 @@ const UpcomingEvents = () => {
 
                 {/* Registration Button */}
                 <div className="pt-4">
-                  <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3">
-                    <span>Register Now</span>
-                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  {currentEvent.registrationLink && currentEvent.registrationLink !== '#' ? (
+                    <a
+                      href={currentEvent.registrationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3">
+                        <span>Register Now</span>
+                        <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </a>
+                  ) : (
+                    <button disabled className="bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold opacity-60 cursor-not-allowed">
+                      Registration Closed
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
