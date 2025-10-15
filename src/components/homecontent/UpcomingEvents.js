@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaUsers, FaArrowRight} from "react-icons/fa";
-//FaChevronLeft, FaChevronRight
+import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
+import cybersec_img from "../assets/upcoming events/cubersce.png";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -9,31 +9,27 @@ const UpcomingEvents = () => {
       id: 1,
       title: "UI/UX Design Competition",
       description: "Join us for an exciting UI/UX design challenge where creativity meets purpose! Craft a single-page digital experience that solves real campus-life problems using design tools like Figma, Adobe XD, Canva, or Sketch — no coding required! Think, design, and innovate your way to impactful solutions!",
-      date: "2025-10-16",
-      time: "09:00 AM",
+      date: "13 Oct 2025 to 17 Oct 2025 " ,
       location: "(Online)",
       maxParticipants: 100,
-      currentParticipants: 12,
+      currentParticipants: 23,
       type: "Competition",
       image: "https://acstechnologies.net/wp-content/uploads/elementor/thumbs/Rectangle-28-33-qo8amwhm4hlbhlejylakcp064d1yo67usvlmls6ds0.jpg",
       registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSeiaArmOP5N2SBtfyq2Y1dwPMnp_n-jyWwHzTQFKkEpXPj7Fg/viewform?usp=header",
       featured: true
     },
-    /*{
+    {
       id: 2,
-      title: "Web Development Workshop",
-      description: "Learn modern web development techniques with React, Node.js, and MongoDB. Perfect for beginners and intermediate developers looking to enhance their skills.",
-      date: "2025-01-25",
+      title: "Cyber Jagrit Bharat",
+      description: "Learn how to stay safe online through fun activities, real-life hacking demos, and games. Take part in workshops, phishing simulations, and Capture The Flag challenges. Become a CyberPeace Cadet and protect yourself in the digital world! ",
+      date: "2025-10-15",
       time: "02:00 PM",
-      location: "Seminar Hall",
-      maxParticipants: 50,
-      currentParticipants: 32,
-      type: "Workshop",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      registrationLink: "#",
+      location: "Science Building",
+      type: "Live Event",
+      image: cybersec_img,
       featured: false
     },
-    {
+    /*{
       id: 3,
       title: "AI & Machine Learning Talk",
       description: "Explore the fascinating world of Artificial Intelligence and Machine Learning with industry experts. Discover career opportunities and latest trends in AI.",
@@ -63,7 +59,7 @@ const UpcomingEvents = () => {
     }*/
   ];
 
- /*
+ 
   const nextEvent = () => {
     setCurrentEventIndex((prev) => (prev + 1) % events.length);
   };
@@ -71,7 +67,7 @@ const UpcomingEvents = () => {
   const prevEvent = () => {
     setCurrentEventIndex((prev) => (prev - 1 + events.length) % events.length);
   };
-*/
+
  
 
   const currentEvent = events[currentEventIndex];
@@ -80,8 +76,9 @@ const UpcomingEvents = () => {
     switch (type) {
       case "Competition": return "bg-red-500";
       case "Workshop": return "bg-blue-500";
-      case "Seminar": return "bg-green-500";
+      case "Live Event": return "bg-green-500";
       case "Contest": return "bg-purple-500";
+      case "Seminar": return "bg-yellow-500";
       default: return "bg-gray-500";
     }
   };
@@ -94,6 +91,9 @@ const UpcomingEvents = () => {
       year: 'numeric' 
     });
   };
+
+  // treat plain ISO yyyy-mm-dd strings as dates to format; otherwise display raw string
+  const isIsoDateString = (s) => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
 
   return (
     <div className="py-16 px-4 lg:px-16">
@@ -151,41 +151,56 @@ const UpcomingEvents = () => {
 
                 {/* Event Info */}
                 <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <FaCalendarAlt className="text-yellow-500 text-xl" />
-                    <span className="text-white font-semibold">{formatDate(currentEvent.date)}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <FaClock className="text-blue-400 text-xl" />
-                    <span className="text-white font-semibold">{currentEvent.time}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <FaMapMarkerAlt className="text-red-400 text-xl" />
-                    <span className="text-white font-semibold">{currentEvent.location}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <FaUsers className="text-green-400 text-xl" />
-                    <span className="text-white font-semibold">
-                      {currentEvent.currentParticipants}/{currentEvent.maxParticipants} participants
-                    </span>
-                  </div>
+                  {currentEvent.date && (
+                    <div className="flex items-center space-x-3">
+                      <FaCalendarAlt className="text-yellow-500 text-xl" />
+                      <span className="text-white font-semibold">
+                        {isIsoDateString(currentEvent.date) ? formatDate(currentEvent.date) : currentEvent.date}
+                      </span>
+                    </div>
+                  )}
+
+                  {currentEvent.time && (
+                    <div className="flex items-center space-x-3">
+                      <FaClock className="text-blue-400 text-xl" />
+                      <span className="text-white font-semibold">{currentEvent.time}</span>
+                    </div>
+                  )}
+
+                  {currentEvent.location && (
+                    <div className="flex items-center space-x-3">
+                      <FaMapMarkerAlt className="text-red-400 text-xl" />
+                      <span className="text-white font-semibold">{currentEvent.location}</span>
+                    </div>
+                  )}
+
+                  {typeof currentEvent.currentParticipants === 'number' && typeof currentEvent.maxParticipants === 'number' && (
+                    <div className="flex items-center space-x-3">
+                      <FaUsers className="text-green-400 text-xl" />
+                      <span className="text-white font-semibold">
+                        {currentEvent.currentParticipants}/{currentEvent.maxParticipants} participants
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Progress Bar */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-gray-300">
-                    <span>Registration Progress</span>
-                    <span>{Math.round((currentEvent.currentParticipants / currentEvent.maxParticipants) * 100)}%</span>
+                {/* Progress & Registration (render only if participants/registration provided) */}
+                {typeof currentEvent.currentParticipants === 'number' && typeof currentEvent.maxParticipants === 'number' && (
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm text-gray-300">
+                      <span>Registration Progress</span>
+                      <span>{Math.round((currentEvent.currentParticipants / currentEvent.maxParticipants) * 100)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-3">
+                      <div 
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
+                        style={{ width: `${(currentEvent.currentParticipants / currentEvent.maxParticipants) * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-3">
-                    <div 
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
-                      style={{ width: `${(currentEvent.currentParticipants / currentEvent.maxParticipants) * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
+                )}
 
-                {/* Registration Button */}
                 <div className="pt-4">
                   {currentEvent.registrationLink && currentEvent.registrationLink !== '#' ? (
                     <a
@@ -200,16 +215,15 @@ const UpcomingEvents = () => {
                       </button>
                     </a>
                   ) : (
-                    <button disabled className="bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold opacity-60 cursor-not-allowed">
-                      Registration Closed
-                    </button>
+                    // show nothing when there's no registration link (user wanted selective removal)
+                    null
                   )}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Navigation Arrows 
+          {/* Navigation Arrows */}
           <button
             onClick={prevEvent}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 text-white transition-all duration-300 hover:scale-110"
@@ -222,7 +236,7 @@ const UpcomingEvents = () => {
           >
             <FaChevronRight className="text-xl" />
           </button>
-          */}
+          
         </div>
         
 
@@ -242,7 +256,7 @@ const UpcomingEvents = () => {
         </div>
 
 {/*         
-  All Events Grid
+  All Events Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event, index) => (
             <div
@@ -277,7 +291,7 @@ const UpcomingEvents = () => {
               </div>
             </div>
           ))}
-        </div>  */}
+        </div>  
         
       </div>
     </div>

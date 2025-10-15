@@ -5,8 +5,88 @@ const Blogs = () => {
 
     const blogsData = [
        
+        
         {
             id: 1,
+            title: 'HackQubit 2025: CUJ Innovators Shine Bright!',
+            date: '10th October, 2025',
+            attendees: 71,
+            location: 'RVS College of Engineering and Technology, Jamshedpur',
+            content: (
+                <>
+                <h3 id="title" className="text-xl font-semibold text-pink-500 mt-6 mb-2">Event Overview:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Innovation met determination at <strong>HackQubit 2025</strong> — a 24-hour national-level hackathon hosted by <strong>RVS College of Engineering and Technology (RVSCET), Jamshedpur</strong>. The event concluded after an exciting marathon of coding, creativity, and collaboration. With over 50 teams from across India, this edition of HackQubit showcased outstanding participation from the <strong>Central University of Jharkhand (CUJ)</strong>, where <strong>14 teams</strong> represented the university — the majority being active members of the <strong>Code Crafter Programming Club (CCPC)</strong>.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">CUJ’s Remarkable Performance:</h3>
+                <ul className="pl-5 space-y-2 text-gray-300">
+                    <li className="text-white mb-2">
+                    <p style={{ textAlign: 'justify' }}>
+                        The hackathon featured multiple rounds of evaluation based on innovation, feasibility, and real-world impact. In the final top 10 teams, <strong>4 were from CUJ</strong> — a proud achievement for our university community.
+                    </p>
+                    </li>
+                    <li className="text-white mb-2">
+                    <p style={{ textAlign: 'justify' }}>
+                        <strong>Team Vibe Coders</strong> (Anish, Hemant, Basil, Dheraj), composed of CCPC members, emerged as the <strong>1st Runner-Up</strong>, securing the <strong>🥈 Second Position</strong> overall. Their innovative project stood out for its technical precision and creative problem-solving.
+                    </p>
+                    </li>
+                    <li className="text-white mb-2">
+                    <p style={{ textAlign: 'justify' }}>
+                        Another CUJ team, <strong>Team A3N</strong> (Apurba, Abhishek, Namrata, Ashish), which also included CCPC members, received a <strong>Special Recognition Award</strong> from <strong>Izzkitech Solutions</strong> for their impactful idea and impressive execution.
+                    </p>
+                    </li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">About HackQubit 2025:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    The hackathon attracted participants from various top institutions, including NIT Jamshedpur and Haldia Institute of Technology. The winners of HackQubit 2025 were announced as:
+                    </p>
+                </p>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li>🥇 <strong>Team S2 Buckets</strong> – NIT Jamshedpur</li>
+                    <li>🥈 <strong>Team Vibe Coders</strong> – Central University of Jharkhand</li>
+                    <li>🥉 <strong>Team Code Blooded</strong> – Haldia Institute of Technology</li>
+                    <li>🏅 <strong>Team A3N</strong> – Central University of Jharkhand (Special Recognition by Izzkitech Solutions)</li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Judging Panel & Guests:</h3>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li>Dr. D.A. Khan – Professor, NIT Jamshedpur</li>
+                    <li>Shraddha Agarwal – Founder & Director, Izzkitech Solutions</li>
+                    <li>Dr. Shamsher Alam – Associate Professor, RVSCET</li>
+                    <li>Prof. Shreyansh Prasad – Assistant Professor, RVSCET</li>
+                </ul>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    The event also witnessed the gracious presence of <strong>Shri Binda Singh</strong> (Hon’ble Chairman, RVS Educational Trust) and <strong>Shri Shatrughna Singh</strong> (Hon’ble Treasurer), who felicitated the winners during the closing ceremony.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">CCPC’s Impact:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;The outstanding performance of CUJ students — particularly from the <strong>Code Crafter Programming Club (CCPC)</strong> — reflects the growing culture of innovation, collaboration, and hands-on learning at the university. The success of <strong>Team Vibe Coders</strong> and <strong>Team A3N</strong> not only highlights individual brilliance but also the spirit of teamwork and problem-solving nurtured within the club.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Conclusion:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;HackQubit 2025 was more than just a competition—it was a celebration of creativity and coding excellence. The remarkable representation from CUJ and CCPC showcases how our students continue to make their mark at national platforms. Congratulations to all participating teams for carrying the CUJ and CCPC legacy forward with pride and innovation. 🚀
+                    </p>
+                </p>
+                </>
+            ),
+            author: "~Basil Joy"
+            },
+
+        
+        {
+            id: 2,
             title: 'Dive into Generative AI and BadgeMonster Platform',
             date: '23rd July, 2025',
             attendees: 67,
@@ -114,7 +194,7 @@ const Blogs = () => {
             author: "~Neha Kumari"
         },
         {
-            id: 2,
+            id: 3,
             title: 'GitHub Unlocked: Mastering Collabrotion & Automation',
             date: '25th Feb, 2025',
             attendees: 38,
@@ -134,7 +214,7 @@ const Blogs = () => {
             author: "~Srishti Pathak"
         },
         {
-            id: 3,
+            id: 4,
             title: 'Career in Tech',
             date: '18th Feb, 2025',
             attendees: 23,
@@ -155,7 +235,7 @@ const Blogs = () => {
             author: "~Namrata Dey"
         },
         {
-            id: 4,
+            id: 5,
             title: 'Weekly Meeting of CCPC',
             date: '25th July, 2024',
             attendees: 17,
@@ -235,7 +315,7 @@ const Blogs = () => {
         },
           
         {
-            id: 5,
+            id: 6,
             title: 'Computer Graphics & Future Outlook',
             date: '16th May, 2024',
             attendees: 18,
@@ -250,7 +330,7 @@ const Blogs = () => {
             author: "~Apurba Das"
         },
         {
-            id: 6,
+            id: 7,
             title: 'GitHub basics and Collaborative coding',
             date: '1st March, 2024',
             attendees: 20,
