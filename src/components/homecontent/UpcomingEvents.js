@@ -6,21 +6,9 @@ const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
   const events = [
+    
     {
       id: 1,
-      title: "CyberSec Meme-athon",
-      description: "In this event, you’ll create memes that spread awareness about the risks and mishappenings in the cyber world — from phishing and weak passwords to online scams",
-      date: "16 Oct 2025",
-      time: "10:00 AM",
-      location: "CSE Lab (room no. 323), Science Building",
-      type: "Competition",
-      image: meme,
-      registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
-      submissionLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
-      featured: true
-    },
-    {
-      id: 3,
       title: "UI/UX Design Competition",
       description: "Join us for an exciting UI/UX design challenge where creativity meets purpose! Craft a single-page digital experience that solves real campus-life problems using design tools like Figma, Adobe XD, Canva, or Sketch — no coding required! Think, design, and innovate your way to impactful solutions!",
       date: "13 Oct 2025 to 17 Oct 2025 " ,
@@ -44,7 +32,21 @@ const UpcomingEvents = () => {
       featured: false
     },
     
-    /*{
+    /*
+    {
+      id: 1,
+      title: "CyberSec Meme-athon",
+      description: "In this event, you’ll create memes that spread awareness about the risks and mishappenings in the cyber world — from phishing and weak passwords to online scams",
+      date: "16 Oct 2025",
+      time: "10:00 AM",
+      location: "CSE Lab (room no. 323), Science Building",
+      type: "Competition",
+      image: meme,
+      registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
+      submissionLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
+      featured: true
+    },
+    {
       id: 4,
       title: "Coding Contest",
       description: "Test your problem-solving skills in our monthly coding contest. Participate in algorithmic challenges and climb the leaderboard!",
