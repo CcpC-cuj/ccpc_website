@@ -1,12 +1,26 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
 import cybersec_img from "../assets/upcoming events/cubersce.png";
+import meme from "../assets/upcoming events/CyberSec Meme.png";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
   const events = [
     {
       id: 1,
+      title: "CyberSec Meme-athon",
+      description: "In this event, you’ll create memes that spread awareness about the risks and mishappenings in the cyber world — from phishing and weak passwords to online scams",
+      date: "16 Oct 2025",
+      time: "10:00 AM",
+      location: "CSE Lab (room no. 323), Science Building",
+      type: "Competition",
+      image: meme,
+      registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
+      submissionLink: "https://docs.google.com/forms/d/e/1FAIpQLSfsT_RILNvit1lNuuuL-HiITAAm5zoqBiQ_-BCSFCvrohd-Sw/viewform?usp=header",
+      featured: true
+    },
+    {
+      id: 3,
       title: "UI/UX Design Competition",
       description: "Join us for an exciting UI/UX design challenge where creativity meets purpose! Craft a single-page digital experience that solves real campus-life problems using design tools like Figma, Adobe XD, Canva, or Sketch — no coding required! Think, design, and innovate your way to impactful solutions!",
       date: "13 Oct 2025 to 17 Oct 2025 " ,
@@ -22,28 +36,15 @@ const UpcomingEvents = () => {
       id: 2,
       title: "Cyber Jagrit Bharat",
       description: "Learn how to stay safe online through fun activities, real-life hacking demos, and games. Take part in workshops, phishing simulations, and Capture The Flag challenges. Become a CyberPeace Cadet and protect yourself in the digital world! ",
-      date: "2025-10-15",
-      time: "02:00 PM",
+      date: "16 Oct 2025",
+      time: "10:00 AM",
       location: "Science Building",
       type: "Live Event",
       image: cybersec_img,
       featured: false
     },
+    
     /*{
-      id: 3,
-      title: "AI & Machine Learning Talk",
-      description: "Explore the fascinating world of Artificial Intelligence and Machine Learning with industry experts. Discover career opportunities and latest trends in AI.",
-      date: "2025-02-01",
-      time: "03:30 PM",
-      location: "Auditorium",
-      maxParticipants: 200,
-      currentParticipants: 145,
-      type: "Seminar",
-      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      registrationLink: "#",
-      featured: false
-    },
-    {
       id: 4,
       title: "Coding Contest",
       description: "Test your problem-solving skills in our monthly coding contest. Participate in algorithmic challenges and climb the leaderboard!",
@@ -184,8 +185,7 @@ const UpcomingEvents = () => {
                   )}
                 </div>
 
-                {/* Progress Bar */}
-                {/* Progress & Registration (render only if participants/registration provided) */}
+                {/* Progress Bar (render only when both participant numbers provided) */}
                 {typeof currentEvent.currentParticipants === 'number' && typeof currentEvent.maxParticipants === 'number' && (
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-gray-300">
@@ -201,22 +201,33 @@ const UpcomingEvents = () => {
                   </div>
                 )}
 
-                <div className="pt-4">
-                  {currentEvent.registrationLink && currentEvent.registrationLink !== '#' ? (
+                {/* Registration / Submission buttons: render individually if present */}
+                <div className="pt-4 flex flex-wrap items-center gap-4">
+                  {currentEvent.registrationLink && currentEvent.registrationLink !== '#' && (
                     <a
                       href={currentEvent.registrationLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-block"
                     >
-                      <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3">
+                      <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3">
                         <span>Register Now</span>
                         <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                       </button>
                     </a>
-                  ) : (
-                    // show nothing when there's no registration link (user wanted selective removal)
-                    null
+                  )}
+
+                  {currentEvent.submissionLink && currentEvent.submissionLink !== '#' && (
+                    <a
+                      href={currentEvent.submissionLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block"
+                    >
+                      <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-2">
+                        <span>Submit Entry</span>
+                      </button>
+                    </a>
                   )}
                 </div>
               </div>
