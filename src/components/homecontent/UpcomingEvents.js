@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
 import cybersec_img from "../assets/upcoming events/cubersce.png";
-import meme from "../assets/upcoming events/CyberSec Meme.png";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
