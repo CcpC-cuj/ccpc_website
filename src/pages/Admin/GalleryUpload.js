@@ -12,16 +12,16 @@ import Navbar from "./Navbar";
 const allowedEmails = [
   "ccpc.cuj@gmail.com",
   "krish.22190503027@cuj.ac.in",
-  "diwakar.23190503026@cuj.ac.in",
-  "sandeep.22190503052@cuj.ac.in",
 ].map((email) => email.toLowerCase());
 
 export default function GalleryUpload() {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]); // Array of files
+  const [previews, setPreviews] = useState([]); // Array of preview URLs
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [customName, setCustomName] = useState("");
+  const [customNames, setCustomNames] = useState([]); // Array of custom names
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState([]); // Array of progress per file
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [authEmail, setAuthEmail] = useState("");
@@ -57,19 +57,39 @@ export default function GalleryUpload() {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile && selectedFile.type.startsWith("image/")) {
-      setFile(selectedFile);
-      const defaultName = selectedFile.name.replace(/\.[^/.]+$/, "");
-      setCustomName(defaultName);
+  const handleFileChange = async (e) => {
+    const selectedFiles = Array.from(e.target.files).filter(f => f.type.startsWith("image/"));
+    if (selectedFiles.length > 0) {
+      setFiles(selectedFiles);
+      setCustomNames(selectedFiles.map(f => f.name.replace(/\.[^/.]+$/, "")));
       setMessage("");
       setIsError(false);
+      // Generate previews, convert HEIC/HEIF to JPEG for preview
+      const previewPromises = selectedFiles.map(async (file) => {
+        const extension = file.name.split('.').pop().toLowerCase();
+        if (extension === "heic" || extension === "heif" || file.type === "image/heic" || file.type === "image/heif") {
+          try {
+            const convertedBlob = await heic2any({
+              blob: file,
+              toType: "image/jpeg",
+              quality: 0.8
+            });
+            return URL.createObjectURL(convertedBlob);
+          } catch (err) {
+            return ""; // fallback: no preview
+          }
+        } else {
+          return URL.createObjectURL(file);
+        }
+      });
+      const previewUrls = await Promise.all(previewPromises);
+      setPreviews(previewUrls);
     } else {
-      setMessage("Please select a valid image file.");
+      setMessage("Please select valid image files.");
       setIsError(true);
-      setFile(null);
-      setCustomName("");
+      setFiles([]);
+      setCustomNames([]);
+      setPreviews([]);
     }
   };
 
@@ -114,8 +134,7 @@ export default function GalleryUpload() {
     await signOut(auth);
     setIsAuthorized(false);
     setFirebaseUser(null);
-    setFile(null);
-    setCustomName("");
+  // removed obsolete setFile and setCustomName
     const input = document.getElementById("fileInput");
     if (input) {
       input.value = "";
@@ -124,43 +143,40 @@ export default function GalleryUpload() {
     setIsError(false);
   };
 
+  const handleCustomNameChange = (idx, value) => {
+    setCustomNames(prev => prev.map((n, i) => (i === idx ? value : n)));
+  };
+
   const handleUpload = async () => {
-    if (!file) {
-      setMessage("Please select an image to upload.");
+    if (!files.length) {
+      setMessage("Please select images to upload.");
       setIsError(true);
       return;
     }
-
     if (!isAuthorized || !firebaseUser) {
       setMessage("You must sign in with an authorized account to upload images.");
       setIsError(true);
       return;
     }
-
-    if (!customName.trim()) {
-      setMessage("Please provide a name for this image before uploading.");
+    if (customNames.some(name => !name.trim())) {
+      setMessage("Please provide a name for each image before uploading.");
       setIsError(true);
       return;
     }
-
     setUploading(true);
     setMessage("");
     setIsError(false);
-
-    try {
+    setUploadProgress(Array(files.length).fill(0));
+    let successCount = 0;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
       let fileToUpload = file;
       let extension = file.name.split(".").pop().toLowerCase();
-      const sanitizedName = sanitizeFileName(customName);
-
-      if (!sanitizedName) {
-        setMessage("Image name must include letters or numbers.");
-        setIsError(true);
-        return;
-      }
-
-      // Check if file is HEIC and convert to JPG
+      const sanitizedName = sanitizeFileName(customNames[i]);
+      if (!sanitizedName) continue;
+      // HEIC/HEIF conversion
       if (extension === "heic" || extension === "heif" || file.type === "image/heic" || file.type === "image/heif") {
-        setMessage("Converting HEIC image to JPG...");
+        setMessage(`Converting HEIC image (${file.name}) to JPG...`);
         try {
           const convertedBlob = await heic2any({
             blob: file,
@@ -171,40 +187,42 @@ export default function GalleryUpload() {
           extension = "jpg";
         } catch (conversionError) {
           console.error("HEIC conversion error:", conversionError);
-          setMessage("Failed to convert HEIC image. Please try with a different image format.");
+          setMessage(`Failed to convert HEIC image (${file.name}). Skipping.`);
           setIsError(true);
-          setUploading(false);
-          return;
+          continue;
         }
       }
-
       const storageRef = ref(
         storage,
         `gallery/${sanitizedName}-${Date.now()}.${extension}`
       );
-
-      await uploadBytes(storageRef, fileToUpload, {
-        customMetadata: {
-          alt: customName.trim(),
-          uploadedBy: firebaseUser.email,
-        },
-      });
-
-      setMessage("Image uploaded successfully!");
-      setIsError(false);
-      setFile(null);
-      setCustomName("");
-      // Reset file input
-      const input = document.getElementById("fileInput");
-      if (input) {
-        input.value = "";
+      try {
+        await uploadBytes(storageRef, fileToUpload, {
+          customMetadata: {
+            alt: customNames[i].trim(),
+            uploadedBy: firebaseUser.email,
+          },
+        });
+        successCount++;
+        setUploadProgress(prev => prev.map((p, idx) => (idx === i ? 100 : p)));
+      } catch (error) {
+        setUploadProgress(prev => prev.map((p, idx) => (idx === i ? -1 : p)));
+        setMessage(`Failed to upload ${file.name}.`);
+        setIsError(true);
       }
-    } catch (error) {
-      console.error("Upload error:", error);
-      setMessage("Failed to upload image. Please try again.");
-      setIsError(true);
-    } finally {
-      setUploading(false);
+    }
+    setUploading(false);
+    if (successCount === files.length) {
+      setMessage("All images uploaded successfully!");
+      setIsError(false);
+      setFiles([]);
+      setCustomNames([]);
+      setUploadProgress([]);
+      const input = document.getElementById("fileInput");
+      if (input) input.value = "";
+    } else if (successCount > 0) {
+      setMessage(`${successCount} of ${files.length} images uploaded successfully.`);
+      setIsError(false);
     }
   };
 
@@ -243,40 +261,70 @@ export default function GalleryUpload() {
             id="fileInput"
             type="file"
             accept="image/*"
+            multiple
             onChange={handleFileChange}
             className="mb-4 w-full text-gray-300"
           />
-          <label className="block text-sm text-gray-400 mb-1" htmlFor="customName">
-            Rename image (used as alt text)
-          </label>
-          <input
-            id="customName"
-            type="text"
-            value={customName}
-            onChange={(e) => setCustomName(e.target.value)}
-            placeholder="Enter descriptive image name"
-            className="mb-4 w-full rounded bg-gray-700 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+          {files.length > 0 && (
+            <div className="mb-4 space-y-4">
+              {files.map((file, idx) => (
+                <div key={idx} className="bg-gray-700/40 p-2 rounded-lg flex flex-col items-center">
+                  {previews[idx] ? (
+                    <img
+                      src={previews[idx]}
+                      alt={customNames[idx] || file.name}
+                      className="w-20 h-20 object-cover rounded shadow mb-2"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 flex items-center justify-center bg-gray-800 text-gray-400 rounded shadow mb-2 text-xs">No Preview</div>
+                  )}
+                  <input
+                    type="text"
+                    value={customNames[idx] || ''}
+                    onChange={e => handleCustomNameChange(idx, e.target.value)}
+                    placeholder="Image name"
+                    className="w-full rounded bg-gray-800 px-2 py-1 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-1"
+                  />
+                  <div className="w-full flex items-center">
+                    <span className="text-xs text-gray-400 mr-2">{file.name.split('.').pop().toUpperCase()}</span>
+                    <div className="flex-1">
+                      {uploadProgress[idx] > 0 && uploadProgress[idx] < 100 && (
+                        <div className="h-2 bg-gray-600 rounded">
+                          <div className="bg-indigo-500 h-2 rounded" style={{ width: `${uploadProgress[idx]}%` }}></div>
+                        </div>
+                      )}
+                      {uploadProgress[idx] === 100 && (
+                        <div className="text-green-400 text-xs">Uploaded</div>
+                      )}
+                      {uploadProgress[idx] === -1 && (
+                        <div className="text-red-400 text-xs">Failed</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <button
             onClick={handleUpload}
             disabled={
               uploading ||
-              !file ||
-              !customName.trim() ||
+              !files.length ||
+              customNames.some(name => !name.trim()) ||
               !isAuthorized ||
               !firebaseUser
             }
             className={`w-full py-2 px-4 rounded font-semibold transition-colors ${
               uploading ||
-              !file ||
-              !customName.trim() ||
+              !files.length ||
+              customNames.some(name => !name.trim()) ||
               !isAuthorized ||
               !firebaseUser
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-indigo-600 hover:bg-indigo-700"
             }`}
           >
-            {uploading ? "Uploading..." : "Upload Image"}
+            {uploading ? "Uploading..." : `Upload ${files.length > 1 ? files.length + ' Images' : 'Image'}`}
           </button>
           {message && (
             <p className={`mt-4 text-center ${isError ? "text-red-400" : "text-green-400"}`}>
