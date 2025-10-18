@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import heic2any from "heic2any";
 import Navbar from "./Navbar";
 
 const allowedEmails = [
@@ -147,7 +148,8 @@ export default function GalleryUpload() {
     setIsError(false);
 
     try {
-      const extension = file.name.split(".").pop();
+      let fileToUpload = file;
+      let extension = file.name.split(".").pop().toLowerCase();
       const sanitizedName = sanitizeFileName(customName);
 
       if (!sanitizedName) {
@@ -156,12 +158,32 @@ export default function GalleryUpload() {
         return;
       }
 
+      // Check if file is HEIC and convert to JPG
+      if (extension === "heic" || extension === "heif" || file.type === "image/heic" || file.type === "image/heif") {
+        setMessage("Converting HEIC image to JPG...");
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+            quality: 0.9
+          });
+          fileToUpload = convertedBlob;
+          extension = "jpg";
+        } catch (conversionError) {
+          console.error("HEIC conversion error:", conversionError);
+          setMessage("Failed to convert HEIC image. Please try with a different image format.");
+          setIsError(true);
+          setUploading(false);
+          return;
+        }
+      }
+
       const storageRef = ref(
         storage,
         `gallery/${sanitizedName}-${Date.now()}.${extension}`
       );
 
-      await uploadBytes(storageRef, file, {
+      await uploadBytes(storageRef, fileToUpload, {
         customMetadata: {
           alt: customName.trim(),
           uploadedBy: firebaseUser.email,
