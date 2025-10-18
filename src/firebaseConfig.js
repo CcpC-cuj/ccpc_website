@@ -5,15 +5,15 @@ import { getAuth } from "firebase/auth"; // For Firebase Authentication
 import { getDatabase } from "firebase/database"; // For Firebase Realtime Database
 import { getStorage } from "firebase/storage"; // Import Firebase Storage
 
-// Your web app's Firebase configuration
+// Your web app's Firebase configuration (read from env when available)
 const firebaseConfig = {
-  apiKey: "AIzaSyA1965fWrtU_011cnp-uwel-d8wWqpLj5A",
-  authDomain: "soc-ccpc-cuj.firebaseapp.com",
-  projectId: "soc-ccpc-cuj",
-  storageBucket: "soc-ccpc-cuj.appspot.com",
-  messagingSenderId: "742957309273",
-  appId: "1:742957309273:web:c095865e3a9c58ea97c048",
-  measurementId: "G-WVHPZM6S6Y"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
