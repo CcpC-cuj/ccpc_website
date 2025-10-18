@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { storage } from '../../firebaseConfig';
-import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
+import { ref, listAll, getDownloadURL, getMetadata, getBlob } from 'firebase/storage';
+import heic2any from 'heic2any';
 
 const formatAltFromName = (name) => {
   const withoutExtension = name.replace(/\.[^/.]+$/, '');
@@ -20,12 +21,23 @@ const Gallery = () => {
         const storageRef = ref(storage, 'gallery/');
         const result = await listAll(storageRef);
         const imagePromises = result.items.map(async (itemRef) => {
-          const [url, metadata] = await Promise.all([
-            getDownloadURL(itemRef),
-            getMetadata(itemRef),
-          ]);
+          const metadata = await getMetadata(itemRef);
           const altFromMetadata = metadata.customMetadata?.alt;
-          return { src: url, alt: altFromMetadata || formatAltFromName(itemRef.name) };
+          let src;
+          if (itemRef.name.toLowerCase().endsWith('.heic') || metadata.contentType === 'image/heic') {
+            try {
+              const blob = await getBlob(itemRef);
+              const convertedBlob = await heic2any({ blob });
+              src = URL.createObjectURL(convertedBlob);
+            } catch (error) {
+              console.error('Error converting HEIC:', error);
+              // Fallback to download URL
+              src = await getDownloadURL(itemRef);
+            }
+          } else {
+            src = await getDownloadURL(itemRef);
+          }
+          return { src, alt: altFromMetadata || formatAltFromName(itemRef.name) };
         });
         const imageList = await Promise.all(imagePromises);
         setImages(imageList);
