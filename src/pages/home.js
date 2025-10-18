@@ -1,4 +1,5 @@
-import React, { } from "react";
+import React, { useState } from "react";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 import NAVBAR from "../components/NavbarHome";
 import STARFIELD from "../components/Starfield";
 import Footer from "../components/Footer";
@@ -8,7 +9,36 @@ import WhyCCPC from "../components/homecontent/WhyCCPC";
 import SoC from "../components/homecontent/Soc"; 
 import TEAM from "../components/SEB/Team2025";
 import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
+import PrashantPrashun from "../components/assets/prashantsir.jpg";
+import hod_img from "../components/assets/hod_img.jpg";
+const coordinatorDetails = {
+  hod: {
+    name: "Dr. Subhash Chandra Yadav",
+    role: "Chairperson",
+    designation: "Head of Deptt & Professor",
+    linkedin: "#", // Add LinkedIn if available
+    github: "#", // Add GitHub if available
+    link: "#", // Add profile link if available
+    img: hod_img,
+    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
+    quote: "Education is the most powerful weapon which you can use to change the world."
+  },
+
+  PrashantParashun: {
+    name: "Dr. Prashant Prashun",
+    role: "Club Coordinator",
+    designation: "Assistant Professor & Faculty Advisor",
+    linkedin: "#", // Add LinkedIn if available
+    github: "#", // Add GitHub if available
+    link: "#", // Add profile link if available
+    img: PrashantPrashun,
+    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
+    quote: "Education is the most powerful weapon which you can use to change the world."
+  }
+};
+
 const Home = () => {
+  const [modalMember, setModalMember] = useState(null);
   return (
     <div className="relative">
       <STARFIELD />
@@ -43,9 +73,154 @@ const Home = () => {
         <WhyCCPC />
         <UpcomingEvents />
         <SoC />
+              <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
+    
+              {/* Professor - Hierarchical Position */}
+              <div className="mb-8 flex justify-center space-x-16">
+                {/* HOD */}
+                <div className="flex flex-col items-center">
+                  <div
+                    className="cursor-pointer group"
+                    onClick={() => setModalMember(coordinatorDetails.hod)}
+                  >
+                    <img
+                      src={coordinatorDetails.hod.img}
+                      alt={coordinatorDetails.hod.name}
+                      className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                    />
+                  </div>
+                  <h2
+                    className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                    onClick={() => setModalMember(coordinatorDetails.hod)}
+                  >
+                    {coordinatorDetails.hod.name}
+                  </h2>
+                  <p className="text-blue-400 text-lg font-semibold">{coordinatorDetails.hod.role}</p>
+                  <p className="text-gray-300 text-base font-medium">{coordinatorDetails.hod.designation}</p>
+                  <div className="flex mt-2 space-x-4">
+                    {coordinatorDetails.hod.linkedin && coordinatorDetails.hod.linkedin !== "#" && (
+                      <span
+                        onClick={() => setModalMember(coordinatorDetails.hod)}
+                        className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                      >
+                        <FaLinkedin size={24} />
+                      </span>
+                    )}
+                    {coordinatorDetails.hod.github && coordinatorDetails.hod.github !== "#" && (
+                      <span
+                        onClick={() => setModalMember(coordinatorDetails.hod)}
+                        className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                      >
+                        <FaGithub size={24} />
+                      </span>
+                    )}
+                  </div>
+                </div>
+        
+                {/* Prashant Prashun */}
+                <div className="flex flex-col items-center">
+                  <div
+                    className="cursor-pointer group"
+                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                  >
+                    <img
+                      src={coordinatorDetails.PrashantParashun.img}
+                      alt={coordinatorDetails.PrashantParashun.name}
+                      className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                    />
+                  </div>
+                  <h2
+                    className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                  >
+                    {coordinatorDetails.PrashantParashun.name}
+                  </h2>
+                  <p className="text-blue-400 text-lg font-semibold">
+                    {coordinatorDetails.PrashantParashun.role}
+                  </p>
+                  <p className="text-gray-300 text-base font-medium">
+                    {coordinatorDetails.PrashantParashun.designation}
+                  </p>
+                  <div className="flex mt-2 space-x-4">
+                    {coordinatorDetails.PrashantParashun.linkedin && coordinatorDetails.PrashantParashun.linkedin !== "#" && (
+                      <span
+                        onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                        className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                      >
+                        <FaLinkedin size={24} />
+                      </span>
+                    )}
+                    {coordinatorDetails.PrashantParashun.github && coordinatorDetails.PrashantParashun.github !== "#" && (
+                      <span
+                        onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                        className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                      >
+                        <FaGithub size={24} />
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+        
         <TEAM />
         <Footer />
       </div>
+
+      {/* Modal for Coordinator Details */}
+      {modalMember && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50"
+          onClick={() => setModalMember(null)}
+        >
+          <div
+            className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+              onClick={() => setModalMember(null)}
+            >
+              ✕
+            </button>
+            <div className="text-center">
+              <img
+                src={modalMember.img}
+                alt={modalMember.name}
+                className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white"
+              />
+              <h2 className="text-white text-2xl font-bold mb-2">{modalMember.name}</h2>
+              <p className="text-blue-400 text-lg font-semibold mb-1">{modalMember.role}</p>
+              <p className="text-gray-300 text-base mb-4">{modalMember.designation}</p>
+              <p className="text-gray-300 text-sm mb-4">{modalMember.bio}</p>
+              <blockquote className="text-yellow-500 italic text-sm mb-4">
+                "{modalMember.quote}"
+              </blockquote>
+              <div className="flex justify-center space-x-4">
+                {modalMember.linkedin && modalMember.linkedin !== "#" && (
+                  <a
+                    href={modalMember.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-400"
+                  >
+                    <FaLinkedin size={24} />
+                  </a>
+                )}
+                {modalMember.github && modalMember.github !== "#" && (
+                  <a
+                    href={modalMember.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-gray-400"
+                  >
+                    <FaGithub size={24} />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
