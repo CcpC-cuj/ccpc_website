@@ -62,20 +62,35 @@ export default function Home() {
           <p className="text-gray-400">Control registration form access.</p>
           <div className="mt-4 flex items-center gap-4">
             <span className="text-sm">Status:</span>
-            <span className={`font-bold ${isRegistrationOpen ? 'text-green-400' : 'text-red-400'}`}>
-              {loading ? 'Loading...' : (isRegistrationOpen ? 'OPEN' : 'CLOSED')}
+            <span
+              className={`font-bold ${
+                loading ? "text-yellow-400" : isRegistrationOpen ? "text-green-400" : "text-red-400"
+              }`}
+            >
+              {loading ? "Loading..." : isRegistrationOpen ? "OPEN" : "CLOSED"}
             </span>
           </div>
           <button
             onClick={toggleRegistration}
             disabled={loading}
             className={`mt-4 px-4 py-2 rounded transition-colors ${
-              isRegistrationOpen 
-                ? 'bg-red-600 hover:bg-red-700' 
-                : 'bg-green-600 hover:bg-green-700'
-            } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              isRegistrationOpen
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-green-600 hover:bg-green-700"
+            } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            {loading ? 'Loading...' : (isRegistrationOpen ? 'Close Registration' : 'Open Registration')}
+            {loading ? "Updating..." : isRegistrationOpen ? "Close Registration" : "Open Registration"}
+          </button>
+        </div>
+
+        <div className="bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold">Manage Gallery</h2>
+          <p className="text-gray-400">Upload and manage gallery images.</p>
+          <button
+            onClick={() => navigate("/admin/gallery")}
+            className="mt-4 bg-indigo-600 px-4 py-2 rounded hover:bg-indigo-700"
+          >
+            Manage Gallery
           </button>
         </div>
       </main>

@@ -9,6 +9,7 @@ import WhyCCPC from "../components/homecontent/WhyCCPC";
 import SoC from "../components/homecontent/Soc"; 
 import TEAM from "../components/SEB/Team2025";
 import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
+import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";
 import hod_img from "../components/assets/hod_img.jpg";
 const coordinatorDetails = {
@@ -163,6 +164,7 @@ const Home = () => {
               </div>
         
         <TEAM />
+        <Gallery />
         <Footer />
       </div>
 

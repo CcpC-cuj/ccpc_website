@@ -24,6 +24,7 @@ import ResetPassword from "./components/SOC/auth/ResetPassword";
 import AdminHome from "./pages/Admin/Home";
 import AdminUsers from "./pages/Admin/User";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import GalleryUpload from "./pages/Admin/GalleryUpload";
 import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
 
 import TeamPage from "./pages/TeamPage";
@@ -68,6 +69,14 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <AdminUsers />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/gallery"
+            element={
+              <AdminProtectedRoute>
+                <GalleryUpload />
               </AdminProtectedRoute>
             }
           />
