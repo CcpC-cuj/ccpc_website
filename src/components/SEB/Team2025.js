@@ -11,34 +11,6 @@ import Prashant from "../assets/Prashant.png";
 import Basil from "../assets/Basil.png";
 import Saket from "../assets/Saket.png";
 import Siya from "../assets/Siya.png";
-import PrashantPrashun from "../assets/prashantsir.jpg";
-import hod_img from "../assets/hod_img.jpg";
-const coordinatorDetails = {
-  hod: {
-    name: "Dr. Subhash Chandra Yadav",
-    role: "Chairperson",
-    designation: "Head of Deptt & Professor",
-    linkedin: "#", // Add LinkedIn if available
-    github: "#", // Add GitHub if available
-    link: "#", // Add profile link if available
-    img: hod_img,
-    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
-    quote: "Education is the most powerful weapon which you can use to change the world."
-  },
-
-  PrashantParashun: {
-    name: "Dr. Prashant Prashun",
-    role: "Club Coordinator",
-    designation: "Assistant Professor & Faculty Advisor",
-    linkedin: "#", // Add LinkedIn if available
-    github: "#", // Add GitHub if available
-    link: "#", // Add profile link if available
-    img: PrashantPrashun,
-    bio: "Dedicated educator and mentor guiding our coding community towards excellence.",
-    quote: "Education is the most powerful weapon which you can use to change the world."
-  }
-};
-
 const studentDetails = {
   Abhimaan: {
     name: "Abhimaan Kumar",
