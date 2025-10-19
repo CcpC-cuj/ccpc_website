@@ -58,7 +58,7 @@ const Gallery = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalImages, setModalImages] = useState([]);
-  const [imgLoading, setImgLoading] = useState({});
+  const [setImgLoading] = useState({});
 
   // Fetch images from Firebase Storage (folder: 'gallery') and update state
   useEffect(() => {
