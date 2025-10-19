@@ -1,7 +1,33 @@
-import React, { } from "react";
+import React from "react";
+import { Helmet } from "react-helmet";
 import NAVBAR from "../components/Navbar";
 import STARFIELD from "../components/Starfield";
 const Blogs = () => {
+        // SEO meta tags and structured data
+        const seoTitle = "CCPC - Coding Club CUJ | Central University of Jharkhand, Ranchi";
+        const seoDescription = "Code Crafter Programming Club (CCPC) at Central University of Jharkhand, Ranchi. Read about our coding events, achievements, and tech sessions in Ranchi, Jamshedpur, and more.";
+        const seoKeywords = "ccpc, coding club, coding club cuj, cuj, ranchi coding club, central university of jharkhand, jamshedpur, hackathon, tech events, programming, code crafter";
+        const seoStructuredData = {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Code Crafter Programming Club (CCPC)",
+            "alternateName": ["CCPC", "Coding Club CUJ", "Ranchi Coding Club"],
+            "url": "https://ccpc.cuj.ac.in", // Change to your actual URL
+            "logo": "https://ccpc.cuj.ac.in/logo.png", // Change to your actual logo URL
+            "sameAs": [
+                "https://www.facebook.com/ccpc.cuj",
+                "https://www.instagram.com/ccpc.cuj/"
+            ],
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Central University of Jharkhand",
+                "addressLocality": "Ranchi",
+                "addressRegion": "Jharkhand",
+                "postalCode": "835222",
+                "addressCountry": "IN"
+            },
+            "description": seoDescription
+        };
 
     const blogsData = [
        
@@ -347,7 +373,22 @@ const Blogs = () => {
     ];
 
     return (
-        <div className="relative min-h-screen bg-black text-white">
+            <>
+                <Helmet>
+                    <title>{seoTitle}</title>
+                    <meta name="description" content={seoDescription} />
+                    <meta name="keywords" content={seoKeywords} />
+                    <meta property="og:title" content={seoTitle} />
+                    <meta property="og:description" content={seoDescription} />
+                    <meta property="og:type" content="website" />
+                    <meta property="og:url" content="https://ccpc.cuj.ac.in" />
+                    <meta property="og:site_name" content="CCPC - Coding Club CUJ" />
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:title" content={seoTitle} />
+                    <meta name="twitter:description" content={seoDescription} />
+                    <script type="application/ld+json">{JSON.stringify(seoStructuredData)}</script>
+                </Helmet>
+                <div className="relative min-h-screen bg-black text-white">
             {/* Background Starfield */}
             <STARFIELD />
             
@@ -383,6 +424,7 @@ const Blogs = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
