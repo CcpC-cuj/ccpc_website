@@ -3,7 +3,7 @@ import { storage } from '../../firebaseConfig';
 import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
 
 // Simple image loader with spinner and blur effect
-const ImageWithProgress = ({ src, alt, aspectRatio, idx, setImgLoading }) => {
+const ImageWithProgress = ({ src, alt, aspectRatio, idx }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const stroke = 1;
   return (
@@ -19,7 +19,6 @@ const ImageWithProgress = ({ src, alt, aspectRatio, idx, setImgLoading }) => {
         }}
         onLoad={() => {
           setImgLoaded(true);
-          setImgLoading(l => ({ ...l, [idx]: false }));
         }}
       />
       {!imgLoaded && (
@@ -58,7 +57,6 @@ const Gallery = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalImages, setModalImages] = useState([]);
-  const [setImgLoading] = useState({});
 
   // Fetch images from Firebase Storage (folder: 'gallery') and update state
   useEffect(() => {
@@ -201,7 +199,6 @@ const Gallery = () => {
                 alt={img?.alt}
                 aspectRatio={img?.aspectRatio}
                 idx={idx}
-                setImgLoading={setImgLoading}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
