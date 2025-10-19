@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { storage, auth } from "../../firebaseConfig";
-import { ref, uploadBytes } from "firebase/storage";
+import { auth } from "../../firebaseConfig";
+import { supabase } from '../../supabaseClient';
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -192,17 +192,11 @@ export default function GalleryUpload() {
           continue;
         }
       }
-      const storageRef = ref(
-        storage,
-        `gallery/${sanitizedName}-${Date.now()}.${extension}`
-      );
+      // Upload to Supabase Storage bucket 'CcpC' in 'gallery' folder
+      const supabaseFileName = `gallery/${sanitizedName}-${Date.now()}.${extension}`;
       try {
-        await uploadBytes(storageRef, fileToUpload, {
-          customMetadata: {
-            alt: customNames[i].trim(),
-            uploadedBy: firebaseUser.email,
-          },
-        });
+        const { error: uploadError } = await supabase.storage.from('CcpC').upload(supabaseFileName, fileToUpload, { upsert: true });
+        if (uploadError) throw uploadError;
         successCount++;
         setUploadProgress(prev => prev.map((p, idx) => (idx === i ? 100 : p)));
       } catch (error) {

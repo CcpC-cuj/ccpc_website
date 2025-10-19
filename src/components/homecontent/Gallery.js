@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { storage } from '../../firebaseConfig';
-import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
+import { supabase } from '../../supabaseClient';
 
 // Simple image loader with spinner and blur effect
 const ImageWithProgress = ({ src, alt, aspectRatio, idx }) => {
@@ -58,23 +57,24 @@ const Gallery = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalImages, setModalImages] = useState([]);
 
-  // Fetch images from Firebase Storage (folder: 'gallery') and update state
+  // Fetch images from Supabase Storage (bucket: 'CcpC', folder: 'gallery') and update state
   useEffect(() => {
     let isMounted = true;
     const fetchImages = async () => {
       try {
-        const listRef = ref(storage, 'gallery');
-        const res = await listAll(listRef);
-        const imagePromises = res.items.map(async (itemRef) => {
-          const url = await getDownloadURL(itemRef);
-          let meta = {};
-          try { meta = await getMetadata(itemRef); } catch (e) {}
-          const altFromMetadata = meta?.customMetadata?.alt;
-          return ({
-            src: url,
-            alt: altFromMetadata || formatAltFromName(itemRef.name),
+        // List all files in the 'gallery' folder of the 'CcpC' bucket
+        const { data, error } = await supabase.storage.from('CcpC').list('gallery', { limit: 100 });
+        if (error) throw error;
+        if (!data) return;
+        // Only keep image files
+        const imageFiles = data.filter(item => item.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(item.name));
+        const imagePromises = imageFiles.map(async (item) => {
+          const { data: urlData } = supabase.storage.from('CcpC').getPublicUrl(`gallery/${item.name}`);
+          return {
+            src: urlData.publicUrl,
+            alt: formatAltFromName(item.name),
             aspectRatio: 1,
-          });
+          };
         });
         const imageList = await Promise.all(imagePromises);
         // Preload images for instant display
@@ -88,7 +88,7 @@ const Gallery = () => {
           setModalImages(imageList);
         }
       } catch (err) {
-        console.error('Error fetching images:', err);
+        console.error('Error fetching images from Supabase:', err);
       }
     };
     fetchImages();
