@@ -9,7 +9,16 @@ const formatAltFromName = (name) => {
   return spaced.replace(/\b\w/g, (char) => char.toUpperCase()) || 'Gallery Image';
 };
 
+
 const Gallery = () => {
+  // Responsive: show 6 images on mobile, 9 on desktop
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [images, setImages] = useState([]);
   const [displayImages, setDisplayImages] = useState([]); // 8 images for grid
   const [loading, setLoading] = useState(true);
@@ -17,6 +26,8 @@ const Gallery = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalImages, setModalImages] = useState([]); // Separate state for modal images
+  // Track loading state for each image
+  const [imgLoading, setImgLoading] = useState({});
 
   useEffect(() => {
     let isMounted = true;
@@ -128,10 +139,44 @@ const Gallery = () => {
     return () => clearInterval(interval);
   }, [images]);
 
+
   // Modal handlers
   const openModal = (index) => {
     setCurrentImageIndex(index);
     setModalOpen(true);
+  };
+
+  // Swipe gesture state for modal
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+
+  // Handle swipe in modal
+  const handleTouchStart = (e) => {
+    if (e.touches && e.touches.length === 1) {
+      setTouchStartX(e.touches[0].clientX);
+      setTouchEndX(null);
+    }
+  };
+  const handleTouchMove = (e) => {
+    if (e.touches && e.touches.length === 1) {
+      setTouchEndX(e.touches[0].clientX);
+    }
+  };
+  const handleTouchEnd = () => {
+    if (touchStartX !== null && touchEndX !== null) {
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) { // minimum swipe distance
+        if (diff > 0) {
+          // Swiped left
+          nextImage();
+        } else {
+          // Swiped right
+          prevImage();
+        }
+      }
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
   };
 
   const closeModal = useCallback(() => {
@@ -172,8 +217,13 @@ const Gallery = () => {
     );
   }
 
+
+  // Responsive: show 6 images on mobile, 9 on desktop
+  // (removed duplicate isDesktop declaration)
+  const imagesToShow = isDesktop ? 9 : 6;
+
   return (
-    <div className="py-10 px-4 lg:px-16"> 
+    <div className="py-10 px-4 lg:px-16">
       <h1 className="text-white text-4xl text-center mb-8">Gallery</h1>
       {images.length === 0 ? (
         <div className="text-center text-gray-400">
@@ -181,69 +231,44 @@ const Gallery = () => {
         </div>
       ) : (
         <div
-          className="grid grid-cols-6 grid-rows-4 gap-2"
+          className="gallery-grid gap-2"
           style={{ minHeight: '60vh' }}
         >
-          {/* a: cols 1-3, rows 1-2 (landscape preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-3 row-span-2 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '1/4', gridRow: '1/3' }}
-            onClick={() => openModal(displayImages[0] ? modalImages.findIndex(img => img.src === displayImages[0].src) : 0)}>
-            <img src={displayImages[0]?.src} alt={displayImages[0]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[0]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* b: cols 4, row 1 (square preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-1 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '4/5', gridRow: '1/2' }}
-            onClick={() => openModal(displayImages[1] ? modalImages.findIndex(img => img.src === displayImages[1].src) : 0)}>
-            <img src={displayImages[1]?.src} alt={displayImages[1]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[1]?.aspectRatio || '1/1' }} loading="lazy" />
-          </div>
-          {/* i: cols 4, row 2 (square preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-1 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '4/5', gridRow: '2/3' }}
-            onClick={() => openModal(displayImages[2] ? modalImages.findIndex(img => img.src === displayImages[2].src) : 0)}>
-            <img src={displayImages[2]?.src} alt={displayImages[2]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[2]?.aspectRatio || '1/1' }} loading="lazy" />
-          </div>
-          {/* c: cols 5-6, row 1 (landscape preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '5/7', gridRow: '1/2' }}
-            onClick={() => openModal(displayImages[3] ? modalImages.findIndex(img => img.src === displayImages[3].src) : 0)}>
-            <img src={displayImages[3]?.src} alt={displayImages[3]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[3]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* d: cols 5-6, row 2-3 (portrait preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-2 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '5/7', gridRow: '2/4' }}
-            onClick={() => openModal(displayImages[4] ? modalImages.findIndex(img => img.src === displayImages[4].src) : 0)}>
-            <img src={displayImages[4]?.src} alt={displayImages[4]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[4]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* e: cols 1-2, rows 3-4 (landscape preferred) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-2 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '1/3', gridRow: '3/5' }}
-            onClick={() => openModal(displayImages[5] ? modalImages.findIndex(img => img.src === displayImages[5].src) : 0)}>
-            <img src={displayImages[5]?.src} alt={displayImages[5]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[5]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* f: cols 3-4, row 3 (square/landscape) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '3/5', gridRow: '3/4' }}
-            onClick={() => openModal(displayImages[6] ? modalImages.findIndex(img => img.src === displayImages[6].src) : 0)}>
-            <img src={displayImages[6]?.src} alt={displayImages[6]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[6]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* g: cols 3-4, row 4 (square/landscape) */}
-          <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '3/5', gridRow: '4/5' }}
-            onClick={() => openModal(displayImages[7] ? modalImages.findIndex(img => img.src === displayImages[7].src) : 0)}>
-            <img src={displayImages[7]?.src} alt={displayImages[7]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[7]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
-          {/* h: cols 5-6, row 4 (square/landscape) */}
-                    <div className="overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg col-span-2 row-span-1 flex items-center justify-center cursor-pointer"
-            style={{ gridColumn: '5/7', gridRow: '4/5' }}
-            onClick={() => openModal(displayImages[8] ? modalImages.findIndex(img => img.src === displayImages[8].src) : 0)}>
-            <img src={displayImages[8]?.src} alt={displayImages[8]?.alt} className="w-full h-full object-cover" style={{ aspectRatio: displayImages[8]?.aspectRatio || 'auto' }} loading="lazy" />
-          </div>
+          {displayImages.slice(0, imagesToShow).map((img, idx) => (
+            <div
+              key={img?.src || idx}
+              className={`overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg flex items-center justify-center cursor-pointer gallery-cell gallery-cell-${idx}`}
+              onClick={() => openModal(img ? modalImages.findIndex(m => m.src === img.src) : 0)}
+              style={{ position: 'relative' }}
+            >
+              <img
+                src={img?.src}
+                alt={img?.alt}
+                className="w-full h-full object-cover"
+                style={{ aspectRatio: img?.aspectRatio || 'auto', filter: imgLoading[idx] === false ? 'none' : 'blur(10px)' }}
+                loading="lazy"
+                onLoad={() => setImgLoading(l => ({ ...l, [idx]: false }))}
+                onError={() => setImgLoading(l => ({ ...l, [idx]: false }))}
+              />
+              {imgLoading[idx] !== false && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <svg className="animate-spin h-8 w-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  </svg>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
 
       {/* Modal Viewer */}
       {modalOpen && modalImages.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm" onClick={closeModal}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+          onClick={closeModal}
+        >
           {/* Close Button */}
           <button
             onClick={closeModal}
@@ -262,8 +287,14 @@ const Gallery = () => {
             ‹
           </button>
 
-          {/* Image Container */}
-          <div className="relative max-w-7xl max-h-[90vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+          {/* Image Container with swipe handlers */}
+          <div
+            className="relative max-w-7xl max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <img
               src={modalImages[currentImageIndex]?.src}
               alt={modalImages[currentImageIndex]?.alt}
