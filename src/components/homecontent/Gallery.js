@@ -1,6 +1,129 @@
+// ...existing code...
+
+// Place this after all imports and before Gallery component
 import React, { useState, useEffect, useCallback } from 'react';
 import { storage } from '../../firebaseConfig';
 import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
+
+// Circular progress image loader
+const ImageWithProgress = ({ src, alt, aspectRatio, idx, imgLoading, setImgLoading }) => {
+  const [progress, setProgress] = useState(0);
+  const [xhrDone, setXhrDone] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  useEffect(() => {
+    let xhr;
+  setProgress(0); // Start at 0% for dynamic loader
+  setXhrDone(false);
+  setImgLoaded(false);
+    let objectUrl = null;
+    xhr = new window.XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.responseType = 'blob';
+    xhr.onprogress = (e) => {
+      if (e.lengthComputable) {
+        setProgress(Math.round((e.loaded / e.total) * 100));
+      }
+    };
+    xhr.onload = () => {
+      setProgress(100);
+      setXhrDone(true);
+      objectUrl = URL.createObjectURL(xhr.response);
+      setBlobUrl(objectUrl);
+    };
+    xhr.onerror = () => {
+      setXhrDone(true);
+    };
+    xhr.send();
+    return () => {
+      if (xhr) xhr.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [src, idx, setImgLoading]);
+
+  const [blobUrl, setBlobUrl] = useState(null);
+
+  // SVG circle progress
+  const radius = 24;
+  const stroke = 2;
+  const normalizedRadius = radius - stroke * 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <img
+        src={blobUrl || src}
+        alt={alt}
+        className="w-full h-full object-cover relative z-10 transition-all duration-300"
+        style={{
+          aspectRatio: aspectRatio || 'auto',
+          filter: imgLoaded ? 'none' : 'blur(20px)',
+          opacity: imgLoaded ? 1 : 0.6
+        }}
+        onError={e => { if (blobUrl) e.target.src = src; }}
+        onLoad={() => {
+          setImgLoaded(true);
+          setImgLoading(l => ({ ...l, [idx]: false }));
+        }}
+      />
+      {!(xhrDone && imgLoaded) && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          {progress > 0 ? (
+            <>
+              <svg height={radius * 2} width={radius * 2}>
+                <circle
+                  stroke="#d1d5db"
+                  fill="transparent"
+                  strokeWidth={stroke}
+                  r={normalizedRadius}
+                  cx={radius}
+                  cy={radius}
+                  style={{ opacity: 0.5 }}
+                />
+                <circle
+                  stroke="#d1d5db"
+                  fill="transparent"
+                  strokeWidth={stroke}
+                  r={normalizedRadius}
+                  cx={radius}
+                  cy={radius}
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  style={{ transition: 'stroke-dashoffset 0.3s', opacity: 1 }}
+                />
+              </svg>
+              <span className="absolute text-xs text-gray-300" style={{ top: '60%', left: '50%', transform: 'translate(-50%, -50%)' }}>{progress}%</span>
+            </>
+          ) : (
+            <svg className="animate-spin h-8 w-8 block mx-auto" viewBox="0 0 24 24">
+              <path className="opacity-75" fill="none" stroke="#d1d5db" strokeWidth="1" strokeLinecap="round" d="M12 2a10 10 0 1 1-10 10" />
+            </svg>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+// Helper for browser cache
+const CACHE_KEY = 'ccpc_gallery_images_v1';
+
+async function getCachedImages() {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+  } catch (e) {}
+  return null;
+}
+
+async function setCachedImages(images) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(images));
+  } catch (e) {}
+}
 
 const formatAltFromName = (name) => {
   const withoutExtension = name.replace(/\.[^/.]+$/, '');
@@ -21,8 +144,6 @@ const Gallery = () => {
 
   const [images, setImages] = useState([]);
   const [displayImages, setDisplayImages] = useState([]); // 8 images for grid
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [modalImages, setModalImages] = useState([]); // Separate state for modal images
@@ -31,7 +152,18 @@ const Gallery = () => {
 
   useEffect(() => {
     let isMounted = true;
-    let isInitialLoad = true;
+
+    // 1. Try to load from cache first
+    (async () => {
+      const cached = await getCachedImages();
+      if (isMounted && cached && Array.isArray(cached) && cached.length > 0) {
+        setImages(cached);
+        setDisplayImages(cached);
+        setModalImages(cached);
+      }
+    })();
+
+    // 2. Always fetch from Firebase in background and update cache
     const fetchImages = async () => {
       try {
         const storageRef = ref(storage, 'gallery/');
@@ -65,24 +197,15 @@ const Gallery = () => {
         // Remove limit, show all images
         if (isMounted) {
           setImages(imageList);
-          // Only set displayImages on initial load, not on re-fetch
-          if (isInitialLoad) {
-            setDisplayImages(imageList);
-            setModalImages(imageList); // Set modal images on initial load
-            isInitialLoad = false;
-          } else {
-            // Update modal images on re-fetch without disrupting modal
-            setModalImages(imageList);
-          }
-          setError(null);
+          setDisplayImages(imageList);
+          setModalImages(imageList);
+          setCachedImages(imageList);
         }
       } catch (err) {
         if (isMounted) {
           console.error('Error fetching images:', err);
-          setError('Gallery is temporarily unavailable.');
         }
       } finally {
-        if (isMounted) setLoading(false);
       }
     };
 
@@ -135,7 +258,7 @@ const Gallery = () => {
       // Shuffle and assign grid areas
       const shuffled = [...images].sort(() => 0.5 - Math.random());
       setDisplayImages(assignGridAreas(shuffled));
-    }, 5000);
+    }, 7000); // 7 seconds
     return () => clearInterval(interval);
   }, [images]);
 
@@ -203,19 +326,7 @@ const Gallery = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modalOpen, nextImage, prevImage, closeModal]);
 
-  if (loading) {
-    return (
-      <div className="py-10 px-4 lg:px-16">
-        <h1 className="text-white text-4xl text-center mb-8">Gallery</h1>
-        <div className="flex justify-center items-center h-40">
-          <svg className="animate-spin h-10 w-10 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-        </div>
-      </div>
-    );
-  }
+  // Always show image cards, even if loading
 
 
   // Responsive: show 6 images on mobile, 9 on desktop
@@ -225,43 +336,39 @@ const Gallery = () => {
   return (
     <div className="py-10 px-4 lg:px-16">
       <h1 className="text-white text-4xl text-center mb-8">Gallery</h1>
-      {images.length === 0 ? (
-        <div className="text-center text-gray-400">
-          {error ? 'No images to display right now. Please check back soon.' : 'No images in gallery yet.'}
-        </div>
-      ) : (
-        <div
-          className="gallery-grid gap-2"
-          style={{ minHeight: '60vh' }}
-        >
-          {displayImages.slice(0, imagesToShow).map((img, idx) => (
-            <div
-              key={img?.src || idx}
-              className={`overflow-hidden rounded-2xl bg-gray-900/70 border border-white/5 shadow-lg flex items-center justify-center cursor-pointer gallery-cell gallery-cell-${idx}`}
-              onClick={() => openModal(img ? modalImages.findIndex(m => m.src === img.src) : 0)}
-              style={{ position: 'relative' }}
-            >
-              <img
-                src={img?.src}
-                alt={img?.alt}
-                className="w-full h-full object-cover"
-                style={{ aspectRatio: img?.aspectRatio || 'auto', filter: imgLoading[idx] === false ? 'none' : 'blur(10px)' }}
-                loading="lazy"
-                onLoad={() => setImgLoading(l => ({ ...l, [idx]: false }))}
-                onError={() => setImgLoading(l => ({ ...l, [idx]: false }))}
-              />
-              {imgLoading[idx] !== false && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                  <svg className="animate-spin h-8 w-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                  </svg>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+      <div
+        className="gallery-grid gap-2"
+        style={{ minHeight: '60vh' }}
+      >
+        {(displayImages.length > 0 ? displayImages : Array(imagesToShow).fill(null)).slice(0, imagesToShow).map((img, idx) => (
+          <div
+            key={img?.src || idx}
+            className={`overflow-hidden rounded-2xl bg-gray-900/30 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center cursor-pointer gallery-cell gallery-cell-${idx}`}
+            onClick={() => img ? openModal(modalImages.findIndex(m => m.src === img.src)) : null}
+            style={{ position: 'relative', minHeight: '200px' }}
+          >
+            {/* Glassomorphism background placeholder */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+            {img ? (
+              <>
+                <ImageWithProgress
+                  src={img?.src}
+                  alt={img?.alt}
+                  aspectRatio={img?.aspectRatio}
+                  idx={idx}
+                  imgLoading={imgLoading}
+                  setImgLoading={setImgLoading}
+                />
+              </>
+            ) : (
+              // Placeholder for empty slot
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="h-12 w-12 rounded-xl border border-gray-300/30 bg-white/5 backdrop-blur-md"></div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
       {/* Modal Viewer */}
       {modalOpen && modalImages.length > 0 && (
