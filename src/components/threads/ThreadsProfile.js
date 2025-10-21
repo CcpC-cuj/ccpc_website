@@ -95,7 +95,7 @@ const ProfilePage = () => {
         );
         await Promise.all(commentDeletionPromises);
   
-        // 2. Delete associated images from Supabase or Firebase Storage
+        // 2. Delete associated images from Firebase Storage
         if (post.imageUrls && post.imageUrls.length > 0) {
           const deletePromises = post.imageUrls.map(async (url) => {
             try {

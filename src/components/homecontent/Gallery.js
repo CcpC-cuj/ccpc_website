@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { storage } from '../../firebaseConfig';
+import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage';
 import { supabase } from '../../supabaseClient';
 
 // Simple image loader with spinner and blur effect
-const ImageWithProgress = ({ src, alt, aspectRatio, idx }) => {
+const ImageWithProgress = ({ src, alt, aspectRatio, idx, fallbackSrc }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(src);
+  const [triedFallback, setTriedFallback] = useState(false);
   const stroke = 1;
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <img
-        src={src}
+        src={imgSrc}
         alt={alt}
         className="w-full h-full object-cover relative z-10 transition-all duration-300"
         style={{
@@ -18,6 +22,13 @@ const ImageWithProgress = ({ src, alt, aspectRatio, idx }) => {
         }}
         onLoad={() => {
           setImgLoaded(true);
+        }}
+        onError={() => {
+          if (!triedFallback && fallbackSrc) {
+            setImgSrc(fallbackSrc);
+            setTriedFallback(true);
+            setImgLoaded(false);
+          }
         }}
       />
       {!imgLoaded && (
@@ -29,8 +40,6 @@ const ImageWithProgress = ({ src, alt, aspectRatio, idx }) => {
       )}
     </div>
   );
-
-  // (removed duplicated/invalid block)
 };
 
 // Helper to format alt text from filename
@@ -62,19 +71,21 @@ const Gallery = () => {
     let isMounted = true;
     const fetchImages = async () => {
       try {
-        // List all files in the 'gallery' folder of the 'CcpC' bucket
-        const { data, error } = await supabase.storage.from('CcpC').list('gallery', { limit: 100 });
-        if (error) throw error;
-        if (!data) return;
-        // Only keep image files
-        const imageFiles = data.filter(item => item.name && /\.(jpg|jpeg|png|gif|webp)$/i.test(item.name));
-        const imagePromises = imageFiles.map(async (item) => {
-          const { data: urlData } = supabase.storage.from('CcpC').getPublicUrl(`gallery/${item.name}`);
-          return {
-            src: urlData.publicUrl,
-            alt: formatAltFromName(item.name),
+        const listRef = ref(storage, 'gallery');
+        const res = await listAll(listRef);
+        const imagePromises = res.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          let meta = {};
+          try { meta = await getMetadata(itemRef); } catch (e) {}
+          const altFromMetadata = meta?.customMetadata?.alt;
+          // Supabase fallback URL
+          const { data: urlData } = supabase.storage.from('CcpC').getPublicUrl(`gallery/${itemRef.name}`);
+          return ({
+            src: url,
+            fallbackSrc: urlData.publicUrl,
+            alt: altFromMetadata || formatAltFromName(itemRef.name),
             aspectRatio: 1,
-          };
+          });
         });
         const imageList = await Promise.all(imagePromises);
         // Preload images for instant display
@@ -87,12 +98,27 @@ const Gallery = () => {
           setDisplayImages(imageList);
           setModalImages(imageList);
         }
+        // Store in localStorage cache
+        localStorage.setItem('galleryImages', JSON.stringify(imageList));
+        localStorage.setItem('galleryImagesTimestamp', Date.now().toString());
       } catch (err) {
-        console.error('Error fetching images from Supabase:', err);
+        console.error('Error fetching images:', err);
       }
     };
+    // Try to load from cache first
+    const cachedImages = localStorage.getItem('galleryImages');
+    if (cachedImages) {
+      try {
+        const parsed = JSON.parse(cachedImages);
+        setImages(parsed);
+        setDisplayImages(parsed);
+        setModalImages(parsed);
+      } catch (e) {}
+    }
+    // Always update cache in background on page load
     fetchImages();
-    const interval = setInterval(fetchImages, 10000);
+    // Only update cache every 1 hours, not every 10 seconds
+    const interval = setInterval(fetchImages, 60 * 60 * 1000);
     return () => { isMounted = false; clearInterval(interval); };
   }, []);
 
@@ -121,7 +147,7 @@ const Gallery = () => {
     const interval = setInterval(() => {
       const shuffled = [...images].sort(() => 0.5 - Math.random());
       setDisplayImages(assignGridAreas(shuffled));
-    }, 7000);
+    }, 12000);
     return () => clearInterval(interval);
   }, [images]);
 
@@ -187,7 +213,7 @@ const Gallery = () => {
       <div className="gallery-grid gap-2" style={{ minHeight: '60vh' }}>
         {(displayImages.length > 0 ? displayImages : Array(imagesToShow).fill(null)).slice(0, imagesToShow).map((img, idx) => (
           <div
-            key={img?.src || idx}
+            key={(img?.src ? img.src : 'empty') + '-' + (img?.alt ? img.alt : idx) + '-' + idx}
             className={`overflow-hidden rounded-2xl bg-gray-900/30 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center cursor-pointer gallery-cell gallery-cell-${idx}`}
             onClick={() => img ? openModal(modalImages.findIndex(m => m.src === img.src)) : null}
             style={{ position: 'relative', minHeight: '200px' }}
@@ -196,6 +222,7 @@ const Gallery = () => {
             {img ? (
               <ImageWithProgress
                 src={img?.src}
+                fallbackSrc={img?.fallbackSrc}
                 alt={img?.alt}
                 aspectRatio={img?.aspectRatio}
                 idx={idx}

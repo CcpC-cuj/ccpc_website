@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "../../firebaseConfig";
+import { auth, storage } from "../../firebaseConfig";
+import { ref as firebaseRef, uploadBytes, listAll, getBlob } from "firebase/storage";
 import { supabase } from '../../supabaseClient';
 import {
   signInWithEmailAndPassword,
@@ -14,6 +15,11 @@ const allowedEmails = [
   "krish.22190503027@cuj.ac.in",
 ].map((email) => email.toLowerCase());
 
+// Utility function to sanitize file names
+const sanitizeFileName = (name) => {
+  return name.replace(/[^a-zA-Z0-9\-_.]/g, '_').substring(0, 100);
+};
+
 export default function GalleryUpload() {
   const [files, setFiles] = useState([]); // Array of files
   const [previews, setPreviews] = useState([]); // Array of preview URLs
@@ -27,6 +33,12 @@ export default function GalleryUpload() {
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  // Admin: Compare and migrate gallery images between Firebase and Supabase
+  const [syncStatus, setSyncStatus] = useState(null);
+  const [syncLoading, setSyncLoading] = useState(false);
+  // Compress existing images
+  const [compressStatus, setCompressStatus] = useState(null);
+  const [compressLoading, setCompressLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,18 +57,49 @@ export default function GalleryUpload() {
         setIsAuthorized(false);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  const sanitizeFileName = (name) =>
-    name
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
-
+  const checkAndSyncGallery = async () => {
+    setSyncLoading(true);
+    setSyncStatus(null);
+    try {
+      // List Firebase images
+      const firebaseListRef = firebaseRef(storage, 'gallery');
+      const firebaseRes = await listAll(firebaseListRef);
+      const firebaseNames = firebaseRes.items.map(item => item.name);
+      // List Supabase images
+      const { data: supabaseData, error: supabaseError } = await supabase.storage.from('CcpC').list('gallery', { limit: 1000 });
+      if (supabaseError) throw supabaseError;
+      const supabaseNames = (supabaseData || []).map(item => item.name);
+      // Find missing in Supabase
+      const missingInSupabase = firebaseNames.filter(name => !supabaseNames.includes(name));
+      // Find missing in Firebase
+      const missingInFirebase = supabaseNames.filter(name => !firebaseNames.includes(name));
+      // Migrate missing images from Firebase to Supabase
+      let migrated = 0;
+      for (const name of missingInSupabase) {
+        try {
+          const itemRef = firebaseRef(storage, `gallery/${name}`);
+          const blob = await getBlob(itemRef);
+          const { error: uploadError } = await supabase.storage.from('CcpC').upload(`gallery/${name}`, blob, { upsert: true });
+          if (!uploadError) migrated++;
+        } catch (err) {
+          // Ignore individual errors, log if needed
+        }
+      }
+      setSyncStatus({
+        firebaseCount: firebaseNames.length,
+        supabaseCount: supabaseNames.length,
+        missingInSupabase,
+        missingInFirebase,
+        migrated
+      });
+    } catch (err) {
+      setSyncStatus({ error: err.message || 'Sync failed.' });
+    }
+    setSyncLoading(false);
+  };
   const handleFileChange = async (e) => {
     const selectedFiles = Array.from(e.target.files).filter(f => f.type.startsWith("image/"));
     if (selectedFiles.length > 0) {
@@ -192,14 +235,64 @@ export default function GalleryUpload() {
           continue;
         }
       }
+      // Compress image to <= 400kb if needed
+      if (fileToUpload.size > 400 * 1024) {
+        try {
+          const compressImage = async (blob, ext) => {
+            return new Promise((resolve, reject) => {
+              const img = new window.Image();
+              img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                let quality = 0.8;
+                const tryCompress = () => {
+                  canvas.toBlob((b) => {
+                    if (b.size <= 400 * 1024 || quality < 0.3) {
+                      resolve(b);
+                    } else {
+                      quality -= 0.1;
+                      tryCompress();
+                    }
+                  }, ext === 'png' ? 'image/png' : 'image/jpeg', quality);
+                };
+                tryCompress();
+              };
+              img.onerror = reject;
+              img.src = URL.createObjectURL(blob);
+            });
+          };
+          fileToUpload = await compressImage(fileToUpload, extension);
+        } catch (compressErr) {
+          console.error('Compression failed:', compressErr);
+        }
+      }
+      // Upload to Firebase Storage (gallery folder)
+      const firebaseFileName = `gallery/${sanitizedName}-${Date.now()}.${extension}`;
+      let firebaseSuccess = false;
+      try {
+        const firebaseStorageRef = firebaseRef(storage, firebaseFileName);
+        await uploadBytes(firebaseStorageRef, fileToUpload);
+        firebaseSuccess = true;
+      } catch (firebaseError) {
+        console.error(`Firebase upload failed for ${file.name}:`, firebaseError);
+      }
       // Upload to Supabase Storage bucket 'CcpC' in 'gallery' folder
       const supabaseFileName = `gallery/${sanitizedName}-${Date.now()}.${extension}`;
+      let supabaseSuccess = false;
       try {
         const { error: uploadError } = await supabase.storage.from('CcpC').upload(supabaseFileName, fileToUpload, { upsert: true });
         if (uploadError) throw uploadError;
+        supabaseSuccess = true;
+      } catch (error) {
+        console.error(`Supabase upload failed for ${file.name}:`, error);
+      }
+      if (firebaseSuccess || supabaseSuccess) {
         successCount++;
         setUploadProgress(prev => prev.map((p, idx) => (idx === i ? 100 : p)));
-      } catch (error) {
+      } else {
         setUploadProgress(prev => prev.map((p, idx) => (idx === i ? -1 : p)));
         setMessage(`Failed to upload ${file.name}.`);
         setIsError(true);
@@ -218,6 +311,79 @@ export default function GalleryUpload() {
       setMessage(`${successCount} of ${files.length} images uploaded successfully.`);
       setIsError(false);
     }
+  };
+
+  const compressExistingImages = async () => {
+    setCompressLoading(true);
+    setCompressStatus(null);
+    try {
+      // List Firebase images
+      const firebaseListRef = firebaseRef(storage, 'gallery');
+      const firebaseRes = await listAll(firebaseListRef);
+      const firebaseItems = firebaseRes.items;
+      
+      let compressed = 0;
+      let total = firebaseItems.length;
+      
+      for (const item of firebaseItems) {
+        try {
+          const blob = await getBlob(item);
+          let fileToUpload = blob;
+          const extension = item.name.split('.').pop().toLowerCase();
+          
+          // Compress if > 400kb
+          if (blob.size > 400 * 1024) {
+            const compressImage = async (blob, ext) => {
+              return new Promise((resolve, reject) => {
+                const img = new window.Image();
+                img.onload = () => {
+                  const canvas = document.createElement('canvas');
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(img, 0, 0);
+                  let quality = 0.8;
+                  const tryCompress = () => {
+                    canvas.toBlob((b) => {
+                      if (b.size <= 400 * 1024 || quality < 0.3) {
+                        resolve(b);
+                      } else {
+                        quality -= 0.1;
+                        tryCompress();
+                      }
+                    }, ext === 'png' ? 'image/png' : 'image/jpeg', quality);
+                  };
+                  tryCompress();
+                };
+                img.onerror = reject;
+                img.src = URL.createObjectURL(blob);
+              });
+            };
+            fileToUpload = await compressImage(blob, extension);
+            compressed++;
+          }
+          
+          // Re-upload to Firebase (overwrite)
+          await uploadBytes(item, fileToUpload);
+          
+          // Upload to Supabase (overwrite)
+          const { error: uploadError } = await supabase.storage.from('CcpC').upload(`gallery/${item.name}`, fileToUpload, { upsert: true });
+          if (uploadError) throw uploadError;
+          
+        } catch (err) {
+          console.error(`Failed to compress ${item.name}:`, err);
+        }
+      }
+      
+      setCompressStatus({
+        total,
+        compressed,
+        message: `Compressed ${compressed} of ${total} images to ≤400kb`
+      });
+    } catch (err) {
+      setCompressStatus({ error: err.message || 'Compression failed.' });
+    }
+    setCompressLoading(false);
   };
 
   return (
@@ -326,6 +492,72 @@ export default function GalleryUpload() {
             </p>
           )}
           </div>
+        </div>
+
+        {/* Sync Gallery Section */}
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg max-w-md space-y-6 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Sync Gallery Images</h2>
+          <p className="text-sm text-gray-300 mb-4">
+            Compare and migrate gallery images between Firebase and Supabase.
+          </p>
+          <button
+            onClick={checkAndSyncGallery}
+            disabled={syncLoading || !isAuthorized}
+            className={`w-full py-2 px-4 rounded font-semibold transition-colors ${
+              syncLoading || !isAuthorized
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {syncLoading ? "Syncing..." : "Check & Sync Gallery"}
+          </button>
+          {syncStatus && (
+            <div className="mt-4 p-4 bg-gray-700 rounded">
+              {syncStatus.error ? (
+                <p className="text-red-400 text-sm">{syncStatus.error}</p>
+              ) : (
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p>Firebase: {syncStatus.firebaseCount} images</p>
+                  <p>Supabase: {syncStatus.supabaseCount} images</p>
+                  <p>Missing in Supabase: {syncStatus.missingInSupabase.length}</p>
+                  <p>Missing in Firebase: {syncStatus.missingInFirebase.length}</p>
+                  <p>Migrated: {syncStatus.migrated} images</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Compress Existing Images Section */}
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg max-w-md space-y-6 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Compress Existing Images</h2>
+          <p className="text-sm text-gray-300 mb-4">
+            Compress all existing gallery images to maximum 400kb size in both Firebase and Supabase.
+          </p>
+          <button
+            onClick={compressExistingImages}
+            disabled={compressLoading || !isAuthorized}
+            className={`w-full py-2 px-4 rounded font-semibold transition-colors ${
+              compressLoading || !isAuthorized
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {compressLoading ? "Compressing..." : "Compress Existing Images"}
+          </button>
+          {compressStatus && (
+            <div className="mt-4 p-4 bg-gray-700 rounded">
+              {compressStatus.error ? (
+                <p className="text-red-400 text-sm">{compressStatus.error}</p>
+              ) : (
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p>Total images: {compressStatus.total}</p>
+                  <p>Compressed: {compressStatus.compressed}</p>
+                  <p className="text-green-400">{compressStatus.message}</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
