@@ -13,7 +13,7 @@ const Blogs = () => {
             "name": "Code Crafter Programming Club (CCPC)",
             "alternateName": ["CCPC", "Coding Club CUJ", "Ranchi Coding Club"],
             "url": "https://ccpc.cuj.ac.in", // Change to your actual URL
-            "logo": "https://ccpc.cuj.ac.in/logo.png", // Change to your actual logo URL
+            "logo": "https://ccpc-cuj.web.app/logo.svg", // Change to your actual logo URL
             "sameAs": [
                 "https://www.facebook.com/ccpc.cuj",
                 "https://www.instagram.com/ccpc.cuj/"

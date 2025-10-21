@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 import NAVBAR from "../components/NavbarHome";
 import STARFIELD from "../components/Starfield";
 import Footer from "../components/Footer";
@@ -41,6 +42,44 @@ const coordinatorDetails = {
 const Home = () => {
   const [modalMember, setModalMember] = useState(null);
   return (
+    <>
+      <Helmet>
+        <title>CCPC - Code Crafters Programming Club | Central University of Jharkhand</title>
+        <meta name="description" content="Join Code Crafters Programming Club (CCPC) at Central University of Jharkhand. Enhance your coding skills, participate in hackathons, and connect with fellow programmers in Ranchi." />
+        <meta name="keywords" content="CCPC, coding club, Central University of Jharkhand, programming club, hackathons, coding events, Ranchi, Jharkhand" />
+        <meta property="og:title" content="CCPC - Code Crafters Programming Club | Central University of Jharkhand" />
+        <meta property="og:description" content="Join Code Crafters Programming Club (CCPC) at Central University of Jharkhand. Enhance your coding skills, participate in hackathons, and connect with fellow programmers in Ranchi." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ccpc-cuj.web.app/" />
+        <meta property="og:image" content="https://ccpc-cuj.web.app/logo.svg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="CCPC - Code Crafters Programming Club | Central University of Jharkhand" />
+        <meta name="twitter:description" content="Join Code Crafters Programming Club (CCPC) at Central University of Jharkhand. Enhance your coding skills, participate in hackathons, and connect with fellow programmers in Ranchi." />
+        <meta name="twitter:image" content="https://ccpc-cuj.web.app/logo.svg" />
+        <link rel="canonical" href="https://ccpc-cuj.web.app/" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Code Crafters Programming Club (CCPC)",
+            "alternateName": ["CCPC", "Coding Club CUJ"],
+            "url": "https://ccpc-cuj.web.app/",
+            "logo": "https://ccpc-cuj.web.app/logo.svg",
+            "description": "Code Crafters Programming Club at Central University of Jharkhand - enhancing coding skills and hosting programming events",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Central University of Jharkhand",
+              "addressLocality": "Ranchi",
+              "addressRegion": "Jharkhand",
+              "postalCode": "835222",
+              "addressCountry": "IN"
+            },
+            "sameAs": [
+              "https://www.instagram.com/ccpc.cuj/"
+            ]
+          })}
+        </script>
+      </Helmet>
     <div className="relative">
       <STARFIELD />
       <div className="relative z-10">
@@ -224,6 +263,7 @@ const Home = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

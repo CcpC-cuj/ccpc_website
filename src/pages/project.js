@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import NAVBAR from "../components/Navbar";
 import STARFIELD from "../components/Starfield";
 
@@ -23,6 +24,21 @@ const Projects = () => {
     ];
     
     return (
+        <>
+            <Helmet>
+                <title>Projects | CCPC - Code Crafters Programming Club</title>
+                <meta name="description" content="Explore amazing coding projects by CCPC members at Central University of Jharkhand. Web development, graphics, and innovative tech solutions." />
+                <meta name="keywords" content="coding projects, web development, graphics, CCPC projects, Central University of Jharkhand" />
+                <meta property="og:title" content="Projects | CCPC - Code Crafters Programming Club" />
+                <meta property="og:description" content="Explore amazing coding projects by CCPC members at Central University of Jharkhand. Web development, graphics, and innovative tech solutions." />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://ccpc-cuj.web.app/projects" />
+                <meta property="og:image" content="https://ccpc-cuj.web.app/logo.svg" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Projects | CCPC - Code Crafters Programming Club" />
+                <meta name="twitter:description" content="Explore amazing coding projects by CCPC members at Central University of Jharkhand. Web development, graphics, and innovative tech solutions." />
+                <link rel="canonical" href="https://ccpc-cuj.web.app/projects" />
+            </Helmet>
         <div className="relative min-h-screen bg-black text-white">
             {/* Background Starfield */}
             <STARFIELD />
@@ -68,6 +84,7 @@ const Projects = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
