@@ -2,6 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import NAVBAR from "../components/Navbar";
 import STARFIELD from "../components/Starfield";
+import AdComponent from "../components/AdComponent";
 const Blogs = () => {
         // SEO meta tags and structured data
         const seoTitle = "CCPC - Coding Club CUJ | Central University of Jharkhand, Ranchi";
@@ -372,6 +373,14 @@ const Blogs = () => {
         }
     ];
 
+    const blogsWithAds = [];
+    blogsData.forEach((blog, index) => {
+      blogsWithAds.push(blog);
+      if ((index + 1) % 2 === 0) {
+        blogsWithAds.push({ type: 'ad', id: `ad-${index}` });
+      }
+    });
+
     return (
             <>
                 <Helmet>
@@ -410,16 +419,20 @@ const Blogs = () => {
 
                     {/* Blog List */}
                     <div className="space-y-8 text-left mb-2">
-                        {blogsData.map((blog) => (
-                            <div key={blog.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                                <h2 className="text-2xl font-semibold text-white mb-4">{blog.title}</h2>
-                                <span className="text-gray-400 mb-4">{`Date: ${blog.date} | ${blog.attendees} people attended | ${blog.location}`}</span>
-                                <div className="text-gray-300 mb-4">
-                                    {blog.content}
+                        {blogsWithAds.map((item) =>
+                            item.type === 'ad' ? (
+                                <AdComponent key={item.id} adSlot="your-ad-slot-id" />
+                            ) : (
+                                <div key={item.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                                    <h2 className="text-2xl font-semibold text-white mb-4">{item.title}</h2>
+                                    <span className="text-gray-400 mb-4">{`Date: ${item.date} | ${item.attendees} people attended | ${item.location}`}</span>
+                                    <div className="text-gray-300 mb-4">
+                                        {item.content}
+                                    </div>
+                                    <p className="text-right text-gray-500">{item.author}</p>
                                 </div>
-                                <p className="text-right text-gray-500">{blog.author}</p>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                 </div>
             </div>
