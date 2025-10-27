@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
-import cybersec_img from "../assets/upcoming events/cubersce.png";
+import techfestmart from "../assets/upcoming events/martreg Large.jpeg";
+import aminsession from "../assets/upcoming events/MARtinovation Large.jpeg";
+import comminpart from "../assets/upcoming events/comunity_partner Large.jpeg";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -8,27 +10,36 @@ const UpcomingEvents = () => {
     
     {
       id: 1,
-      title: "UI/UX Design Competition",
-      description: "Join us for an exciting UI/UX design challenge where creativity meets purpose! Craft a single-page digital experience that solves real campus-life problems using design tools like Figma, Adobe XD, Canva, or Sketch — no coding required! Think, design, and innovate your way to impactful solutions!",
-      date: "13 Oct 2025 to 17 Oct 2025 " ,
-      location: "(Online)",
-      maxParticipants: 100,
-      currentParticipants: 23,
-      type: "Competition",
-      image: "https://acstechnologies.net/wp-content/uploads/elementor/thumbs/Rectangle-28-33-qo8amwhm4hlbhlejylakcp064d1yo67usvlmls6ds0.jpg",
-      registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSeiaArmOP5N2SBtfyq2Y1dwPMnp_n-jyWwHzTQFKkEpXPj7Fg/viewform?usp=header",
-      featured: true
+        title: "MARTINOVATION 2025 – Tech Fest",
+        description: "Gear up for the ultimate celebration of innovation, creativity, and technology! Usha Martin University, Ranchi, presents its flagship annual Tech Fest — MARTINOVATION 2025. Experience a dynamic fusion of competitions and challenges that push the limits of imagination and skill. From hackathons and gaming tournaments to web development sprints and quizzes it’s a playground for creators, coders, and changemakers. Proudly partnered with CcpC, the Official Community Partner, empowering collaboration and innovation across campuses. Win exciting prizes, earn recognition, and be part of the genesis of tomorrow!",
+        date: "3 Nov 2025 to 7 Nov 2025",
+        location: "Usha Martin University, Ranchi",
+        type: "Tech Fest",
+        image: techfestmart,
+        registrationLink: "https://www.umutechfest.co.in",
+        featured: false
     },
     {
       id: 2,
-      title: "Cyber Jagrit Bharat",
-      description: "Learn how to stay safe online through fun activities, real-life hacking demos, and games. Take part in workshops, phishing simulations, and Capture The Flag challenges. Become a CyberPeace Cadet and protect yourself in the digital world! ",
-      date: "16 Oct 2025",
-      time: "10:00 AM",
-      location: "Science Building",
-      type: "Live Event",
-      image: cybersec_img,
-      featured: false
+        title: "Generative AI Workshop – MARTINOVATION 2025",
+        description: "Unlock the power of Generative AI with Mr. Aamin Uddin, Founder of Badge Monster and alumnus of IIT Guwahati. This exclusive workshop dives into how creativity and technology come together through real-world applications and hands-on learning. Join us to explore the limitless possibilities of AI and innovation. Organized as part of MARTINOVATION 2025 and proudly powered by CcpC, the Official Community Partner driving collaboration and tech learning at Usha Martin University.",
+        date: "4 Nov 2025",
+        location: "Usha Martin University, Ranchi, Jharkhand",
+        type: "Workshop",
+        image: aminsession,
+        registrationLink: "https://www.umutechfest.co.in",
+        featured: false
+    },
+    {
+      id: 3,
+        title: "Official Community Partner – Code Crafters Programming Club (CcpC)",
+        description: "We’re thrilled to announce that the Code Crafters Programming Club (CcpC) is the official Community Partner for MARTINOVATION 2025! Together, we’re set to create an inspiring journey of innovation, learning, and collaboration. From hands-on workshops to tech challenges, CcpC will be at the forefront empowering participants to learn, build, and grow throughout the fest.",
+        date: "3 Nov 2025 to 7 Nov 2025",
+        location: "Usha Martin University, Ranchi, Jharkhand",
+        type: "Live Event",
+        image: comminpart,
+        registrationLink: "https://www.umutechfest.co.in",
+        featured: false
     },
     
     /*
@@ -135,7 +146,7 @@ const UpcomingEvents = () => {
                 <img
                   src={currentEvent.image}
                   alt={currentEvent.title}
-                  className="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-xl"
+                  className="w-full h-auto max-h object-contain rounded-2xl shadow-xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
               </div>
@@ -282,7 +293,7 @@ const UpcomingEvents = () => {
                 <img
                   src={event.image}
                   alt={event.title}
-                  className="w-full h-32 object-cover rounded-xl"
+                  className="w-full h-80 object-contain rounded-xl"
                 />
                 <div className="absolute top-2 right-2">
                   <span className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${getEventTypeColor(event.type)}`}>
@@ -292,14 +303,18 @@ const UpcomingEvents = () => {
               </div>
               <h4 className="text-white font-bold text-lg mb-2">{event.title}</h4>
               <div className="space-y-2 text-sm text-gray-300">
-                <div className="flex items-center space-x-2">
-                  <FaCalendarAlt className="text-yellow-500" />
-                  <span>{formatDate(event.date)}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <FaMapMarkerAlt className="text-red-400" />
-                  <span>{event.location}</span>
-                </div>
+                {event.date && (
+                  <div className="flex items-center space-x-2">
+                    <FaCalendarAlt className="text-yellow-500" />
+                    <span>{isIsoDateString(event.date) ? formatDate(event.date) : event.date}</span>
+                  </div>
+                )}
+                {event.location && (
+                  <div className="flex items-center space-x-2">
+                    <FaMapMarkerAlt className="text-red-400" />
+                    <span>{event.location}</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -76,3 +76,4 @@ build/static/js/
 #firebaseconfig
 src/firebaseConfig.js
 .DS_Store
+src/components/assets/.DS_Store
