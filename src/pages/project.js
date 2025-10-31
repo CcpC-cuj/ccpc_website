@@ -33,8 +33,8 @@ const Projects = () => {
     tags: ["web", "html"],
       authors: [
         { name: "Krish Kumar", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FKrish.png?alt=media&token=ef05b24c-402f-486a-8677-b4bfebd89f4c", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/FE9FO4dLssN22QBPz8liIIgj04C2"},
-        { name: "Apurba Das", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2F1000281115.heic?alt=media&token=c90901f7-a6df-4ab8-af7f-58a01f45ca4b", title: "Graphics Lead", link: "https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2" },
-        { name: "Akash Kumar", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FIMG_20241128_114003_027~2.jpg?alt=media&token=bbb88881-5270-488f-a19e-348ae5f18ebb", title: "Graphics Lead", link: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FIMG_20241128_114003_027~2.jpg?alt=media&token=bbb88881-5270-488f-a19e-348ae5f18ebb" },
+        { name: "Apurba Das", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2F1000281115.heic?alt=media&token=c90901f7-a6df-4ab8-af7f-58a01f45ca4b", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2" },
+        { name: "Akash Kumar", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FIMG_20241128_114003_027~2.jpg?alt=media&token=bbb88881-5270-488f-a19e-348ae5f18ebb", title: "Frontend Developer", link: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FIMG_20241128_114003_027~2.jpg?alt=media&token=bbb88881-5270-488f-a19e-348ae5f18ebb" },
         { name: "Siya Mandal", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profileImages%2FgNC7e2F5AxNa9onJDzpBmBrgYBp1?alt=media&token=b5f0b658-2931-44fb-b4b5-fd8baac8a45c", title: "Graphics Lead", link: "https://ccpc-cuj.web.app/profile/gNC7e2F5AxNa9onJDzpBmBrgYBp1" },
       ],
       websiteLink: "https://ccpc-cuj.github.io/Webdev/",
@@ -378,7 +378,7 @@ const Projects = () => {
                 <motion.div
                   ref={modalRef}
                   tabIndex={-1}
-                  className="relative z-60 max-w-3xl w-full bg-white/8 rounded-2xl shadow-2xl border border-white/10 overflow-hidden"
+                  className="relative z-60 max-w-3xl w-full bg-white/8 rounded-2xl shadow-2xl border border-white/10 overflow-hidden max-h-[90vh] flex flex-col"
                   initial={{ scale: 0.98, y: 10 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.98, y: 10, opacity: 0 }}
@@ -404,7 +404,7 @@ const Projects = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5 max-h-[70vh] overflow-y-auto">
+                  <div className="p-5 flex-1 flex flex-col overflow-y-auto">
                     <h2 className="text-2xl font-bold text-white">{modalProject.title}</h2>
                     {modalProject.authors && modalProject.authors.length > 0 && (
                       <div className="mt-1 text-xs text-gray-400">
@@ -467,7 +467,7 @@ const Projects = () => {
                       <p>{modalProject.description}</p>
                     </div>
 
-                    <div className="mt-5 flex flex-wrap gap-3">
+                    <div className="mt-5 flex flex-wrap gap-3 mt-auto">
                       {modalProject.githubLink && (
                         <a href={modalProject.githubLink} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-600/90 hover:bg-blue-600 rounded-md text-white">
                           View GitHub
