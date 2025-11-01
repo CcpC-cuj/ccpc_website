@@ -25,7 +25,7 @@ const Projects = () => {
     {
       id: 1,
       img: swastik,
-      title: "Web Development",
+      title: "We Development",
       short: "Modern responsive websites and web apps built with React.",
       description:
         "A collection of web development projects including single-page apps, full-stack demos and component libraries. Edit this description later to add project-specific details. This is extended text to simulate a long description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut urna venenatis, tincidunt risus non, pellentesque magna. Integer vitae libero sed augue fermentum varius. Praesent vulputate fermentum augue, at tempor erat tincidunt nec. Curabitur a gravida arcu, id lobortis odio. Proin sed risus nec lorem condimentum volutpat. Donec ut dapibus lorem. Sed rutrum libero vel sapien tincidunt, sit amet hendrerit lorem feugiat.",
