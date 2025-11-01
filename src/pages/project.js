@@ -7,6 +7,7 @@ import doodlerush from "../components/assets/Projects/Doodle Rush .jpeg";
 import swastik from "../components/assets/Projects/sastik.jpeg";
 import cargame from "../components/assets/Projects/cargame.jpeg";
 import atendentracker from "../components/assets/Projects/Attendance tracker.jpeg";
+import capverse from "../components/assets/Projects/Campverse.jpeg";
 
 /**
  * Projects page — improved UX/UI and fixes:
@@ -25,7 +26,7 @@ const Projects = () => {
     {
       id: 1,
       img: swastik,
-      title: "We Development",
+      title: "Web Development",
       short: "Modern responsive websites and web apps built with React.",
       description:
         "A collection of web development projects including single-page apps, full-stack demos and component libraries. Edit this description later to add project-specific details. This is extended text to simulate a long description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut urna venenatis, tincidunt risus non, pellentesque magna. Integer vitae libero sed augue fermentum varius. Praesent vulputate fermentum augue, at tempor erat tincidunt nec. Curabitur a gravida arcu, id lobortis odio. Proin sed risus nec lorem condimentum volutpat. Donec ut dapibus lorem. Sed rutrum libero vel sapien tincidunt, sit amet hendrerit lorem feugiat.",
@@ -89,6 +90,32 @@ const Projects = () => {
       ],
       websiteLink: "https://doodle-rush.vercel.app/",
     },
+    {
+      id: 5,
+      img: capverse,
+      title: "CampVerse",
+      short: "A platform for managing and hosting educational camps and events",
+      description:
+        "CampVerse is a comprehensive web application designed to streamline the organization, management, and participation in educational camps and events. The platform offers features such as user registration, event creation, certificate generation, feedback collection, analytics, and secure file handling. The backend is built with Node.js and Express, utilizing MongoDB for data storage, and integrates with Firebase for authentication and storage. The frontend is developed using React and Vite, providing a modern and responsive user interface. The project emphasizes security, scalability, and ease of use for both organizers and participants.",
+      githubLink: "https://github.com/CcpC-cuj/CampVerse",
+      tags: [ "web", "react", "nodejs", "express", "mongodb", "firebase", "event-management", "education", "certificate", "analytics", "docker", "vite"],
+      authors: [
+        { name: "Krish Kumar ", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FKrish.png?alt=media&token=ef05b24c-402f-486a-8677-b4bfebd89f4c", title: "Project Head and Full Stack Developer", link: "https://ccpc-cuj.web.app/profile/FE9FO4dLssN22QBPz8liIIgj04C2" },
+        { name: "Apurba Das", avatar: "#", title: "Lead Frontend Developer", link: "https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2" },
+        { name: "Md Tarik Anvar", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FMy_Profile_pic.jpg?alt=media&token=2d240f15-2359-4e8f-a55a-95e7e17402aa", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/bAf9XIUFjJP1ksbV6XB4w6yCzBq2" },
+        { name: "Abhimaan Kumar", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profileImages%2FWjaIg6rrBtPFHjttuTFanKmubZP2?alt=media&token=5810dbd0-7d1e-4cce-b10f-dd997f654121", title: "ML Pipeline Architecture", link: "https://ccpc-cuj.web.app/profile/WjaIg6rrBtPFHjttuTFanKmubZP2" },
+        { name: "OM VISHESH", avatar: "#", title: "ML Pipeline Architecture", link: "https://ccpc-cuj.web.app/profile/g9xJ9JMy56XXJh4W1FKLXaTVdD52" },
+        { name: "Priyanshu Verma", avatar: "https://vlycbxrafcccxqyvnifb.supabase.co/storage/v1/object/public/CcpC/members_images/1757240271131-IMG-20250316-WA0013.jpg", title: "ML Pipeline Architecture", link: "https://ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92" },
+        { name: "Namrata Dey", avatar: "#", title: "ML Pipeline Architecture", link: "https://ccpc-cuj.web.app/profile/CdoDwd9nXJNsznHKbMlsqRYjY2a2" },
+        { name: "Srishti Pathak", avatar: "https://firebasestorage.googleapis.com/v0/b/soc-ccpc-cuj.appspot.com/o/profile_images%2FSIDE.jpg?alt=media&token=3cb2e888-7438-4e9c-9b26-0c338f9e001a", title: "UI/UX Designe", link: "https://ccpc-cuj.web.app/profile/RV6fBVb42IOcDKV7iyP30MG8JUt2" },
+        { name: "Sanskar", avatar: "#", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/T7znNjW9N3ZUDO7UFyUF0gWC2nz1" },
+        { name: "Abhi Raj Gupta", avatar: "#", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/wcYdLeaZwYXEsbRMqDTDSAqrUIX2" },
+        { name: "Abhishek", avatar: "https://vlycbxrafcccxqyvnifb.supabase.co/storage/v1/object/public/CcpC/members_images/5pEiWGlT30RUlHcMFqP77xOO0T13-1757237839408-IMG_20240523_123859_167.jpg", title: "Frontend Developer", link: "https://ccpc-cuj.web.app/profile/5pEiWGlT30RUlHcMFqP77xOO0T13" },
+        { name: "Priyanshi Chaurasia", avatar: "#", title: "UI/UX Designer", link: "https://ccpc-cuj.web.app/profile/I87C3CSJswXWynQSC2Q8cGNPr8k2" },
+      ],
+      websiteLink: "https://campverse-alqa.onrender.com/",
+    },
+    //{ name: "", avatar: "#", title: "", link: "#" }
   ];
 
   const [projects] = useState(initialProjects);
