@@ -9,7 +9,7 @@ import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
 import TEAM from "../components/SEB/Team2025";
-import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
+//{enabel when we have an evnent to display on the home page line 114 too}import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
 import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";
 import hod_img from "../components/assets/hod_img.jpg";
@@ -111,7 +111,7 @@ const Home = () => {
         </div>
 
         <WhyCCPC />
-        <UpcomingEvents />
+       {/* <UpcomingEvents /> */}
         <SoC />
               <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
     
