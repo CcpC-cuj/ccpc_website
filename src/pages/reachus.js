@@ -9,7 +9,7 @@ const ReachUs = () => {
       <Starfield />
 
       {/* Main container */}
-      <div className="relative z-10 bg-white bg-opacity-5 backdrop-blur-sm rounded-xl shadow-2xl p-8 mx-4 md:flex md:w-3/4 border border-white border-opacity-20">
+      <div className="relative z-10 bg-/10 bg-opacity-5 backdrop-blur-sm rounded-xl shadow-2xl p-8 mx-4 md:flex md:w-3/4 border border-white border-opacity-20">
         {/* Left side: Social & Info */}
         <div className="md:w-1/2 p-4 flex flex-col justify-center">
           <h2 className="text-4xl font-extrabold mb-4 text-white">Reach Us</h2>

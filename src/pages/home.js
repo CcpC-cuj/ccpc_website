@@ -13,6 +13,16 @@ import TEAM from "../components/SEB/Team2025";
 import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";
 import hod_img from "../components/assets/hod_img.jpg";
+import IndependenceDayWrapper from "../components/IndependenceDay/IndependenceDayWrapper";
+
+// ============================================
+// INDEPENDENCE DAY THEME TOGGLE
+// ============================================
+// To ENABLE the Independence Day theme: set to true
+// To DISABLE the Independence Day theme: set to false
+// ============================================
+const isIndependenceDayTheme = true;
+// ============================================
 const coordinatorDetails = {
   hod: {
     name: "Dr. Subhash Chandra Yadav",
@@ -80,132 +90,260 @@ const Home = () => {
           })}
         </script>
       </Helmet>
-    <div className="relative">
-      <STARFIELD />
-      <div className="relative z-10">
-        <NAVBAR />
-        <div className="flex flex-col justify-center items-center min-h-[70vh] lg:min-h-screen">
-          <div className="fixed-width text-center">
-            <Title text="Code Crafters Programming Club" />
-          </div>
-        </div>
+    {isIndependenceDayTheme ? (
+      <IndependenceDayWrapper>
+        <div className="relative">
+          <div className="relative z-10">
+            <NAVBAR />
 
-        <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
-          <div className="flex justify-center items-start mt-8">
-            <Logo />
-          </div>
-          <div className="bg-blue-500/20 backdrop-blur-md text-s lg:text-xl mt-3 lg:ml-10 rounded-lg text-left p-6 lg:p-10">
-            <div>
-              <p className="text-gray-300 leading-relaxed">
-                Code Crafters Programming Club is an exciting initiative designed to ignite a passion for coding within our institution.
-                Our mission is to provide students with a gateway to the dynamic world of programming, offering a supportive platform where assistance and mentorship are readily available.
-                Whether you're just starting or looking to refine your skills, we're here to help you unlock your potential and enhance your coding abilities.
-              </p>
-              <p className="text-gray-300 leading-relaxed mt-4">
-                At Code Crafters, we believe coding is a skill everyone should have the opportunity to learn. Our motto is simple:
-                <span className="font-semibold text-yellow-500"> "Innovate. Collaborate. Elevate."</span>
-                Join us as we provide every student with the right tools, guidance, and community to embark on this exciting journey.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <WhyCCPC />
-       {/* <UpcomingEvents /> */}
-        <SoC />
-              <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
-    
-              {/* Professor - Hierarchical Position */}
-              <div className="mb-8 flex justify-center space-x-16">
-                {/* HOD */}
-                <div className="flex flex-col items-center">
-                  <div
-                    className="cursor-pointer group"
-                    onClick={() => setModalMember(coordinatorDetails.hod)}
-                  >
-                    <img
-                      src={coordinatorDetails.hod.img}
-                      alt={coordinatorDetails.hod.name}
-                      className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-                  <h2
-                    className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
-                    onClick={() => setModalMember(coordinatorDetails.hod)}
-                  >
-                    {coordinatorDetails.hod.name}
-                  </h2>
-                  <p className="text-blue-400 text-lg font-semibold">{coordinatorDetails.hod.role}</p>
-                  <p className="text-gray-300 text-base font-medium">{coordinatorDetails.hod.designation}</p>
-                  <div className="flex mt-2 space-x-4">
-                    {coordinatorDetails.hod.linkedin && coordinatorDetails.hod.linkedin !== "#" && (
-                      <span
-                        onClick={() => setModalMember(coordinatorDetails.hod)}
-                        className="text-blue-500 hover:text-blue-400 cursor-pointer"
-                      >
-                        <FaLinkedin size={24} />
-                      </span>
-                    )}
-                    {coordinatorDetails.hod.github && coordinatorDetails.hod.github !== "#" && (
-                      <span
-                        onClick={() => setModalMember(coordinatorDetails.hod)}
-                        className="text-gray-500 hover:text-gray-400 cursor-pointer"
-                      >
-                        <FaGithub size={24} />
-                      </span>
-                    )}
-                  </div>
-                </div>
-        
-                {/* Prashant Prashun */}
-                <div className="flex flex-col items-center">
-                  <div
-                    className="cursor-pointer group"
-                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
-                  >
-                    <img
-                      src={coordinatorDetails.PrashantParashun.img}
-                      alt={coordinatorDetails.PrashantParashun.name}
-                      className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-                  <h2
-                    className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
-                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
-                  >
-                    {coordinatorDetails.PrashantParashun.name}
-                  </h2>
-                  <p className="text-blue-400 text-lg font-semibold">
-                    {coordinatorDetails.PrashantParashun.role}
+            {/* Logo and Description Section */}
+            <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
+              <div className="flex justify-center items-start mt-8">
+                <Logo />
+              </div>
+              <div className="bg-blue-500/20 backdrop-blur-md text-s lg:text-xl mt-3 lg:ml-10 rounded-lg text-left p-6 lg:p-10">
+                <div>
+                  <p className="text-gray-300 leading-relaxed">
+                    Code Crafters Programming Club is an exciting initiative designed to ignite a passion for coding within our institution.
+                    Our mission is to provide students with a gateway to the dynamic world of programming, offering a supportive platform where assistance and mentorship are readily available.
+                    Whether you're just starting or looking to refine your skills, we're here to help you unlock your potential and enhance your coding abilities.
                   </p>
-                  <p className="text-gray-300 text-base font-medium">
-                    {coordinatorDetails.PrashantParashun.designation}
+                  <p className="text-gray-300 leading-relaxed mt-4">
+                    At Code Crafters, we believe coding is a skill everyone should have the opportunity to learn. Our motto is simple:
+                    <span className="font-semibold text-yellow-500"> "Innovate. Collaborate. Elevate."</span>
+                    Join us as we provide every student with the right tools, guidance, and community to embark on this exciting journey.
                   </p>
-                  <div className="flex mt-2 space-x-4">
-                    {coordinatorDetails.PrashantParashun.linkedin && coordinatorDetails.PrashantParashun.linkedin !== "#" && (
-                      <span
-                        onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
-                        className="text-blue-500 hover:text-blue-400 cursor-pointer"
-                      >
-                        <FaLinkedin size={24} />
-                      </span>
-                    )}
-                    {coordinatorDetails.PrashantParashun.github && coordinatorDetails.PrashantParashun.github !== "#" && (
-                      <span
-                        onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
-                        className="text-gray-500 hover:text-gray-400 cursor-pointer"
-                      >
-                        <FaGithub size={24} />
-                      </span>
-                    )}
-                  </div>
                 </div>
               </div>
-        
-        <TEAM />
-        <Gallery />
-        <Footer />
+            </div>
+
+            <WhyCCPC />
+            {/* <UpcomingEvents /> */}
+            <SoC />
+            <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
+      
+            {/* Professor - Hierarchical Position */}
+            <div className="mb-8 flex justify-center space-x-16">
+              {/* HOD */}
+              <div className="flex flex-col items-center">
+                <div
+                  className="cursor-pointer group"
+                  onClick={() => setModalMember(coordinatorDetails.hod)}
+                >
+                  <img
+                    src={coordinatorDetails.hod.img}
+                    alt={coordinatorDetails.hod.name}
+                    className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+                <h2
+                  className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                  onClick={() => setModalMember(coordinatorDetails.hod)}
+                >
+                  {coordinatorDetails.hod.name}
+                </h2>
+                <p className="text-blue-400 text-lg font-semibold">{coordinatorDetails.hod.role}</p>
+                <p className="text-gray-300 text-base font-medium">{coordinatorDetails.hod.designation}</p>
+                <div className="flex mt-2 space-x-4">
+                  {coordinatorDetails.hod.linkedin && coordinatorDetails.hod.linkedin !== "#" && (
+                    <span
+                      onClick={() => setModalMember(coordinatorDetails.hod)}
+                      className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                    >
+                      <FaLinkedin size={24} />
+                    </span>
+                  )}
+                  {coordinatorDetails.hod.github && coordinatorDetails.hod.github !== "#" && (
+                    <span
+                      onClick={() => setModalMember(coordinatorDetails.hod)}
+                      className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                    >
+                      <FaGithub size={24} />
+                    </span>
+                  )}
+                </div>
+              </div>
+      
+              {/* Prashant Prashun */}
+              <div className="flex flex-col items-center">
+                <div
+                  className="cursor-pointer group"
+                  onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                >
+                  <img
+                    src={coordinatorDetails.PrashantParashun.img}
+                    alt={coordinatorDetails.PrashantParashun.name}
+                    className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                  />
+                </div>
+                <h2
+                  className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                  onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                >
+                  {coordinatorDetails.PrashantParashun.name}
+                </h2>
+                <p className="text-blue-400 text-lg font-semibold">
+                  {coordinatorDetails.PrashantParashun.role}
+                </p>
+                <p className="text-gray-300 text-base font-medium">
+                  {coordinatorDetails.PrashantParashun.designation}
+                </p>
+                <div className="flex mt-2 space-x-4">
+                  {coordinatorDetails.PrashantParashun.linkedin && coordinatorDetails.PrashantParashun.linkedin !== "#" && (
+                    <span
+                      onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                      className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                    >
+                      <FaLinkedin size={24} />
+                    </span>
+                  )}
+                  {coordinatorDetails.PrashantParashun.github && coordinatorDetails.PrashantParashun.github !== "#" && (
+                    <span
+                      onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                      className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                    >
+                      <FaGithub size={24} />
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+      
+            <TEAM />
+            <Gallery />
+            <Footer />
+          </div>
+        </div>
+      </IndependenceDayWrapper>
+    ) : (
+      <div className="relative">
+        <STARFIELD />
+        <div className="relative z-10">
+          <NAVBAR />
+          <div className="flex flex-col justify-center items-center min-h-[70vh] lg:min-h-screen">
+            <div className="fixed-width text-center">
+              <Title text="Code Crafters Programming Club" />
+            </div>
+          </div>
+
+          <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
+            <div className="flex justify-center items-start mt-8">
+              <Logo />
+            </div>
+            <div className="bg-blue-500/20 backdrop-blur-md text-s lg:text-xl mt-3 lg:ml-10 rounded-lg text-left p-6 lg:p-10">
+              <div>
+                <p className="text-gray-300 leading-relaxed">
+                  Code Crafters Programming Club is an exciting initiative designed to ignite a passion for coding within our institution.
+                  Our mission is to provide students with a gateway to the dynamic world of programming, offering a supportive platform where assistance and mentorship are readily available.
+                  Whether you're just starting or looking to refine your skills, we're here to help you unlock your potential and enhance your coding abilities.
+                </p>
+                <p className="text-gray-300 leading-relaxed mt-4">
+                  At Code Crafters, we believe coding is a skill everyone should have the opportunity to learn. Our motto is simple:
+                  <span className="font-semibold text-yellow-500"> "Innovate. Collaborate. Elevate."</span>
+                  Join us as we provide every student with the right tools, guidance, and community to embark on this exciting journey.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <WhyCCPC />
+          {/* <UpcomingEvents /> */}
+          <SoC />
+          <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
+    
+          {/* Professor - Hierarchical Position */}
+          <div className="mb-8 flex justify-center space-x-16">
+            {/* HOD */}
+            <div className="flex flex-col items-center">
+              <div
+                className="cursor-pointer group"
+                onClick={() => setModalMember(coordinatorDetails.hod)}
+              >
+                <img
+                  src={coordinatorDetails.hod.img}
+                  alt={coordinatorDetails.hod.name}
+                  className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                />
+              </div>
+              <h2
+                className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                onClick={() => setModalMember(coordinatorDetails.hod)}
+              >
+                {coordinatorDetails.hod.name}
+              </h2>
+              <p className="text-blue-400 text-lg font-semibold">{coordinatorDetails.hod.role}</p>
+              <p className="text-gray-300 text-base font-medium">{coordinatorDetails.hod.designation}</p>
+              <div className="flex mt-2 space-x-4">
+                {coordinatorDetails.hod.linkedin && coordinatorDetails.hod.linkedin !== "#" && (
+                  <span
+                    onClick={() => setModalMember(coordinatorDetails.hod)}
+                    className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                  >
+                    <FaLinkedin size={24} />
+                  </span>
+                )}
+                {coordinatorDetails.hod.github && coordinatorDetails.hod.github !== "#" && (
+                  <span
+                    onClick={() => setModalMember(coordinatorDetails.hod)}
+                    className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                  >
+                    <FaGithub size={24} />
+                  </span>
+                )}
+              </div>
+            </div>
+      
+            {/* Prashant Prashun */}
+            <div className="flex flex-col items-center">
+              <div
+                className="cursor-pointer group"
+                onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+              >
+                <img
+                  src={coordinatorDetails.PrashantParashun.img}
+                  alt={coordinatorDetails.PrashantParashun.name}
+                  className="w-40 h-40 rounded-full bg-white border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-200"
+                />
+              </div>
+              <h2
+                className="text-white text-xl font-bold mt-3 cursor-pointer text-center"
+                onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+              >
+                {coordinatorDetails.PrashantParashun.name}
+              </h2>
+              <p className="text-blue-400 text-lg font-semibold">
+                {coordinatorDetails.PrashantParashun.role}
+              </p>
+              <p className="text-gray-300 text-base font-medium">
+                {coordinatorDetails.PrashantParashun.designation}
+              </p>
+              <div className="flex mt-2 space-x-4">
+                {coordinatorDetails.PrashantParashun.linkedin && coordinatorDetails.PrashantParashun.linkedin !== "#" && (
+                  <span
+                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                    className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                  >
+                    <FaLinkedin size={24} />
+                  </span>
+                )}
+                {coordinatorDetails.PrashantParashun.github && coordinatorDetails.PrashantParashun.github !== "#" && (
+                  <span
+                    onClick={() => setModalMember(coordinatorDetails.PrashantParashun)}
+                    className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                  >
+                    <FaGithub size={24} />
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+      
+          <TEAM />
+          <Gallery />
+          <Footer />
+        </div>
       </div>
+    )}
 
       {/* Modal for Coordinator Details */}
       {modalMember && (
@@ -262,7 +400,6 @@ const Home = () => {
           </div>
         </div>
       )}
-    </div>
     </>
   );
 };

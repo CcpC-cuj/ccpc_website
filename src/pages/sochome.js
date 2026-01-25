@@ -38,7 +38,7 @@ const SOC = () => {
             </div>
             <div className="relative group">
               {/* Animated Card */}
-              <div className="bg-gradient-to-br bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl overflow-hidden transition-all duration-700">
+              <div className="bg-gradient-to-br bg-/10 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl overflow-hidden transition-all duration-700">
                 {/* Shimmer animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 
@@ -64,7 +64,7 @@ const SOC = () => {
             </div>
 
 
-          <div className="relative min-h-[70vh] px-4 md:px-8 py-4 md:py-12 flex flex-col md:flex-row items-center justify-between bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-2xl text-white mt-10 overflow-hidden">
+          <div className="relative min-h-[70vh] px-4 md:px-8 py-4 md:py-12 flex flex-col md:flex-row items-center justify-between bg-/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-2xl text-white mt-10 overflow-hidden">
             {/* Big SOC Text - Top on mobile, original position on desktop */}
             <div className="flex-1 relative text-center">
               <h1 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">

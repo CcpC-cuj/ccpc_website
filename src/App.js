@@ -1,6 +1,16 @@
 // App.jsx
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import RepublicDayTheme from "./components/RepublicDayTheme";
+
+// ============================================
+// REPUBLIC DAY THEME TOGGLE
+// ============================================
+// To ENABLE the Republic Day theme: set to true
+// To DISABLE the Republic Day theme: set to false
+// ============================================
+const ENABLE_REPUBLIC_DAY_THEME = true;
+// ============================================
 
 // Lazy load components
 const Home = lazy(() => import("./pages/home"));
@@ -30,63 +40,75 @@ const GalleryUpload = lazy(() => import("./pages/Admin/GalleryUpload"));
 const AdminProtectedRoute = lazy(() => import("./components/Admin/AdminProtectedRoute"));
 
 const TeamPage = lazy(() => import("./pages/TeamPage"));
+
+// App Routes Component (reusable)
+const AppRoutes = () => (
+  <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/projects" element={<Project />} />
+      <Route path="/blogs" element={<Blogs />} />
+      <Route path="/reachus" element={<ReachUs />} />
+      <Route path="/soc" element={<SoC />} />
+      <Route path="/members" element={<Members />} />
+      <Route path="/threads" element={<ThreadsWrapper />} />
+      <Route path="/profile/:id" element={<Profile />} />
+      <Route path="/login/auth" element={<LoginPage />} />
+      <Route path="/u/:userId"  element={<Dashboard />} />
+      <Route path="/login/auth/complete-profile" element={<CompleteProfile />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/registration" element={<RegistrationForm />} />
+      <Route path="*" element={<NotFound />} />
+      <Route path="/threads/signin" element={<ThreadsSignin />} />
+      <Route path="/threads/profile/:id" element={<ThreadsProfile />} />
+      <Route path="/threads/create/:id" element={<CreatePost />} />
+      <Route path="/threads/forum/:id" element={<ThreadsMessages />} />
+      <Route path="/post/:postId" element={<SharedPost />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route
+        path="/admin"
+        element={
+          <AdminProtectedRoute>
+            <AdminHome />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <AdminProtectedRoute>
+            <AdminUsers />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/gallery"
+        element={
+          <AdminProtectedRoute>
+            <GalleryUpload />
+          </AdminProtectedRoute>
+        }
+      />
+      <Route path="/team" element={<TeamPage />} />
+    </Routes>
+  </Suspense>
+);
+
 function App() {
   return (
     <Router>
-      <div>
-        <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white">Loading...</div></div>}>
-          <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Project />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/reachus" element={<ReachUs />} />
-          <Route path="/soc" element={<SoC />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/threads" element={<ThreadsWrapper />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/login/auth" element={<LoginPage />} /> {/* Login Page Route */}
-          <Route path="/u/:userId"  element={<Dashboard />} /> {/* Dashboard Route */}
-          <Route path="/login/auth/complete-profile" element={<CompleteProfile />} /> {/* Complete Profile Page Route */}
-          <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Forgot Password Page Route */}
-          <Route path="/registration" element={<RegistrationForm />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/threads/signin" element={<ThreadsSignin />} />
-          <Route path="/threads/profile/:id" element={<ThreadsProfile />} />
-          <Route path="/threads/create/:id" element={<CreatePost />} />
-          <Route path="/threads/forum/:id" element={<ThreadsMessages />} />
-          <Route path="/post/:postId" element={<SharedPost />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          
-          {/* Admin Routes - Protected */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={
-              <AdminProtectedRoute>
-                <AdminHome />
-              </AdminProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/users"
-            element={
-              <AdminProtectedRoute>
-                <AdminUsers />
-              </AdminProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/gallery"
-            element={
-              <AdminProtectedRoute>
-                <GalleryUpload />
-              </AdminProtectedRoute>
-            }
-          />
-          <Route path="/team" element={<TeamPage />} /> {/* TeamPage Route */}
-        </Routes>
-        </Suspense>
-      </div>
+      {ENABLE_REPUBLIC_DAY_THEME ? (
+        <RepublicDayTheme showBanner={true}>
+          <div>
+            <AppRoutes />
+          </div>
+        </RepublicDayTheme>
+      ) : (
+        <div>
+          <AppRoutes />
+        </div>
+      )}
     </Router>
   );
 }
