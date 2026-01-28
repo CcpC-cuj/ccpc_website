@@ -2,7 +2,7 @@
 // Prefers REACT_APP_API_BASE_URL, but if running on production frontend
 // and the env points to localhost, fall back to the Render URL.
 const DEFAULT_LOCAL = 'http://localhost:5002';
-const RENDER_PROD = 'https://ccpc-regitration.onrender.com';
+const RENDER_PROD = 'https://ccpccuj-mem-reg-2026.hf.space';
 
 export function getApiBase() {
   const env = (process.env.REACT_APP_API_BASE_URL || DEFAULT_LOCAL).split('||')[0].trim();

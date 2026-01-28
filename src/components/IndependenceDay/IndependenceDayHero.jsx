@@ -112,3 +112,4 @@ const IndependenceDayHero = () => {
 
 export default IndependenceDayHero;
 
+
