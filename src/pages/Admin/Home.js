@@ -7,6 +7,8 @@ export default function Home() {
   const navigate = useNavigate();
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState("info");
 
   useEffect(() => {
     fetchRegistrationStatus();
@@ -14,12 +16,14 @@ export default function Home() {
 
   const fetchRegistrationStatus = async () => {
     try {
-  const apiBase = getApiBase();
-  const response = await fetch(`${apiBase}/api/settings/registration-status`);
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}/api/settings/registration-status`);
       const data = await response.json();
       setIsRegistrationOpen(data.isOpen);
     } catch (error) {
       console.error("Error fetching registration status:", error);
+      setStatusType("error");
+      setStatusMessage("Failed to fetch registration status.");
     } finally {
       setLoading(false);
     }
@@ -27,18 +31,25 @@ export default function Home() {
 
   const toggleRegistration = async () => {
     try {
-  const apiBase = getApiBase();
-  const response = await fetch(`${apiBase}/api/settings/registration-status`, {
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}/api/settings/registration-status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isOpen: !isRegistrationOpen })
       });
-      const data = await response.json();
-      setIsRegistrationOpen(data.isOpen);
-      alert(data.message);
+      const data = await response.json().catch(() => ({}));
+      if (response.ok) {
+        setIsRegistrationOpen(data.isOpen);
+        setStatusType("success");
+        setStatusMessage(data.message || "Registration status updated.");
+      } else {
+        setStatusType("error");
+        setStatusMessage(data.message || "Failed to update registration status.");
+      }
     } catch (error) {
       console.error("Error toggling registration:", error);
-      alert("Failed to update registration status");
+      setStatusType("error");
+      setStatusMessage("Failed to update registration status.");
     }
   };
 
@@ -46,6 +57,19 @@ export default function Home() {
     <div className="min-h-screen bg-gray-900 text-white w-full">
       <Navbar />
       <main className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {statusMessage && (
+          <div
+            className={`sm:col-span-2 lg:col-span-3 rounded-lg px-4 py-3 text-sm font-medium border ${
+              statusType === "success"
+                ? "bg-green-500/10 text-green-300 border-green-500/30"
+                : statusType === "error"
+                ? "bg-red-500/10 text-red-300 border-red-500/30"
+                : "bg-blue-500/10 text-blue-300 border-blue-500/30"
+            }`}
+          >
+            {statusMessage}
+          </div>
+        )}
         <div className="bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition">
           <h2 className="text-lg font-semibold">Manage Users</h2>
           <p className="text-gray-400">Add, remove, and update members.</p>

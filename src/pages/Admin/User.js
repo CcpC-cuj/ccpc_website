@@ -7,6 +7,9 @@ import getApiBase from '../../utils/apiBase';
 export default function Users() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [toast, setToast] = useState({ message: "", type: "info" });
 
 useEffect(() => {
   const fetchUsers = async () => {
@@ -24,12 +27,17 @@ useEffect(() => {
       // Add an "active" field if not present
       const usersWithStatus = data.map(u => ({
         ...u,
-        active: u.active !== undefined ? u.active : true
+        active: u.active !== undefined ? u.active : true,
+        tasks: Array.isArray(u.tasks) ? u.tasks : [],
+        Batch: u.Batch ?? u.batch,
+        Skills: u.Skills ?? u.skills,
+        PreferedLanguage: u.PreferedLanguage ?? u.preferedLanguage
       }));
 
       setUsers(usersWithStatus);
     } catch (error) {
       console.error("Error fetching users:", error);
+      setToast({ message: "Failed to load users.", type: "error" });
     }
   };
 
@@ -44,29 +52,29 @@ useEffect(() => {
     }
 
     try {
-      const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+      const apiBase = getApiBase();
       const response = await fetch(`${apiBase}/api/email/send-individual`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user._id })
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       
       if (data.success) {
-        alert(`✅ ${data.message}`);
+        setToast({ message: data.message || "Email sent successfully.", type: "success" });
       } else {
-        alert(`❌ Failed to send email: ${data.message}`);
+        setToast({ message: data.message || "Failed to send email.", type: "error" });
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("❌ Failed to send email. Please check your connection and try again.");
+      setToast({ message: "Failed to send email. Please try again.", type: "error" });
     }
   };
 
 const toggleActive = async (userId, currentStatus) => {
   try {
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const apiBase = getApiBase();
   const response = await fetch(`${apiBase}/api/users/${userId}/status`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -77,7 +85,7 @@ const toggleActive = async (userId, currentStatus) => {
     setUsers(users.map(u => u._id === userId ? updatedUser : u));
   } catch (err) {
     console.error("Failed to update status", err);
-    alert("Failed to update status");
+    setToast({ message: "Failed to update status.", type: "error" });
   }
 };
 
@@ -106,7 +114,7 @@ const submitTask = async () => {
     if (editIndex !== undefined) {
       // editing existing task
       newTasks[editIndex] = task;
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const apiBase = getApiBase();
   const response = await fetch(`${apiBase}/api/users/${user._id}/updateTasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -115,7 +123,7 @@ const submitTask = async () => {
       updatedUser = await response.json();
     } else {
       // adding new task
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const apiBase = getApiBase();
   const response = await fetch(`${apiBase}/api/users/${user._id}/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -128,7 +136,7 @@ const submitTask = async () => {
     closeTaskModal();
   } catch (err) {
     console.error("Failed to submit task", err);
-    alert("Failed to submit task");
+    setToast({ message: "Failed to submit task.", type: "error" });
   }
 };
 
@@ -136,7 +144,7 @@ const submitTask = async () => {
 const deleteTask = async (user, taskIndex) => {
   try {
     const newTasks = user.tasks.filter((_, idx) => idx !== taskIndex);
-  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+  const apiBase = getApiBase();
   const response = await fetch(`${apiBase}/api/users/${user._id}/updateTasks`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -146,7 +154,7 @@ const deleteTask = async (user, taskIndex) => {
     setUsers(users.map(u => u._id === user._id ? updatedUser : u));
   } catch (err) {
     console.error("Failed to delete task", err);
-    alert("Failed to delete task");
+    setToast({ message: "Failed to delete task.", type: "error" });
   }
 };
 
@@ -161,6 +169,19 @@ const openEditTaskModal = (user, taskIndex) => {
     <div className="min-h-screen bg-gray-900 text-white w-full">
       <Navbar />
       <div className="p-8">
+        {toast.message && (
+          <div
+            className={`mb-6 rounded-lg px-4 py-3 text-sm font-medium border ${
+              toast.type === "success"
+                ? "bg-green-500/10 text-green-300 border-green-500/30"
+                : toast.type === "error"
+                ? "bg-red-500/10 text-red-300 border-red-500/30"
+                : "bg-blue-500/10 text-blue-300 border-blue-500/30"
+            }`}
+          >
+            {toast.message}
+          </div>
+        )}
         <div className="flex mb-6 justify-between">
           <button
             onClick={() => navigate("/admin")}
@@ -173,7 +194,7 @@ const openEditTaskModal = (user, taskIndex) => {
               onClick={async () => {
                 const activeUsers = users.filter(u => u.active);
                 if (activeUsers.length === 0) {
-                  return alert("No active users to send mail to.");
+                  return setToast({ message: "No active users to send mail to.", type: "info" });
                 }
                 
                 if (!window.confirm(`Send welcome email to all ${activeUsers.length} active users?`)) {
@@ -181,22 +202,22 @@ const openEditTaskModal = (user, taskIndex) => {
                 }
 
                 try {
-                  const apiBase = (process.env.REACT_APP_API_BASE_URL || "http://localhost:5002").split("||")[0];
+                  const apiBase = getApiBase();
                   const response = await fetch(`${apiBase}/api/email/send-bulk`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                   });
 
-                  const data = await response.json();
+                  const data = await response.json().catch(() => ({}));
                   
                   if (data.success) {
-                    alert(`✅ ${data.message}`);
+                    setToast({ message: data.message || "Bulk email sent.", type: "success" });
                   } else {
-                    alert(`❌ Failed to send bulk email: ${data.message}`);
+                    setToast({ message: data.message || "Failed to send bulk email.", type: "error" });
                   }
                 } catch (error) {
                   console.error("Error sending bulk email:", error);
-                  alert("❌ Failed to send bulk email. Please check your connection and try again.");
+                  setToast({ message: "Failed to send bulk email. Please try again.", type: "error" });
                 }
               }}
               className="mb-6 ml-4 bg-green-600 px-4 py-2 rounded hover:bg-green-700"
@@ -206,13 +227,50 @@ const openEditTaskModal = (user, taskIndex) => {
 
         </div>
 
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex-1">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by name, email, or reg no"
+              className="w-full rounded bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-300">Filter:</span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="rounded bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
         <h1 className="text-3xl font-bold mb-4">Registered Users</h1>
 
         {users.length === 0 ? (
           <p className="text-gray-400">No users registered yet.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {users.map((user) => (
+            {users
+              .filter((user) => {
+                const q = query.trim().toLowerCase();
+                const matchesQuery =
+                  !q ||
+                  user.name?.toLowerCase().includes(q) ||
+                  user.email?.toLowerCase().includes(q) ||
+                  user.reg_no?.toLowerCase().includes(q);
+                const matchesStatus =
+                  statusFilter === "all" ||
+                  (statusFilter === "active" ? user.active : !user.active);
+                return matchesQuery && matchesStatus;
+              })
+              .map((user) => (
               <div
                 key={user._id}
                 className="bg-gray-800 p-6 rounded-xl shadow hover:shadow-lg transition"
@@ -221,9 +279,9 @@ const openEditTaskModal = (user, taskIndex) => {
                 <p className="text-gray-400">Email: {user.email}</p>
                 <p className="text-gray-400">Phone: {user.phone}</p>
                 <p className="text-gray-400">Department: {user.password}</p>
-                <p className="text-gray-400">Batch: {user.batch}</p>
-                <p className="text-gray-400">Skills: {user.skills}</p>
-                <p className="text-gray-400">Preferred Language: {user.preferedLanguage}</p>
+                <p className="text-gray-400">Batch: {user.Batch ?? user.batch}</p>
+                <p className="text-gray-400">Skills: {user.Skills ?? user.skills}</p>
+                <p className="text-gray-400">Preferred Language: {user.PreferedLanguage ?? user.preferedLanguage}</p>
                 <p className="text-gray-400">Reg No: {user.reg_no}</p>
 
                 

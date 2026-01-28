@@ -22,8 +22,7 @@ export default function AdminLogin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.ok && data.success) {
         // Store admin token and email in localStorage

@@ -15,6 +15,8 @@ const allowedOrigins = [
   'https://ccpc-cuj.firebaseapp.com'
 ];
 
+const localhostRegex = /^http:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0):\d+$/;
+
 // If CORS_ORIGIN is set in env, use it (supports || separator for multiple origins)
 if (process.env.CORS_ORIGIN) {
   const envOrigins = process.env.CORS_ORIGIN.split('||').map(origin => origin.trim());
@@ -30,7 +32,7 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) || localhostRegex.test(origin)) {
       callback(null, true);
     } else {
       console.warn(`⚠️ CORS blocked origin: ${origin}`);

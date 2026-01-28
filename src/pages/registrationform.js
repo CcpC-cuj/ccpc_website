@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Starfield from '../components/Starfield';
-import getApiBase from '../utils/apiBase';
+
+const API_BASE_URL = 'https://ccpccuj-mem-reg-2026.hf.space';
 
 const RegistrationForm = () => {
   // Check registration status from API
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const [name, setName] = useState('');
@@ -22,13 +23,12 @@ const RegistrationForm = () => {
 
   const fetchRegistrationStatus = async () => {
     try {
-  const apiBase = getApiBase();
-  const response = await fetch(`${apiBase}/api/settings/registration-status`);
+      const response = await fetch(`${API_BASE_URL}/api/settings/registration-status`);
       const data = await response.json();
-      setIsFormOpen(data.isOpen);
+      setIsFormOpen(data.isOpen || true);
     } catch (error) {
       console.error("Error fetching registration status:", error);
-      setIsFormOpen(false); // Default to closed on error
+      setIsFormOpen(true); // Default to open on error
     } finally {
       setLoading(false);
     }
@@ -46,32 +46,35 @@ const RegistrationForm = () => {
       email,
       password,
       phone,
-      preferedLanguage: PreferedLanguage,
-      skills: Skills,
+      PreferedLanguage,
+      Skills,
       reg_no,
-      batch: Batch
+      Batch
     };
 
     try {
-  const apiBase = getApiBase();
-  const response = await fetch(`${apiBase}/api/register`, {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
-      alert(result.message);
 
-      // Reset form
-      setName("");
-      setEmail("");
-      setPassword("");
-      setPhone("");
-      setSkills("");
-      setPreferedLanguage("");
-      setRegNo("");
-      setBatch("");
+      if (response.ok && result.ok) {
+        alert(result.message || "Form submitted. Check your e-mail");
+        // Reset form
+        setName("");
+        setEmail("");
+        setPassword("");
+        setPhone("");
+        setSkills("");
+        setPreferedLanguage("");
+        setRegNo("");
+        setBatch("");
+      } else {
+        alert(result.message || "Registration failed");
+      }
     } catch (error) {
       console.error(error);
       alert("Registration failed");
