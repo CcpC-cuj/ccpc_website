@@ -24,7 +24,7 @@ useEffect(() => {
         return; // stop if data is not an array
       }
 
-      // Add an "active" field if not present
+      // Add an "active" field if not present (default to true for new users)
       const usersWithStatus = data.map(u => ({
         ...u,
         active: u.active !== undefined ? u.active : true,
@@ -45,31 +45,9 @@ useEffect(() => {
 }, []);
 
 
-  // Send email to individual user via API
   const handleSendMail = async (user) => {
-    if (!window.confirm(`Send welcome email to ${user.name} (${user.email})?`)) {
-      return;
-    }
-
-    try {
-      const apiBase = getApiBase();
-      const response = await fetch(`${apiBase}/api/email/send-individual`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user._id })
-      });
-
-      const data = await response.json().catch(() => ({}));
-      
-      if (data.success) {
-        setToast({ message: data.message || "Email sent successfully.", type: "success" });
-      } else {
-        setToast({ message: data.message || "Failed to send email.", type: "error" });
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      setToast({ message: "Failed to send email. Please try again.", type: "error" });
-    }
+    // Navigate to email page with user pre-selected
+    navigate("/admin/email", { state: { preselectedUserId: user._id, preselectedUser: user } });
   };
 
 const toggleActive = async (userId, currentStatus) => {

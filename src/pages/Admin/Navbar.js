@@ -23,13 +23,13 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/registration" className="text-white hover:text-gray-300">
-            RegistrationForm
+          <Link to="/admin/users" className="text-white hover:text-gray-300">
+            Users
           </Link>
         </li>
         <li>
-          <Link to="/admin/users" className="text-white hover:text-gray-300">
-            Users
+          <Link to="/admin/email" className="text-white hover:text-gray-300">
+            Email
           </Link>
         </li>
         <li>

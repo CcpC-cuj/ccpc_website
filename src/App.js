@@ -25,6 +25,7 @@ const ThreadsWrapper = lazy(() => import("./pages/ThreadsWrapper"));
 const ResetPassword = lazy(() => import("./components/SOC/auth/ResetPassword"));
 const AdminHome = lazy(() => import("./pages/Admin/Home"));
 const AdminUsers = lazy(() => import("./pages/Admin/User"));
+const AdminEmail = lazy(() => import("./pages/Admin/Email"));
 const AdminLogin = lazy(() => import("./pages/Admin/AdminLogin"));
 const GalleryUpload = lazy(() => import("./pages/Admin/GalleryUpload"));
 const AdminProtectedRoute = lazy(() => import("./components/Admin/AdminProtectedRoute"));
@@ -72,6 +73,14 @@ function App() {
             element={
               <AdminProtectedRoute>
                 <AdminUsers />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/email"
+            element={
+              <AdminProtectedRoute>
+                <AdminEmail />
               </AdminProtectedRoute>
             }
           />

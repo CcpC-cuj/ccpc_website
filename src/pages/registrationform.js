@@ -25,7 +25,7 @@ const RegistrationForm = () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/settings/registration-status`);
       const data = await response.json();
-      setIsFormOpen(data.isOpen || true);
+      setIsFormOpen(data.isOpen); // Respect exact backend value
     } catch (error) {
       console.error("Error fetching registration status:", error);
       setIsFormOpen(true); // Default to open on error
