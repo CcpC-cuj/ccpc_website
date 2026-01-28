@@ -21,7 +21,7 @@ import IndependenceDayWrapper from "../components/IndependenceDay/IndependenceDa
 // To ENABLE the Independence Day theme: set to true
 // To DISABLE the Independence Day theme: set to false
 // ============================================
-const isIndependenceDayTheme = tru;
+const isIndependenceDayTheme = true;
 // ============================================
 const coordinatorDetails = {
   hod: {
