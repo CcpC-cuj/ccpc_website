@@ -6,6 +6,24 @@ const API_BASE_URL = 'https://ccpccuj-mem-reg-2026.hf.space';
 // reCAPTCHA v3 Site Key from environment variable
 const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
+// Function to load reCAPTCHA script dynamically
+const loadRecaptchaScript = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof window.grecaptcha !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Failed to load reCAPTCHA'));
+    document.head.appendChild(script);
+  });
+};
+
 // Function to get reCAPTCHA token
 const getRecaptchaToken = () => {
   return new Promise((resolve, reject) => {
@@ -46,6 +64,10 @@ const RegistrationForm = () => {
 
   useEffect(() => {
     fetchRegistrationStatus();
+    // Load reCAPTCHA script
+    loadRecaptchaScript().catch((error) => {
+      console.error('Failed to load reCAPTCHA:', error);
+    });
   }, []);
 
   const fetchRegistrationStatus = async () => {
@@ -333,6 +355,19 @@ const RegistrationForm = () => {
           >
             Join Now
           </button>
+          
+          {/* reCAPTCHA v3 Notice */}
+          <p className="text-xs text-gray-400 text-center mt-4">
+            This site is protected by reCAPTCHA and the Google{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">
+              Privacy Policy
+            </a>{' '}
+            and{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">
+              Terms of Service
+            </a>{' '}
+            apply.
+          </p>
         </form>
       </div>
     </div>
