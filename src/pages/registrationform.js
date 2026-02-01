@@ -3,6 +3,33 @@ import Starfield from '../components/Starfield';
 
 const API_BASE_URL = 'https://ccpccuj-mem-reg-2026.hf.space';
 
+// reCAPTCHA v3 Site Key from environment variable
+const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
+
+// Function to get reCAPTCHA token
+const getRecaptchaToken = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof window.grecaptcha === 'undefined') {
+      console.error('❌ reCAPTCHA not loaded');
+      reject(new Error('reCAPTCHA not loaded'));
+      return;
+    }
+    
+    window.grecaptcha.ready(() => {
+      window.grecaptcha
+        .execute(RECAPTCHA_SITE_KEY, { action: 'submit' })
+        .then((token) => {
+          console.log('✅ reCAPTCHA token received');
+          resolve(token);
+        })
+        .catch((error) => {
+          console.error('❌ reCAPTCHA error:', error);
+          reject(error);
+        });
+    });
+  });
+};
+
 const RegistrationForm = () => {
   // Check registration status from API
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -41,18 +68,22 @@ const RegistrationForm = () => {
       return;
     }
 
-    const data = {
-      name,
-      email,
-      password,
-      phone,
-      PreferedLanguage,
-      Skills,
-      reg_no,
-      Batch
-    };
-
     try {
+      // Get reCAPTCHA token before submitting
+      const recaptchaToken = await getRecaptchaToken();
+
+      const data = {
+        name,
+        email,
+        password,
+        phone,
+        PreferedLanguage,
+        Skills,
+        reg_no,
+        Batch,
+        recaptchaToken // Include reCAPTCHA token
+      };
+
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -61,8 +92,20 @@ const RegistrationForm = () => {
 
       const result = await response.json();
 
+      // Handle bot detection (403)
+      if (response.status === 403) {
+        alert('❌ Bot detection triggered. Please try again.');
+        return;
+      }
+
+      // Handle rate limiting (429)
+      if (response.status === 429) {
+        alert('⚠️ Too many registration attempts. Please try again after 1 hour.');
+        return;
+      }
+
       if (response.ok && result.ok) {
-        alert(result.message || "Form submitted. Check your e-mail");
+        alert(result.message || "✅ Registration successful! Check your email.");
         // Reset form
         setName("");
         setEmail("");
@@ -73,11 +116,15 @@ const RegistrationForm = () => {
         setRegNo("");
         setBatch("");
       } else {
-        alert(result.message || "Registration failed");
+        alert(result.message || "❌ Registration failed");
       }
     } catch (error) {
-      console.error(error);
-      alert("Registration failed");
+      console.error('Registration error:', error);
+      if (error.message === 'reCAPTCHA not loaded') {
+        alert("❌ Security verification failed. Please refresh the page and try again.");
+      } else {
+        alert("❌ An error occurred. Please try again.");
+      }
     }
   };
 
