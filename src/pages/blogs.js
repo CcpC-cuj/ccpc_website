@@ -32,9 +32,94 @@ const Blogs = () => {
 
     const blogsData = [
        
-        
+
         {
             id: 1,
+            title: 'Cyber Jagrit Bharat 2025: Advancing Cyber Awareness at CUJ',
+            date: '16th, 17th & 26th October, 2025',
+            attendees: 150,
+            location: 'Central University of Jharkhand',
+            content: (
+                <>
+                <h3 id="title" className="text-xl font-semibold text-pink-500 mt-6 mb-2">Event Overview:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;The <strong>Code Crafter Programming Club (CCPC)</strong>, in academic collaboration with the <strong>Department of Computer Science and Engineering, Central University of Jharkhand and and Computer Society Of India, Studen Chapter CUJ</strong>, actively contributed to the successful organization of <strong>Cyber Jagrit Bharat 2025</strong> a multi-day cybersecurity awareness initiative aimed at promoting responsible digital behavior and practical understanding of cyber threats among students.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Cyber Awareness Desk:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;CCPC volunteers co-managed an interactive awareness desk that served as an information hub for students across campus. Through guided interactions and educational displays, participants explored safe internet practices, phishing prevention, password protection strategies, social media responsibility, and digital privacy awareness. The initiative enabled students to engage directly with CCPC members, seek guidance, and pledge responsible online conduct.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">CyberSec Memeathon:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;To encourage creative expression of cybersecurity concepts, CCPC supported the CyberSec Memeathon, where students communicated awareness messages through visual storytelling and humor. The event witnessed enthusiastic participation from approximately 150 students, reflecting strong engagement with topics such as phishing scams, data leaks, digital fraud, privacy risks, and cyberbullying.
+                    </p>
+                </p>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li>🥇 <strong>Rishav Mishra</strong> – 3rd Year</li>
+                    <li>🥈 <strong>Keerti Lata Choudhury</strong> – 3rd Year</li>
+                    <li>🥉 <strong>Srishti Pathak</strong> – 3rd Year</li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Cybersecurity Simulation Demonstrations:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;A major highlight of the initiative was the series of supervised cybersecurity simulation sessions supported by CCPC. These demonstrations provided conceptual exposure to common cyberattack techniques and preventive defense mechanisms within controlled and ethical environments. Participants gained practical awareness of database security, password vulnerabilities, endpoint protection, phishing recognition, and brute-force attack concepts.
+                    </p>
+                </p>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li>Activities conducted in isolated, permission-based environments</li>
+                    <li>No real or institutional data utilized</li>
+                    <li>Faculty-supervised demonstrations ensuring ethical practice</li>
+                    <li><strong> Thank you </strong> Manas Mani, Diwakar Singh, Mitthu Kumar for making this happen</li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Cyber Awareness Street Play:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Students from DCSE presented a street play highlighting the consequences of careless online behavior, including phishing fraud, online deception, and cyber harassment. The performance delivered a strong message encouraging critical thinking and responsible digital actions.
+                    </p>
+                </p>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li><strong>Performers:</strong> Apurba, Namrata, Siya, Dheeraj, Pawan, Raj Vardhan, Shashi, Samridhi, Priyanshi, Sanskar, Mohit, Pragati Priya, Ritika, Sonu, Aniket, Shreya</li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Online Cybersecurity Quiz:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;To reinforce awareness and assess learning outcomes, an online cybersecurity quiz was conducted. The assessment evaluated participants’ understanding of cyber safety principles, digital responsibility, and legal awareness in the online space. Participants received e-certificates, and top performers were recognized for their achievement.
+                    </p>
+                </p>
+                <ul className="list-disc pl-14 text-gray-300">
+                    <li>Format: 10 Multiple Choice Questions</li>
+                    <li>Mode: Online Submission</li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">CCPC’s Contribution & Impact:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Through active coordination, volunteer engagement, and technical support, <strong>Code Crafter Programming Club (CCPC)</strong> played a significant role in strengthening cybersecurity awareness within the CUJ community. The initiative reflects CCPC’s continued commitment to practical learning, digital responsibility, and student empowerment in the evolving technological landscape.
+                    </p>
+                </p>
+
+                <h3 className="text-xl font-semibold text-pink-500 mt-6 mb-2">Conclusion:</h3>
+                <p className="text-lg text-gray-300 mb-4">
+                    <p style={{ textAlign: 'justify' }}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Cyber Jagrit Bharat 2025 successfully fostered awareness, engagement, and practical understanding of cybersecurity among students. With strong participation and impactful activities, CCPC once again demonstrated its leadership in promoting responsible technology usage and collaborative learning at the Central University of Jharkhand.
+                    </p>
+                </p>
+                </>
+            ),
+            author: "~Basil Joy"
+        },
+        {
+            id: 2,
             title: 'HackQubit 2025: CUJ Innovators Shine Bright!',
             date: '10th October, 2025',
             attendees: 71,
@@ -110,10 +195,8 @@ const Blogs = () => {
             ),
             author: "~Basil Joy"
             },
-
-        
-        {
-            id: 2,
+             {
+            id: 3,
             title: 'Dive into Generative AI and BadgeMonster Platform',
             date: '23rd July, 2025',
             attendees: 67,
@@ -221,7 +304,7 @@ const Blogs = () => {
             author: "~Neha Kumari"
         },
         {
-            id: 3,
+            id: 4,
             title: 'GitHub Unlocked: Mastering Collabrotion & Automation',
             date: '25th Feb, 2025',
             attendees: 38,
@@ -241,7 +324,7 @@ const Blogs = () => {
             author: "~Srishti Pathak"
         },
         {
-            id: 4,
+            id: 5,
             title: 'Career in Tech',
             date: '18th Feb, 2025',
             attendees: 23,
@@ -262,7 +345,7 @@ const Blogs = () => {
             author: "~Namrata Dey"
         },
         {
-            id: 5,
+            id: 6,
             title: 'Weekly Meeting of CCPC',
             date: '25th July, 2024',
             attendees: 17,
@@ -340,9 +423,8 @@ const Blogs = () => {
           ),
           author: "~Shradha Singh"          
         },
-          
         {
-            id: 6,
+            id: 7,
             title: 'Computer Graphics & Future Outlook',
             date: '16th May, 2024',
             attendees: 18,
@@ -357,7 +439,7 @@ const Blogs = () => {
             author: "~Apurba Das"
         },
         {
-            id: 7,
+            id: 8,
             title: 'GitHub basics and Collaborative coding',
             date: '1st March, 2024',
             attendees: 20,
@@ -372,14 +454,6 @@ const Blogs = () => {
             author: "~Basil Joy"
         }
     ];
-
-    const blogsWithAds = [];
-    blogsData.forEach((blog, index) => {
-      blogsWithAds.push(blog);
-      if ((index + 1) % 2 === 0) {
-        blogsWithAds.push({ type: 'ad', id: `ad-${index}` });
-      }
-    });
 
     return (
             <>
@@ -419,19 +493,15 @@ const Blogs = () => {
 
                     {/* Blog List */}
                     <div className="space-y-8 text-left mb-2">
-                        {blogsWithAds.map((item) =>
-                            item.type === 'ad' ? (
-                                <AdComponent key={item.id} adSlot="your-ad-slot-id" />
-                            ) : (
-                                <div key={item.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                                    <h2 className="text-2xl font-semibold text-white mb-4">{item.title}</h2>
-                                    <span className="text-gray-400 mb-4">{`Date: ${item.date} | ${item.attendees} people attended | ${item.location}`}</span>
-                                    <div className="text-gray-300 mb-4">
-                                        {item.content}
-                                    </div>
-                                    <p className="text-right text-gray-500">{item.author}</p>
+                        {blogsData.map((item) =>
+                            <div key={item.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                                <h2 className="text-2xl font-semibold text-white mb-4">{item.title}</h2>
+                                <span className="text-gray-400 mb-4">{`Date: ${item.date} | ${item.attendees} people attended | ${item.location}`}</span>
+                                <div className="text-gray-300 mb-4">
+                                    {item.content}
                                 </div>
-                            )
+                                <p className="text-right text-gray-500">{item.author}</p>
+                            </div>
                         )}
                     </div>
                 </div>
