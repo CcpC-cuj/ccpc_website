@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import NAVBAR from "../components/Navbar";
 import STARFIELD from "../components/Starfield";
-import AdComponent from "../components/AdComponent";
+//import AdComponent from "../components/AdComponent";
 const Blogs = () => {
         // SEO meta tags and structured data
         const seoTitle = "CCPC - Coding Club CUJ | Central University of Jharkhand, Ranchi";
