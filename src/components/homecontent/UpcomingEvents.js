@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
-import techfestmart from "../assets/upcoming events/martreg Large.jpeg";
-import aminsession from "../assets/upcoming events/MARtinovation Large.jpeg";
-import comminpart from "../assets/upcoming events/comunity_partner Large.jpeg";
+import img_new_reg from "../assets/upcoming events/new_reg.jpeg";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -10,38 +8,15 @@ const UpcomingEvents = () => {
     
     {
       id: 1,
-        title: "MARTINOVATION 2025 – Tech Fest",
-        description: "Gear up for the ultimate celebration of innovation, creativity, and technology! Usha Martin University, Ranchi, presents its flagship annual Tech Fest — MARTINOVATION 2025. Experience a dynamic fusion of competitions and challenges that push the limits of imagination and skill. From hackathons and gaming tournaments to web development sprints and quizzes it’s a playground for creators, coders, and changemakers. Proudly partnered with CcpC, the Official Community Partner, empowering collaboration and innovation across campuses. Win exciting prizes, earn recognition, and be part of the genesis of tomorrow!",
-        date: "3 Nov 2025 to 7 Nov 2025",
-        location: "Usha Martin University, Ranchi",
-        type: "Tech Fest",
-        image: techfestmart,
-        registrationLink: "https://www.umutechfest.co.in",
+        title: "CcpC New Member Recruitment",
+        description: "Ready to level up your coding journey? Join Code Crafters Programming Club (CCPC) and gain hands-on experience, real-world projects, mentorship, and a community that grows together. Code. Create. Collaborate.",
+        date: "27th Jan 2026 to 15th Feb 2026",
+        location: "Central University Of Jharkhand",
+        type: "",
+        image: img_new_reg,
+        registrationLink: "https://ccpc-cuj.web.app/registration",
         featured: false
     },
-    {
-      id: 2,
-        title: "Generative AI Workshop – MARTINOVATION 2025",
-        description: "Unlock the power of Generative AI with Mr. Aamin Uddin, Founder of Badge Monster and alumnus of IIT Guwahati. This exclusive workshop dives into how creativity and technology come together through real-world applications and hands-on learning. Join us to explore the limitless possibilities of AI and innovation. Organized as part of MARTINOVATION 2025 and proudly powered by CcpC, the Official Community Partner driving collaboration and tech learning at Usha Martin University.",
-        date: "4 Nov 2025",
-        location: "Usha Martin University, Ranchi, Jharkhand",
-        type: "Workshop",
-        image: aminsession,
-        registrationLink: "https://www.umutechfest.co.in",
-        featured: false
-    },
-    {
-      id: 3,
-        title: "Official Community Partner – Code Crafters Programming Club (CcpC)",
-        description: "We’re thrilled to announce that the Code Crafters Programming Club (CcpC) is the official Community Partner for MARTINOVATION 2025! Together, we’re set to create an inspiring journey of innovation, learning, and collaboration. From hands-on workshops to tech challenges, CcpC will be at the forefront empowering participants to learn, build, and grow throughout the fest.",
-        date: "3 Nov 2025 to 7 Nov 2025",
-        location: "Usha Martin University, Ranchi, Jharkhand",
-        type: "Live Event",
-        image: comminpart,
-        registrationLink: "https://www.umutechfest.co.in",
-        featured: false
-    },
-    
     /*
     {
       id: 1,
@@ -92,7 +67,7 @@ const UpcomingEvents = () => {
       case "Live Event": return "bg-green-500";
       case "Contest": return "bg-purple-500";
       case "Seminar": return "bg-yellow-500";
-      default: return "bg-gray-500";
+      default: return "";
     }
   };
 
@@ -114,7 +89,7 @@ const UpcomingEvents = () => {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Upcoming <span className="text-yellow-500">Events</span>
+            Events on<span className="text-yellow-500"> Calendar</span>
           </h2>
           <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
             Join our exciting lineup of coding events, workshops, and competitions designed to enhance your programming journey.
