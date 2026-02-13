@@ -6,6 +6,8 @@ import Footer from "../components/Footer.js";
 import NAVBAR from "../components/Navbar.js";
 import STARFIELD from "../components/Starfield";
 import Team2024 from "../components/SEB/Team2025";
+import Team2026 from "../components/SEB/Team2026";
+
 // Add future imports here, e.g.:
 // import Team2026 from "../components/SEB/Team2026";
 
@@ -14,6 +16,7 @@ const CACHE_TTL = 60 * 60 * 1000; // 1 hour in ms
 
 const TEAM_COMPONENTS = [
   { year: 2025, Component: Team2024 },
+  { year: 2026, Component: Team2026 },
   // { year: 2026, Component: Team2026 },
 ];
 

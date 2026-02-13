@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
 import img_new_reg from "../assets/upcoming events/new_reg.jpeg";
+import img_cloud_native from "../assets/upcoming events/cloud_native.jpeg";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -9,12 +10,24 @@ const UpcomingEvents = () => {
     {
       id: 1,
         title: "CcpC New Member Recruitment",
-        description: "Ready to level up your coding journey? Join Code Crafters Programming Club (CCPC) and gain hands-on experience, real-world projects, mentorship, and a community that grows together. Code. Create. Collaborate.",
+        description: "Ready to level up your coding journey? Join Code Crafters Programming Club (CcpC) and gain hands-on experience, real-world projects, mentorship, and a community that grows together. Code. Create. Collaborate.",
         date: "27th Jan 2026 to 15th Feb 2026",
         location: "Central University Of Jharkhand",
         type: "",
         image: img_new_reg,
         registrationLink: "https://ccpc-cuj.web.app/registration",
+        featured: false
+    },
+    {
+      id: 2,
+        title: "Cloud Native Computing Workshop",
+        description: "CcpC, in collaboration with CNCG Ranchi, is organizing a Cloud Native Computing Workshop covering Kubernetes basics and GitOps for modern cloud projects. The session will be hands-on and beginner-friendly, offering students practical exposure to industry-relevant cloud technologies.",
+        date: "14th Feb 2026",
+        time: "11:00 AM to 04:00 PM",
+        location: "Room No. 327, Science Building, Central University Of Jharkhand, Ranchi",
+        type: "Workshop",
+        image: img_cloud_native,
+        registrationLink: "https://community.cncf.io/e/mb86zw/",
         featured: false
     },
     /*

@@ -8,7 +8,7 @@ import Logo from "../components/logo/logo";
 import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
-import TEAM from "../components/SEB/Team2025";
+import TEAM from "../components/SEB/Team2026";
 import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
 import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";

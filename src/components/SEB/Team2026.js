@@ -1,30 +1,22 @@
 import React, { useState } from "react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
-import Sandeep from "../assets/SEB Profile Photo/SEB2025/Sandeep.png";
-import Om from "../assets/SEB Profile Photo/SEB2025/Om.png";
+import Hemant from "../assets/SEB Profile Photo/SEB2026/Hemant.png";
+import Sanskar from "../assets/SEB Profile Photo/SEB2026/Sanskar.jpg";
 import Apurba from "../assets/SEB Profile Photo/SEB2025/Apurba.png";
-import AdityaSC from "../assets/SEB Profile Photo/SEB2025/AdityaSC.png";
-import Priyanshu from "../assets/SEB Profile Photo/SEB2025/Priyanshu.png";
-import Abhimaan from "../assets/SEB Profile Photo/SEB2025/Abhimaan.png";
+import Diwakar from "../assets/SEB Profile Photo/SEB2026/Diwakar.png";
 import Krish from "../assets/SEB Profile Photo/SEB2025/Krish.png";
-import Prashant from "../assets/SEB Profile Photo/SEB2025/Prashant.png";
+//import Raj from "../assets/SEB Profile Photo/SEB2026/Raj.jpg";
 import Basil from "../assets/SEB Profile Photo/SEB2025/Basil.png";
-import Saket from "../assets/SEB Profile Photo/SEB2025/Saket.png";
-import Siya from "../assets/SEB Profile Photo/SEB2025/Siya.png";
+import Samridhi from "../assets/SEB Profile Photo/SEB2026/Samridhi.png";
+import Abhishek from "../assets/SEB Profile Photo/SEB2026/Abhishek.png";
+import Abhiraj from "../assets/SEB Profile Photo/SEB2026/Abhiraj.png";
+//import Priyanshi from "../assets/SEB Profile Photo/SEB2026/Priyanshi.jpg";
+import Kundan from "../assets/SEB Profile Photo/SEB2026/Kundan.png";
+import Ujit from "../assets/SEB Profile Photo/SEB2026/Ujith.png";
 const studentDetails = {
-  Abhimaan: {
-    name: "Abhimaan Kumar",
-    role: "President",
-    linkedin: "https://www.linkedin.com/in/abhimaan-kumar-287262247/",
-    github: "https://github.com/Abhimaan-kumar",
-    link: "https://ccpc-cuj.web.app/profile/WjaIg6rrBtPFHjttuTFanKmubZP2",
-    img: Abhimaan,
-    bio: "Leading with vision and passion.",
-    quote: "I believe in empowering every coder to reach their potential."
-  },
   Krish: {
     name: "Krish Kumar",
-    role: "Vice-President",
+    role: "President",
     linkedin: "https://www.linkedin.com/in/imkkrish/",
     github: "https://github.com/Imkkrish",
     link: "https://ccpc-cuj.web.app/profile/FE9FO4dLssN22QBPz8liIIgj04C2",
@@ -32,49 +24,9 @@ const studentDetails = {
     bio: "Always ready to innovate and collaborate.",
     quote: "Teamwork and curiosity drive our success."
   },
-  Priyanshu: {
-    name: "Priyanshu Verma",
-    role: "Vice-President",
-    linkedin: "https://www.linkedin.com/in/priyanshuverma17/",
-    github: "https://github.com/PriyanshuV17",
-    link: "https://ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92",
-    img: Priyanshu,
-    bio: "Passionate about coding and community.",
-    quote: "Let's build something amazing together!"
-  },
-  AdityaSC: {
-    name: "Aditya Singh Chandel",
-    role: "Secretary",
-    linkedin: "https://www.linkedin.com/in/adityasc2004/",
-    github: "https://github.com/adityasc2004",
-    link: "https://ccpc-cuj.web.app/profile/iBdQw1IaMHY2urKixNsee8R7y4D3",
-    img: AdityaSC,
-    bio: "Organizing with precision and heart.",
-    quote: "Every detail matters in a great team."
-  },
-  Apurba: {
-    name: "Apurba Das",
-    role: "Joint Secretary",
-    linkedin: "https://www.linkedin.com/in/apurbasbjk30/",
-    github: "https://github.com/apurbasbjk30",
-    link: "https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2",
-    img: Apurba,
-    bio: "Driven by curiosity and learning.",
-    quote: "Growth comes from sharing knowledge."
-  },
-  Prashant: {
-    name: "Prashant Dubey",
-    role: "Joint Secretary",
-    linkedin: "https://www.linkedin.com/in/prashantdubey2107/",
-    github: "https://github.com/prashantdubeypng",
-    link: "https://ccpc-cuj.web.app/profile/rOJOSJnLGYfNd5Tyi1wiZTFCk2z1",
-    img: Prashant,
-    bio: "Committed to excellence and support.",
-    quote: "Together, we achieve more."
-  },
   Basil: {
     name: "Basil Joy",
-    role: "Executive",
+    role: "Vice-President",
     linkedin: "https://www.linkedin.com/in/basil-joy-6b07511a7/",
     github: "https://github.com/basiljoy91",
     link: "https://ccpc-cuj.web.app/profile/ZnStO6ic3fM6MQLiI5iUBZnyyC63",
@@ -82,45 +34,115 @@ const studentDetails = {
     bio: "Eager to help and grow.",
     quote: "Every challenge is a new opportunity."
   },
-  Om: {
-    name: "Om Vishesh",
-    role: "Executive",
-    linkedin: "https://www.linkedin.com/in/omvishesh/",
-    github: "https://github.com/Omvishesh",
-    link: "https://ccpc-cuj.web.app/profile/g9xJ9JMy56XXJh4W1FKLXaTVdD52",
-    img: Om,
-    bio: "Focused on results and learning.",
-    quote: "Persistence is the key to mastery."
+  Apurba: {
+    name: "Apurba Das",
+    role: "Vice-President",
+    linkedin: "https://www.linkedin.com/in/apurbasbjk30/",
+    github: "https://github.com/apurbasbjk30",
+    link: "https://ccpc-cuj.web.app/profile/3UZdnFrZSJZByPREjytOetCtb9S2",
+    img: Apurba,
+    bio: "Driven by curiosity and learning.",
+    quote: "Growth comes from sharing knowledge."
   },
-  Siya: {
-    name: "Siya Mandal",
-    role: "Executive",
-    linkedin: "https://www.linkedin.com/in/siya-mandal-29ad10/",
-    github: "https://github.com/siya2910",
-    link: "https://ccpc-cuj.web.app/profile/gNC7e2F5AxNa9onJDzpBmBrgYBp1",
-    img: Siya,
-    bio: "Creative and enthusiastic.",
-    quote: "Imagination fuels innovation."
+  Diwakar: {
+    name: "Diwakar Singh",
+    role: "Secretary",
+    linkedin: "https://www.linkedin.com/in/diwakar-singh16/",
+    github: "https://github.com/DiwakarSingh16",
+    link: "https://ccpc-cuj.web.app/profile/Znx0hbCu8tcrtVvd5Ut3afkprdC3",
+    img: Diwakar,
+    bio: "Building smart systems and stronger tech communities.",
+    quote: "Consistency builds excellence."
   },
-  Sandeep: {
-    name: "Sandeep Mahato",
+  // Raj: {
+  //   name: "Raj Vardhan Jha",
+  //   role: "Joint Secretary",
+  //   linkedin: "https://www.linkedin.com/in/raj-vardhan-jha-4b2235329?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+  //   github: "https://github.com/raj-vardhanjha",
+  //   link: "https://ccpc-cuj.web.app/profile/wsm6pmqWGVXe8KB05p2RKj4WzcD2",
+  //   img: Raj,
+  //   bio: "Code; Debug; Repeat;",
+  //   quote: "Stop thinking about doing it and do it!"
+  // },
+  Sanskar: {
+    name: "Sanskar",
+    role: "Joint Secretary",
+    linkedin: "https://www.linkedin.com/in/sanskarsahay/",
+    github: "https://github.com/sanskarsahay4/",
+    link: "https://ccpc-cuj.web.app/profile/T7znNjW9N3ZUDO7UFyUF0gWC2nz1",
+    img: Sanskar,
+    bio: "Focused on learning, building, and evolving every single day.",
+    quote: "Responsibility creates character."
+  },
+  Hemant: {
+    name: "Hemant Prakash",
     role: "Treasurer",
-    linkedin: "https://www.linkedin.com/in/sandeep-mahato-a31b4a256/",
-    github: "https://github.com/sandeepmahato1",
-    link: "https://ccpc-cuj.web.app/profile/2I3nncT3UERhG4ZMJxJwNEpoZ5y1",
-    img: Sandeep,
-    bio: "Managing resources with care.",
-    quote: "Trust and transparency are our foundation."
+    linkedin: "https://www.linkedin.com/in/hemant-prakash-74381929b/",
+    github: "https://github.com/hemantprakash2005",
+    link: "https://ccpc-cuj.web.app/profile/MhwocZMiclcWoutneIDVVDbFw193",
+    img: Hemant,
+    bio: "Learning by Doing",
+    quote: "..."
   },
-  Saket: {
-    name: "Saket Tripathi",
-    role: "Treasurer",
-    linkedin: "https://www.linkedin.com/in/saket-tripathi-178819286/",
-    github: "https://github.com/Tripathijii147",
-    link: "https://ccpc-cuj.web.app/profile/tl7kpo2ijLP4JC7RlZAmKYyPdWA2",
-    img: Saket,
+  Abhishek: {
+    name: "Abhishek",
+    role: "Technical Executive",
+    linkedin: "https://www.linkedin.com/in/abhishek-aiml",
+    github: "https://github.com/MeAbhishek09",
+    link: "https://ccpc-cuj.web.app/profile/5pEiWGlT30RUlHcMFqP77xOO0T13",
+    img: Abhishek,
+    bio: "Eager to help and grow.",
+    quote: "The best way to predict the future is to create it"
+  },
+  Abhiraj: {
+    name: "Abhi Raj Gupta",
+    role: "Technical Executive",
+    linkedin: "https://www.linkedin.com/in/abhi-raj-gupta-bb6a65379/",
+    github:"https://github.com/Abhi-raj-gupta",
+    link: "https://ccpc-cuj.web.app/profile/wcYdLeaZwYXEsbRMqDTDSAqrUIX2",
+    img: Abhiraj,
+    bio: "Learning today, leading tomorrow.",
+    quote: "I don’t wait for opportunities — I build them."
+  },
+  // Priyanshi: {
+  //   name: "Priyanshi Chaurasia",
+  //   role: "Design Executive",
+  //   linkedin: "https://www.linkedin.com/in/priyanshi-chaurasia-aa9ab4338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  //   github: "https://github.com/Priyanshi110207",
+  //   link: "https://ccpc-cuj.web.app/profile/I87C3CSJswXWynQSC2Q8cGNPr8k2",
+  //   img: Priyanshi,
+  //   bio: "you could be the master of your fate, the captain of your soul but you have to realize that life is coming from you not at you?",
+  //   quote: "Go for it! No time is better than now."
+  // },
+  Kundan: {
+    name : "Kundan Kumar",
+    role: "Design Executive",
+    linkedin: "https://www.linkedin.com/in/kundankumar015/",
+    github: "https://github.com/Kundan311",
+    link: "https://ccpc-cuj.web.app/profile/wfT41e7CD0OQ8C8n2sbTB3BX79H2",
+    img: Kundan,
     bio: "Detail-oriented and reliable.",
-    quote: "Success is built on consistency."
+    quote: "Alone we learn, together we lead"
+  },
+  Ujit: {
+    name: "Ujit Raj Rathore",
+    role: "PR Executive",
+    linkedin: "https://www.linkedin.com/in/urrathore825/",
+    github: "https://github.com/urrathore",
+    link: "https://ccpc-cuj.web.app/profile/rGNgf8YGw1gLlRbrmGIZCrs8Msm2",
+    img: Ujit,
+    bio: "Turning stories into influence and reputation into advantage.",
+    quote: "Make money so that you walk out of situation you don’t like."
+  },
+  Samridhi: {
+    name: "Samridhi Tripathi",
+    role: "PR executive",
+    linkedin: "https://www.linkedin.com/in/samridhi-tripathi-823568373/",
+    github: "https://github.com/Samridhi2006",
+    link: "https://ccpc-cuj.web.app/profile/9lhmZgNefSPtO2aTwTWY7XH66MC3",
+    img: Samridhi,
+    bio: "Leading with vision and passion.",
+    quote: "I believe in empowering every coder to reach their potential."
   }
 };
 
