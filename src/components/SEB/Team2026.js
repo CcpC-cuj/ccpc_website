@@ -5,14 +5,15 @@ import Sanskar from "../assets/SEB Profile Photo/SEB2026/Sanskar.jpg";
 import Apurba from "../assets/SEB Profile Photo/SEB2025/Apurba.png";
 import Diwakar from "../assets/SEB Profile Photo/SEB2026/Diwakar.png";
 import Krish from "../assets/SEB Profile Photo/SEB2025/Krish.png";
-//import Raj from "../assets/SEB Profile Photo/SEB2026/Raj.jpg";
+import Raj from "../assets/SEB Profile Photo/SEB2026/Raj.png";
 import Basil from "../assets/SEB Profile Photo/SEB2025/Basil.png";
 import Samridhi from "../assets/SEB Profile Photo/SEB2026/Samridhi.png";
 import Abhishek from "../assets/SEB Profile Photo/SEB2026/Abhishek.png";
 import Abhiraj from "../assets/SEB Profile Photo/SEB2026/Abhiraj.png";
-//import Priyanshi from "../assets/SEB Profile Photo/SEB2026/Priyanshi.jpg";
+import Priyanshi from "../assets/SEB Profile Photo/SEB2026/Priyanshi.png";
 import Kundan from "../assets/SEB Profile Photo/SEB2026/Kundan.png";
 import Ujit from "../assets/SEB Profile Photo/SEB2026/Ujith.png";
+import Priyanshu from "../assets/SEB Profile Photo/SEB2025/Priyanshu.png"
 const studentDetails = {
   Krish: {
     name: "Krish Kumar",
@@ -54,16 +55,16 @@ const studentDetails = {
     bio: "Building smart systems and stronger tech communities.",
     quote: "Consistency builds excellence."
   },
-  // Raj: {
-  //   name: "Raj Vardhan Jha",
-  //   role: "Joint Secretary",
-  //   linkedin: "https://www.linkedin.com/in/raj-vardhan-jha-4b2235329?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-  //   github: "https://github.com/raj-vardhanjha",
-  //   link: "https://ccpc-cuj.web.app/profile/wsm6pmqWGVXe8KB05p2RKj4WzcD2",
-  //   img: Raj,
-  //   bio: "Code; Debug; Repeat;",
-  //   quote: "Stop thinking about doing it and do it!"
-  // },
+  Raj: {
+   name: "Raj Vardhan Jha",
+   role: "Joint Secretary",
+   linkedin: "https://www.linkedin.com/in/raj-vardhan-jha-4b2235329?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+   github: "https://github.com/raj-vardhanjha",
+   link: "https://ccpc-cuj.web.app/profile/wsm6pmqWGVXe8KB05p2RKj4WzcD2",
+   img: Raj,
+   bio: "Code; Debug; Repeat;",
+   quote: "Stop thinking about doing it and do it!"
+ },
   Sanskar: {
     name: "Sanskar",
     role: "Joint Secretary",
@@ -83,6 +84,16 @@ const studentDetails = {
     img: Hemant,
     bio: "Learning by Doing",
     quote: "..."
+  },
+  Priyanshu: {
+    name: "Priyanshu Verma",
+    role: "Vice-President",
+    linkedin: "https://www.linkedin.com/in/priyanshuverma17/",
+    github: "https://github.com/PriyanshuV17",
+    link: "https://ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92",
+    img: Priyanshu,
+    bio: "Passionate about coding and community.",
+    quote: "Let's build something amazing together!"
   },
   Abhishek: {
     name: "Abhishek",
@@ -104,16 +115,16 @@ const studentDetails = {
     bio: "Learning today, leading tomorrow.",
     quote: "I don’t wait for opportunities — I build them."
   },
-  // Priyanshi: {
-  //   name: "Priyanshi Chaurasia",
-  //   role: "Design Executive",
-  //   linkedin: "https://www.linkedin.com/in/priyanshi-chaurasia-aa9ab4338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-  //   github: "https://github.com/Priyanshi110207",
-  //   link: "https://ccpc-cuj.web.app/profile/I87C3CSJswXWynQSC2Q8cGNPr8k2",
-  //   img: Priyanshi,
-  //   bio: "you could be the master of your fate, the captain of your soul but you have to realize that life is coming from you not at you?",
-  //   quote: "Go for it! No time is better than now."
-  // },
+  Priyanshi: {
+   name: "Priyanshi Chaurasia",
+   role: "Design Executive",
+   linkedin: "https://www.linkedin.com/in/priyanshi-chaurasia-aa9ab4338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+   github: "https://github.com/Priyanshi110207",
+   link: "https://ccpc-cuj.web.app/profile/I87C3CSJswXWynQSC2Q8cGNPr8k2",
+   img: Priyanshi,
+   bio: "you could be the master of your fate, the captain of your soul but you have to realize that life is coming from you not at you?",
+   quote: "Go for it! No time is better than now."
+  },
   Kundan: {
     name : "Kundan Kumar",
     role: "Design Executive",
