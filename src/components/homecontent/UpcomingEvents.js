@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
 import img_new_reg from "../assets/upcoming events/new_reg.jpeg";
-import img_cloud_native from "../assets/upcoming events/cloud_native.jpeg";
+// import img_cloud_native from "../assets/upcoming events/cloud_native.jpeg";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
@@ -18,7 +18,7 @@ const UpcomingEvents = () => {
         registrationLink: "https://ccpc-cuj.web.app/registration",
         featured: false
     },
-    {
+    /*{
       id: 2,
         title: "Cloud Native Computing Workshop",
         description: "CcpC, in collaboration with CNCG Ranchi, is organizing a Cloud Native Computing Workshop covering Kubernetes basics and GitOps for modern cloud projects. The session will be hands-on and beginner-friendly, offering students practical exposure to industry-relevant cloud technologies.",
@@ -30,7 +30,7 @@ const UpcomingEvents = () => {
         registrationLink: "https://community.cncf.io/e/mb86zw/",
         featured: false
     },
-    /*
+    
     {
       id: 1,
       title: "CyberSec Meme-athon",
