@@ -18,19 +18,19 @@ const UpcomingEvents = () => {
         registrationLink: "https://ccpc-cuj.web.app/registration",
         featured: false
     },
-    /*{
+    {
       id: 2,
-        title: "Cloud Native Computing Workshop",
+        title: "Cloud Native Computing Workshop-Register for the Quiz",
         description: "CcpC, in collaboration with CNCG Ranchi, is organizing a Cloud Native Computing Workshop covering Kubernetes basics and GitOps for modern cloud projects. The session will be hands-on and beginner-friendly, offering students practical exposure to industry-relevant cloud technologies.",
         date: "14th Feb 2026",
         time: "11:00 AM to 04:00 PM",
         location: "Room No. 327, Science Building, Central University Of Jharkhand, Ranchi",
         type: "Workshop",
         image: img_cloud_native,
-        registrationLink: "https://community.cncf.io/e/mb86zw/",
+        registrationLink: "https://app.sli.do/event/1TvhifcpTD7fr1zVDbMySa",
         featured: false
     },
-    
+    /*
     {
       id: 1,
       title: "CyberSec Meme-athon",
