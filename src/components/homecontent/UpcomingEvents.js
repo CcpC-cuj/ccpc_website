@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaChevronLeft, FaChevronRight, FaUsers, FaArrowRight} from "react-icons/fa";
 import img_new_reg from "../assets/upcoming events/new_reg.jpeg";
-// import img_cloud_native from "../assets/upcoming events/cloud_native.jpeg";
+import img_cloud_native from "../assets/upcoming events/cloud_native.jpeg";
 const UpcomingEvents = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
