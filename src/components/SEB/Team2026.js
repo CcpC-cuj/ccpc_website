@@ -87,7 +87,7 @@ const studentDetails = {
   },
   Priyanshu: {
     name: "Priyanshu Verma",
-    role: "Vice-President",
+    role: "Treasurer",
     linkedin: "https://www.linkedin.com/in/priyanshuverma17/",
     github: "https://github.com/PriyanshuV17",
     link: "https://ccpc-cuj.web.app/profile/VyRgQ4vRlrQRnPm540bEsdjYzR92",
