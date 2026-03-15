@@ -9,7 +9,8 @@ import Title from "../components/homecontent/Title";
 import WhyCCPC from "../components/homecontent/WhyCCPC"; 
 import SoC from "../components/homecontent/Soc"; 
 import TEAM from "../components/SEB/Team2026";
-//import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
+import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
+import NewMembers from "../components/homecontent/NewMembers";
 import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";
 import hod_img from "../components/assets/hod_img.jpg";
@@ -90,6 +91,8 @@ const Home = () => {
           </div>
         </div>
 
+        <NewMembers />
+
         <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
           <div className="flex justify-center items-start mt-8">
             <Logo />
@@ -111,7 +114,7 @@ const Home = () => {
         </div>
 
         <WhyCCPC />
-       {/* <UpcomingEvents /> */}
+       <UpcomingEvents />
         <SoC />
               <h1 className="text-white text-4xl mb-6 text-center mt-10">Club Leadership</h1>
     
