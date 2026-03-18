@@ -339,11 +339,11 @@ export default function UpcomingEvents() {
         objective:
           "A 24-hour online hackathon focused on building innovative web applications. Participants will collaborate, design, and develop creative solutions using modern web technologies.",
         date: "2026-03-21",
-        // time: "02:00 PM - 02:00 PM (Next Day)",
-        // last_date_reg: "2026-03-20",
-        // submission_deadline: "2026-03-22 01:00 PM",
+        time: "2026-03-21 02:00 PM - 2026-03-22 02:00 PM",
+        last_date_reg: "2026-03-20",
+        submission_deadline: "2026-03-22 02:00 PM",
         place: "Online",
-        // registration: "https://ccpc-cuj.web.app/registration",
+        registration: "https://dev-sprint.pages.dev/",
         image: devsprint
       }
     ],
@@ -560,7 +560,7 @@ export default function UpcomingEvents() {
                     </p>
                   </div>
 
-                  <span className="text-sm text-yellow-500">
+                  <span className="text-sm text-yellow-500 w-32 text-right">
                     {event.date}
                   </span>
                 </div>
