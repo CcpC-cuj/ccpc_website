@@ -108,19 +108,19 @@ const members = [
   {
     name: "Pawan Pratap Singh",
     dept: "CSE",
-    batch: "2026",
+    batch: "2024",
     reg: "24190503038",
   },
   {
     name: "Aniket kumar",
     dept: "CSE",
-    batch: "2026",
+    batch: "2024",
     reg: "24190503008",
   },
   {
     name: "Arghyadipta Das",
-    dept: "CSE",
-    batch: "2026",
+    dept: "EE",
+    batch: "2024",
     reg: "24210503025",
   },
 ];
