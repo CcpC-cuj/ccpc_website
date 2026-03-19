@@ -32,7 +32,7 @@ const members = [
     reg: "25190503015",
   },
   {
-    name: "RSiddharth Das",
+    name: "Siddharth Das",
     dept: "CSE",
     batch: "2025",
     reg: "25190503036",
@@ -118,7 +118,7 @@ const members = [
     reg: "24190503008",
   },
   {
-    name: "PArghyadipta Das",
+    name: "Arghyadipta Das",
     dept: "CSE",
     batch: "2026",
     reg: "24210503025",
