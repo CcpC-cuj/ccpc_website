@@ -327,21 +327,37 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // import image from "../../assets/image.png";
-import devsprint from "../assets/upcoming events/devsprint3.png";
+import devsprint from "../assets/upcoming events/Devsprint.png";
 
 export default function UpcomingEvents() {
 
   const events = {
-      "2026-03-21": [
+     
+    // "2026-03-24":[
+    //   {
+    //     title: "Tech Talk - Emerging Technologies",
+    //     theme: "Technology & Innovation",
+    //     objective:
+    //       "An engaging tech talk aimed at exploring emerging technologies, sharing industry insights, and inspiring students to build impactful solutions. The session will include discussions, real-world examples, and interactive Q&A.",
+    //     date: "2026-03-24",
+    //     time: "03:00 PM - 05:00 PM",
+    //     last_date_reg: null,
+    //     submission_deadline: null,
+    //     place: "Science Building, Room No. 327",
+    //     registration: null,
+    //     image: devsprint
+    //   }
+    // ],
+     "2026-03-27": [
       {
         title: "Dev Sprint – Online Web Development Hackathon",
         theme: "Web Development",
         objective:
           "A 24-hour online hackathon focused on building innovative web applications. Participants will collaborate, design, and develop creative solutions using modern web technologies.",
-        date: "2026-03-21",
-        time: "2026-03-21 02:00 PM - 2026-03-22 02:00 PM",
-        last_date_reg: "2026-03-20",
-        submission_deadline: "2026-03-22 02:00 PM",
+        date: "2026-03-27",
+        time: "2026-03-27 08:00 PM - 2026-03-28 08:00 PM",
+        last_date_reg: "2026-03-27 10:00 PM",
+        submission_deadline: "2026-03-27 02:00 PM",
         place: "Online",
         registration: "https://dev-sprint.pages.dev/",
         image: devsprint
@@ -391,6 +407,11 @@ export default function UpcomingEvents() {
 
   const nextEvent = upcomingEvents[0];
   
+const handleNextEventClick = () => {
+  if (!nextEvent) return;
+  setSelectedDate(nextEvent.date);
+};
+
 
   return (
     <section className="w-full px-4 lg:px-16 text-white py-12">
@@ -476,8 +497,10 @@ export default function UpcomingEvents() {
               </span>
 
               <h3
-                onClick={() => setSelectedDate(nextEvent.date)}
-                className="text-2xl font-bold mt-2 cursor-pointer hover:text-yellow-400 transition"
+                onClick={handleNextEventClick}
+                className={`text-2xl font-bold mt-2 transition
+                  ${nextEvent ? "cursor-pointer hover:text-yellow-400" : "text-slate-500"}
+                `}
               >
                 {nextEvent?.title || "No upcoming events"}
               </h3>
@@ -486,7 +509,7 @@ export default function UpcomingEvents() {
                 {nextEvent?.objective}
               </p>
 
-              {nextEvent.time && (
+              {nextEvent?.last_date_reg && (
                 <p className="text-slate-300">
                   <span className="text-yellow-500 font-semibold">
                     Last Date of Registration:
@@ -495,15 +518,17 @@ export default function UpcomingEvents() {
                 </p>
               )}
 
-              <p className="text-slate-300">
-                <span className="text-yellow-500 font-semibold">
-                  Date:
-                </span>{" "}
-                {nextEvent?.date}
-              </p>
+              {nextEvent?.date && (
+                  <p className="text-slate-300">
+                  <span className="text-yellow-500 font-semibold">
+                    Date:
+                  </span>{" "}
+                  {nextEvent?.date}
+                </p>
+              )}
 
 
-              {nextEvent.time && (
+              {nextEvent?.time && (
               <p className="text-slate-300">
                 <span className="text-yellow-500 font-semibold">
                   Time:
@@ -512,13 +537,15 @@ export default function UpcomingEvents() {
               </p>
             )}
 
-
+            {nextEvent?.place && (
               <p className="text-slate-300">
                 <span className="text-yellow-500 font-semibold">
                   Venue:
                 </span>{" "}
                 {nextEvent?.place}
               </p>
+            )}
+
 
             </div>
 
@@ -680,7 +707,7 @@ function EventModal({ events, onClose }) {
               {event.theme}
             </p>
 
-            {event.time && (
+            {event.last_date_reg && (
               <p className="mb-2">
                   <span className="text-yellow-500 font-semibold">
                     Last Date of Registration:
