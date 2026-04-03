@@ -31,6 +31,7 @@ const GalleryUpload = lazy(() => import("./pages/Admin/GalleryUpload"));
 const AdminProtectedRoute = lazy(() => import("./components/Admin/AdminProtectedRoute"));
 
 const TeamPage = lazy(() => import("./pages/TeamPage"));
+const Policy = lazy(() => import("./components/Footer/Policy"));
 function App() {
   return (
     <Router>
@@ -93,6 +94,7 @@ function App() {
             }
           />
           <Route path="/team" element={<TeamPage />} /> {/* TeamPage Route */}
+          <Route path="/policy" element={<Policy />} />
         </Routes>
         </Suspense>
       </div>

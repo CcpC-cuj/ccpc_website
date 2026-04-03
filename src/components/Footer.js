@@ -54,14 +54,28 @@ const Footer = () => {
             </div>
 
             {/* Team Page Link */}
-            <div className="w-full flex justify-center mt-4">
+            {/* <div className="w-full flex justify-center mt-4">
               <a
                 href="/team"
                 className="text-blue-400 hover:underline text-base font-medium"
               >
                 Meet the Student Body
               </a>
-            </div>
+            </div> */}
+
+             <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+                <a href="/team" 
+                    className="hover:underline text-blue-400">
+                  Meet the Student Body
+                </a>
+
+                <a
+                  href="/policy"
+                  className="hover:underline text-blue-400"
+                >
+                  Policy
+                </a>
+              </div>
 
             {/* Address Section */}
             <div className="text-center sm:text-right text-sm">
