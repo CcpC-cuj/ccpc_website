@@ -91,7 +91,7 @@ const Home = () => {
           </div>
         </div>
 
-        <NewMembers />
+        {/* <NewMembers /> */}
 
         <div className="mt-6 text-center px-4 lg:px-16 flex lg:flex-row flex-col items-center justify-center">
           <div className="flex justify-center items-start mt-8">
