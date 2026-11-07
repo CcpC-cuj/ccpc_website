@@ -328,6 +328,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // import image from "../../assets/image.png";
 import devsprint from "../assets/upcoming events/Devsprint.png";
+import devsprint2 from  "../assets/upcoming events/devsprint2.jpeg";
+import cyberjagrit from  "../assets/upcoming events/cyberjagrit.jpeg";
+
 
 export default function UpcomingEvents() {
 
@@ -348,6 +351,7 @@ export default function UpcomingEvents() {
     //     image: devsprint
     //   }
     // ],
+    
      "2026-03-27": [
       {
         title: "Dev Sprint – Online Web Development Hackathon",
@@ -361,6 +365,38 @@ export default function UpcomingEvents() {
         place: "Online",
         registration: "https://dev-sprint.pages.dev/",
         image: devsprint
+      }
+    ],
+
+    "2026-10-30": [
+      {
+        title: "DEV SPRINT 2.0",
+        theme: "Skill Building & Problem Solving",
+        objective:
+          "Bigger, grander, bolder. Get ready to level up your skills—Think. Solve. Build. No prior coding knowledge required, open to 1st & 2nd-year students.",
+        date: "2026-10-30",
+        time: "2026-10-30 02:00 PM - 2026-10-30 05:00 PM",
+        last_date_reg: "2026-10-30 02:00 PM",
+        submission_deadline: "2026-10-30 05:00 PM",
+        place: "Room 327",
+        registration: "https://forms.gle/Dy6zFBD4Ld1bBmmo8",
+        image: devsprint2
+      }
+    ],
+
+    "2026-11-09": [
+      {
+        title: "Cyber Jagrit Bharat 2.0 – Memathon & Reels Competition",
+        theme: "Cyber Security Awareness & Digital Safety",
+        objective:
+          "Spread awareness and build a cyber-secure India through creativity! Participate in the Memathon and Reels Competition by creating funny, engaging memes and reels on cybersecurity topics.",
+        date: "2026-11-09",
+        time: "Inauguration on 2026-11-09",
+        last_date_reg: "2026-11-09",
+        submission_deadline: "Memathon: 2026-11-09 | Reels: 2026-11-11",
+        place: "Online",
+        registration: "",
+        image: cyberjagrit
       }
     ],
     
