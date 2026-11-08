@@ -10,7 +10,7 @@ import WhyCCPC from "../components/homecontent/WhyCCPC";
 import SoC from "../components/homecontent/Soc"; 
 import TEAM from "../components/SEB/Team2026";
 import UpcomingEvents from "../components/homecontent/UpcomingEvents"; 
-import NewMembers from "../components/homecontent/NewMembers";
+// import NewMembers from "../components/homecontent/NewMembers";
 import Gallery from "../components/homecontent/Gallery"; 
 import PrashantPrashun from "../components/assets/prashantsir.jpg";
 import hod_img from "../components/assets/hod_img.jpg";
